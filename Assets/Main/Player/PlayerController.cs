@@ -23,27 +23,30 @@ public class Player1Controller : MonoBehaviour
     {
         if (equiment == Equiment.AXE)
         {
+            weapon.SetActive(true);
             weapon.GetComponent<SpriteRenderer>().sprite = axe;
             if (Input.GetKeyDown(KeyCode.I)) equiment = Equiment.SWORD;
         }
-        else if (equiment == Equiment.SWORD) {
+        else if (equiment == Equiment.SWORD)
+        {
+            weapon.SetActive(true);
             weapon.GetComponent<SpriteRenderer>().sprite = sword;
+            if (Input.GetKeyDown(KeyCode.I)) equiment = Equiment.PUNCH;
+        }
+        else if (equiment == Equiment.PUNCH) {
+            weapon.SetActive(false);            
             if (Input.GetKeyDown(KeyCode.I)) equiment = Equiment.AXE;
         }
 
         if (Input.GetKeyDown(KeyCode.Z)) {
-            weapon.SetActive(true);
+            
             GetComponent<Animator>().SetTrigger("sword");
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
-            weapon.SetActive(false);
-            GetComponent<Animator>().SetTrigger("punch");
-        }
-        else if (Input.GetKeyDown(KeyCode.C))
-        {
-            weapon.SetActive(false);
-            GetComponent<Animator>().SetTrigger("punch");
-        }
+            if (equiment == Equiment.AXE) GetComponent<Animator>().SetTrigger("sword");
+            else if (equiment == Equiment.SWORD) GetComponent<Animator>().SetTrigger("sword");
+            else if (equiment == Equiment.PUNCH) GetComponent<Animator>().SetTrigger("punch");
+        }        
     }
 }
