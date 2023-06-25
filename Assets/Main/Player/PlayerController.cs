@@ -9,6 +9,7 @@ public class Player1Controller : MonoBehaviour
     public Sprite axe, sword;
     Rigidbody2D rb;
     Animator animator;
+    GameObject otherPlayer;
     enum Equiment { 
         AXE,SWORD,PUNCH
     };
@@ -28,6 +29,14 @@ public class Player1Controller : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         onGround = false;
+
+        if (player == 1)
+        {
+            otherPlayer = GameObject.Find("Player2");
+        }
+        else {
+            otherPlayer = GameObject.Find("Player1");
+        }
     }
 
     // Update is called once per frame
