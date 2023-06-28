@@ -7,14 +7,17 @@ TagManager:
   - Floor
   - Player1
   - Player2
+  - Sword
+  - Axe
+  - Spear
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
+  - Weapon
   - 
   - 
   - 
