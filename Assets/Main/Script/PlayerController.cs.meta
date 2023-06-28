@@ -3,7 +3,14 @@ guid: d4f88b27a19d2664fae664f00a829db7
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - weapon: {instanceID: 0}
+  - axePre: {fileID: 3081265719968954611, guid: 3c8621087f2acf649ba5378d6b3e7269, type: 3}
+  - swordPre: {fileID: 1154018821322401736, guid: f73f67169bbbad0469078ee8f966e4a4, type: 3}
+  - spearPre: {fileID: 5582843355123188142, guid: c62a026905ba4174ca04115018a52813, type: 3}
+  - axe: {instanceID: 0}
+  - sword: {instanceID: 0}
+  - spear: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

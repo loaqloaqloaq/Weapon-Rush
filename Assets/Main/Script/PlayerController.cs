@@ -5,12 +5,17 @@ using static UnityEditor.PlayerSettings;
 
 public class Player1Controller : MonoBehaviour
 {
-    public GameObject weapon;
+    public GameObject weapon,axePre,swordPre,spearPre;
     public Sprite axe, sword, spear;
     Rigidbody2D rb;
     Animator animator;
     GameObject otherPlayer;
-    
+
+    struct KeyBind {
+        public string move;
+        public KeyCode atk, jump, drop;
+    }
+    KeyBind[] input=new KeyBind[2];
     enum Equiment { 
         AXE,SWORD,SPEAR,PUNCH,NON
     };
@@ -19,14 +24,12 @@ public class Player1Controller : MonoBehaviour
 
     public int player = 1;
     float moveSpeed = 5.0f;
-    float jumpPow = 7.0f;
-    string playerStr;
+    float jumpPow = 7.0f;    
     bool onGround;
     // Start is called before the first frame update
     void Start()
     {
-        equiment=Equiment.PUNCH;
-        playerStr = "Player" + player.ToString();
+        equiment=Equiment.PUNCH;        
         weapon = transform.Find("Body/Front arm/Weapon").gameObject;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -40,7 +43,20 @@ public class Player1Controller : MonoBehaviour
         else {
             otherPlayer = GameObject.Find("Player1");
         }
-        
+
+        //キーバインド
+        //プレイヤー　１
+        input[0].move = "Player1_Horizontal";
+        input[0].atk = KeyCode.Space;
+        input[0].drop = KeyCode.LeftControl;
+        input[0].jump = KeyCode.W;
+        //プレイヤー　2
+        input[1].move = "Player2_Horizontal";
+        input[1].atk = KeyCode.Keypad0;
+        input[1].drop = KeyCode.RightControl;
+        input[1].jump = KeyCode.UpArrow;
+
+
     }
 
     // Update is called once per frame
@@ -68,7 +84,7 @@ public class Player1Controller : MonoBehaviour
 
         
         bool attacking = animator.GetCurrentAnimatorStateInfo(0).IsName("punch attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("sword attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("axe attack");
-        if ((player == 1 ? Input.GetKeyDown(KeyCode.Space) : Input.GetKeyDown(KeyCode.Keypad0))&& !attacking)
+        if (Input.GetKeyDown(input[player-1].atk)&& !attacking)
         {
             //攻撃
             if (onHoverObject == null)
@@ -93,32 +109,41 @@ public class Player1Controller : MonoBehaviour
                 {
                     case "Axe":
                         equiment = Equiment.AXE;
+                        Destroy(onHoverObject);
                         break;
                     case "Sword":
                         equiment = Equiment.SWORD;
+                        Destroy(onHoverObject);
                         break;
                     case "Spear":
                         equiment = Equiment.SPEAR;
+                        Destroy(onHoverObject);
                         break;
                     default: break;
-                }
+                }                
             }
-        }        
-        //操作
+        }
+        //武器捨てる
+        if (Input.GetKeyDown(input[player - 1].drop) && !attacking)
+        {
+            equiment = Equiment.PUNCH;
+
+        }
+
         //移動
-        Vector3 vec = new Vector3(Input.GetAxis(playerStr + "_Horizontal") * moveSpeed * Time.deltaTime, 0, 0);
+        Vector3 vec = new Vector3(Input.GetAxis(input[player - 1].move) * moveSpeed * Time.deltaTime, 0, 0);
         transform.Translate(vec);        
-        if (Input.GetAxis(playerStr + "_Horizontal") > 0) transform.localScale = new Vector3(-1, 1, 1);
-        else if (Input.GetAxis(playerStr + "_Horizontal") < 0) transform.localScale = new Vector3(1, 1, 1);
+        if (Input.GetAxis(input[player - 1].move) > 0) transform.localScale = new Vector3(-1, 1, 1);
+        else if (Input.GetAxis(input[player - 1].move) < 0) transform.localScale = new Vector3(1, 1, 1);
 
         //ジャンプ       
-        if ((player == 1 ? Input.GetKeyDown(KeyCode.W) : Input.GetKeyDown(KeyCode.UpArrow)) && onGround) {
+        if (Input.GetKeyDown(input[player - 1].jump) && onGround) {
             rb.velocity = new Vector2(0, jumpPow);
             onGround= false;
         }
 
         //移動アニメーション
-        if(Input.GetAxis(playerStr + "_Horizontal")!=0) animator.SetBool("walking",true);
+        if(Input.GetAxis(input[player - 1].move) !=0) animator.SetBool("walking",true);
         else animator.SetBool("walking", false);  
     }
     private void OnCollisionEnter2D(Collision2D collision)
