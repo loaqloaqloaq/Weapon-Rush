@@ -11,7 +11,7 @@ public class Player1Controller : MonoBehaviour
     Animator animator;
     GameObject otherPlayer;
     enum Equiment { 
-        AXE,SWORD,PUNCH
+        AXE,SWORD,SPEAR,PUNCH
     };
     Equiment equiment;
     
@@ -42,7 +42,7 @@ public class Player1Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //•Ší‰æ‘œ
+        //ï¿½ï¿½ï¿½ï¿½æ‘œ
         if (equiment == Equiment.AXE)
         {
             weapon.SetActive(true);
@@ -60,7 +60,7 @@ public class Player1Controller : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.I)) equiment = Equiment.AXE;
         }
 
-        //‘€ì
+        //ï¿½ï¿½ï¿½ï¿½
         bool attacking = animator.GetCurrentAnimatorStateInfo(0).IsName("punch attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("sword attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("axe attack");        
         if ((player==1?Input.GetKeyDown(KeyCode.Space):Input.GetKeyDown(KeyCode.Keypad0)) && !attacking)
         {
@@ -77,20 +77,20 @@ public class Player1Controller : MonoBehaviour
                 animator.SetTrigger("punch");
             }
         }        
-        //ˆÚ“®
-        //‰¡
+        //ï¿½Ú“ï¿½
+        //ï¿½ï¿½
         Vector3 vec = new Vector3(Input.GetAxis(playerStr + "_Horizontal") * moveSpeed * Time.deltaTime, 0, 0);
         transform.Translate(vec);        
         if (Input.GetAxis(playerStr + "_Horizontal") > 0) transform.localScale = new Vector3(-1, 1, 1);
         else if (Input.GetAxis(playerStr + "_Horizontal") < 0) transform.localScale = new Vector3(1, 1, 1);
 
-        //ƒWƒƒƒ“ƒv        
+        //ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½v        
         if ((player == 1 ? Input.GetKeyDown(KeyCode.W) : Input.GetKeyDown(KeyCode.UpArrow)) && onGround) {
             rb.velocity = new Vector2(0, jumpPow);
             onGround= false;
         }
 
-        //ˆÚ“®ƒAƒjƒ[ƒVƒ‡ƒ“
+        //ï¿½Ú“ï¿½ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½
         if(Input.GetAxis(playerStr + "_Horizontal")!=0) animator.SetBool("walking",true);
         else animator.SetBool("walking", false);  
     }
@@ -98,6 +98,15 @@ public class Player1Controller : MonoBehaviour
     {
         if (collision.transform.CompareTag("Floor")) {
             onGround = true;
+        }
+        if (collision.transform.CompareTag("Axe") ) {
+            equiment = Equiment.AXE;
+        }
+        if (collision.transform.CompareTag("Sword")) {
+            equiment = Equiment.SWORD;
+        }
+        if (collision.transform.CompareTag("Spear")) {
+            equiment = Equiment.SPEAR;
         }
     }
 }
