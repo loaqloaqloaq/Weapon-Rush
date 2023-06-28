@@ -936,6 +936,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: axe
       objectReference: {fileID: 0}
+    - target: {fileID: 5817787369506048812, guid: 3c8621087f2acf649ba5378d6b3e7269, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 8227592014510643368, guid: 3c8621087f2acf649ba5378d6b3e7269, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -1041,6 +1045,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6314001877870498825, guid: 5ca9a637cb25972418d7e2f2203c2ba2, type: 3}
+      propertyPath: axePre
+      value: 
+      objectReference: {fileID: 3081265719968954611, guid: 3c8621087f2acf649ba5378d6b3e7269, type: 3}
+    - target: {fileID: 6314001877870498825, guid: 5ca9a637cb25972418d7e2f2203c2ba2, type: 3}
+      propertyPath: spearPre
+      value: 
+      objectReference: {fileID: 5582843355123188142, guid: c62a026905ba4174ca04115018a52813, type: 3}
+    - target: {fileID: 6314001877870498825, guid: 5ca9a637cb25972418d7e2f2203c2ba2, type: 3}
+      propertyPath: swordPre
+      value: 
+      objectReference: {fileID: 1154018821322401736, guid: f73f67169bbbad0469078ee8f966e4a4, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1057,6 +1073,10 @@ PrefabInstance:
     - target: {fileID: 1154018821322401736, guid: f73f67169bbbad0469078ee8f966e4a4, type: 3}
       propertyPath: m_Name
       value: sword
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462156227080345917, guid: f73f67169bbbad0469078ee8f966e4a4, type: 3}
+      propertyPath: m_Constraints
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5437670393695503341, guid: f73f67169bbbad0469078ee8f966e4a4, type: 3}
       propertyPath: m_RootOrder
@@ -1191,6 +1211,10 @@ PrefabInstance:
     - target: {fileID: 5582843355123188142, guid: c62a026905ba4174ca04115018a52813, type: 3}
       propertyPath: m_Name
       value: spear
+      objectReference: {fileID: 0}
+    - target: {fileID: 7713974628996519337, guid: c62a026905ba4174ca04115018a52813, type: 3}
+      propertyPath: m_Constraints
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8739052684647242667, guid: c62a026905ba4174ca04115018a52813, type: 3}
       propertyPath: m_RootOrder

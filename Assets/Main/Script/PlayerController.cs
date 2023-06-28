@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
-public class Player1Controller : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public GameObject weapon,axePre,swordPre,spearPre;
     public Sprite axe, sword, spear;
     Rigidbody2D rb;
     Animator animator;
     GameObject otherPlayer;
-
     struct KeyBind {
         public string move;
         public KeyCode atk, jump, drop;
@@ -26,6 +25,8 @@ public class Player1Controller : MonoBehaviour
     float moveSpeed = 5.0f;
     float jumpPow = 7.0f;    
     bool onGround;
+
+    float facing;
     // Start is called before the first frame update
     void Start()
     {
@@ -56,6 +57,7 @@ public class Player1Controller : MonoBehaviour
         input[1].drop = KeyCode.RightControl;
         input[1].jump = KeyCode.UpArrow;
 
+        facing = player == 1 ? -1.0f : 1.0f;
 
     }
 
@@ -114,14 +116,17 @@ public class Player1Controller : MonoBehaviour
                 switch (onHoverObject.tag)
                 {
                     case "Axe":
+                        DropWeapon();
                         equiment = Equiment.AXE;
                         Destroy(onHoverObject);
                         break;
                     case "Sword":
+                        DropWeapon();
                         equiment = Equiment.SWORD;
                         Destroy(onHoverObject);
                         break;
                     case "Spear":
+                        DropWeapon();
                         equiment = Equiment.SPEAR;
                         Destroy(onHoverObject);
                         break;
@@ -132,15 +137,23 @@ public class Player1Controller : MonoBehaviour
         //武器捨てる
         if (Input.GetKeyDown(input[player - 1].drop) && !attacking)
         {
+            DropWeapon();
             equiment = Equiment.PUNCH;
-
         }
 
         //移動
         Vector3 vec = new Vector3(Input.GetAxis(input[player - 1].move) * moveSpeed * Time.deltaTime, 0, 0);
-        transform.Translate(vec);        
-        if (Input.GetAxis(input[player - 1].move) > 0) transform.localScale = new Vector3(-1, 1, 1);
-        else if (Input.GetAxis(input[player - 1].move) < 0) transform.localScale = new Vector3(1, 1, 1);
+        transform.Translate(vec);
+        if (Input.GetAxis(input[player - 1].move) > 0)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+            facing = -1.0f;
+        }
+        else if (Input.GetAxis(input[player - 1].move) < 0)
+        {
+            facing = 1.0f;
+            transform.localScale = new Vector3(1, 1, 1);
+        }
 
         //ジャンプ       
         if (Input.GetKeyDown(input[player - 1].jump) && onGround) {
@@ -171,5 +184,24 @@ public class Player1Controller : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         onHoverObject = null;
+    }
+
+    private void DropWeapon()
+    {
+        if (equiment == Equiment.PUNCH) return;
+
+        GameObject droppedWeapon = null;
+        if (equiment == Equiment.AXE)
+        {
+            droppedWeapon = Instantiate(axePre, transform.position, Quaternion.identity);
+        }
+        else if(equiment == Equiment.SWORD) {
+            droppedWeapon = Instantiate(swordPre, transform.position, Quaternion.identity);
+        }
+        else if (equiment == Equiment.SPEAR)
+        {
+            droppedWeapon = Instantiate(spearPre, transform.position, Quaternion.identity);
+        }
+        droppedWeapon.GetComponent<Rigidbody2D>().velocity=new Vector3(facing*2.0f,5.0f,0 );  
     }
 }
