@@ -62,6 +62,12 @@ public class Player1Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //一時停止時はプレイヤーを動けないようにする
+        if (Mathf.Approximately(Time.timeScale, 0.0f))
+        {
+            return;
+        }
+
         //武器画像
         if (equiment == Equiment.AXE)
         {
