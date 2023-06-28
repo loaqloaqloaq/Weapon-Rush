@@ -123,11 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &166462786 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5582843355123188142, guid: c62a026905ba4174ca04115018a52813, type: 3}
-  m_PrefabInstance: {fileID: 6631321536760386047}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &295178686
 GameObject:
   m_ObjectHideFlags: 0
@@ -460,16 +455,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &1209333229 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1154018821322401736, guid: f73f67169bbbad0469078ee8f966e4a4, type: 3}
-  m_PrefabInstance: {fileID: 5603035583679750679}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1478999381 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3081265719968954611, guid: 3c8621087f2acf649ba5378d6b3e7269, type: 3}
-  m_PrefabInstance: {fileID: 1242738530698764505}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1686419420
 GameObject:
   m_ObjectHideFlags: 0
@@ -1135,6 +1120,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1709870776534457448, guid: 9d3f6578fd9f4564697823e9a7512c25, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300134, guid: 15b2d2faaecad4bfb9edc6585d94f509, type: 3}
     - target: {fileID: 2126850785813793097, guid: 9d3f6578fd9f4564697823e9a7512c25, type: 3}
       propertyPath: m_Name
       value: Player1
@@ -1142,15 +1131,15 @@ PrefabInstance:
     - target: {fileID: 5704133621961994775, guid: 9d3f6578fd9f4564697823e9a7512c25, type: 3}
       propertyPath: axePre
       value: 
-      objectReference: {fileID: 1478999381}
+      objectReference: {fileID: 3081265719968954611, guid: 3c8621087f2acf649ba5378d6b3e7269, type: 3}
     - target: {fileID: 5704133621961994775, guid: 9d3f6578fd9f4564697823e9a7512c25, type: 3}
       propertyPath: spearPre
       value: 
-      objectReference: {fileID: 166462786}
+      objectReference: {fileID: 5582843355123188142, guid: c62a026905ba4174ca04115018a52813, type: 3}
     - target: {fileID: 5704133621961994775, guid: 9d3f6578fd9f4564697823e9a7512c25, type: 3}
       propertyPath: swordPre
       value: 
-      objectReference: {fileID: 1209333229}
+      objectReference: {fileID: 1154018821322401736, guid: f73f67169bbbad0469078ee8f966e4a4, type: 3}
     - target: {fileID: 6931307686856016843, guid: 9d3f6578fd9f4564697823e9a7512c25, type: 3}
       propertyPath: m_RootOrder
       value: 1

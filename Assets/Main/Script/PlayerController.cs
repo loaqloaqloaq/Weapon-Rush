@@ -75,19 +75,23 @@ public class PlayerController : MonoBehaviour
         {
             weapon.SetActive(true);
             weapon.GetComponent<SpriteRenderer>().sprite = axe;
+            animator.SetBool("using spear", false);
         }
         else if (equiment == Equiment.SPEAR)
         {
             weapon.SetActive(true);
             weapon.GetComponent<SpriteRenderer>().sprite = spear;
+            animator.SetBool("using spear",true);
         }
         else if (equiment == Equiment.SWORD)
         {
             weapon.SetActive(true);
             weapon.GetComponent<SpriteRenderer>().sprite = sword;
+            animator.SetBool("using spear", false);
         }
         else if (equiment == Equiment.PUNCH) {
-            weapon.SetActive(false);   
+            weapon.SetActive(false);
+            animator.SetBool("using spear", false);
         }
 
         
@@ -116,17 +120,17 @@ public class PlayerController : MonoBehaviour
                 switch (onHoverObject.tag)
                 {
                     case "Axe":
-                        DropWeapon();
+                        //DropWeapon();
                         equiment = Equiment.AXE;
                         Destroy(onHoverObject);
                         break;
                     case "Sword":
-                        DropWeapon();
+                        //DropWeapon();
                         equiment = Equiment.SWORD;
                         Destroy(onHoverObject);
                         break;
                     case "Spear":
-                        DropWeapon();
+                        //DropWeapon();
                         equiment = Equiment.SPEAR;
                         Destroy(onHoverObject);
                         break;
@@ -140,7 +144,6 @@ public class PlayerController : MonoBehaviour
             DropWeapon();
             equiment = Equiment.PUNCH;
         }
-
         //移動
         Vector3 vec = new Vector3(Input.GetAxis(input[player - 1].move) * moveSpeed * Time.deltaTime, 0, 0);
         transform.Translate(vec);
@@ -190,18 +193,21 @@ public class PlayerController : MonoBehaviour
     {
         if (equiment == Equiment.PUNCH) return;
 
-        GameObject droppedWeapon = null;
+       
         if (equiment == Equiment.AXE)
         {
-            droppedWeapon = Instantiate(axePre, transform.position, Quaternion.identity);
+            GameObject droppedWeapon = Instantiate(axePre, transform.position, Quaternion.identity);
+            droppedWeapon.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * -2.0f, 5.0f, 0);
         }
         else if(equiment == Equiment.SWORD) {
-            droppedWeapon = Instantiate(swordPre, transform.position, Quaternion.identity);
+            GameObject droppedWeapon = Instantiate(swordPre, transform.position, Quaternion.identity);
+            droppedWeapon.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * -2.0f, 5.0f, 0);
         }
         else if (equiment == Equiment.SPEAR)
         {
-            droppedWeapon = Instantiate(spearPre, transform.position, Quaternion.identity);
+            GameObject droppedWeapon = Instantiate(spearPre, transform.position, Quaternion.identity);
+            droppedWeapon.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * -2.0f, 5.0f, 0);
         }
-        droppedWeapon.GetComponent<Rigidbody2D>().velocity=new Vector3(facing*2.0f,5.0f,0 );  
+         
     }
 }
