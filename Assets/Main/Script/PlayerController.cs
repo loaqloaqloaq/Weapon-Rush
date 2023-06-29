@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 using static UnityEditor.PlayerSettings;
 
 public class PlayerController : MonoBehaviour
@@ -10,10 +11,11 @@ public class PlayerController : MonoBehaviour
     public Sprite axe, sword, spear;
     Rigidbody2D rb;
     Animator animator;
-    GameObject otherPlayer;
+    GameObject otherPlayer;    
+    float dashing;
     struct KeyBind {
         public string move;
-        public KeyCode atk, jump, drop;
+        public KeyCode atk, jump, drop,dash;
     }
     KeyBind[] input=new KeyBind[2];
     enum Equiment { 
@@ -25,7 +27,7 @@ public class PlayerController : MonoBehaviour
     public int player = 1;
     float moveSpeed = 5.0f;
     float jumpPow = 7.0f;    
-    bool onGround;
+    bool onGround;    
 
     float facing;
     // Start is called before the first frame update
@@ -58,14 +60,17 @@ public class PlayerController : MonoBehaviour
         input[0].atk = KeyCode.Space;
         input[0].drop = KeyCode.LeftControl;
         input[0].jump = KeyCode.W;
+        input[0].dash = KeyCode.LeftShift;
         //プレイヤー　2
         input[1].move = "Player2_Horizontal";
         input[1].atk = KeyCode.Keypad0;
         input[1].drop = KeyCode.RightControl;
         input[1].jump = KeyCode.UpArrow;
+        input[1].dash = KeyCode.RightShift;
 
         facing = player == 1 ? -1.0f : 1.0f;
-
+        
+        dashing = 0.0f ;
     }
 
     // Update is called once per frame
@@ -171,20 +176,30 @@ public class PlayerController : MonoBehaviour
             DropWeapon();
             equiment = Equiment.PUNCH;
         }
-        //移動
-        Vector3 vec = new Vector3(Input.GetAxis(input[player - 1].move) * moveSpeed * Time.deltaTime, 0, 0);
+        //移動とダッシュ
+        float dashTime = 0.2f;
+        float dashSpeed = 1.0f;
+        if (Input.GetKeyDown(input[player - 1].dash) && dashing <= 0) dashing = dashTime;
+        if (dashing > 0)
+        {
+            dashSpeed = 2.5f;
+            dashing -= Time.deltaTime;
+            if (dashing < 0) dashing = 0;
+        }
+        Vector3 vec = new Vector3(Input.GetAxis(input[player - 1].move) * moveSpeed * dashSpeed * Time.deltaTime, 0, 0);
         transform.Translate(vec);
+        //画像の向きと
+        
         if (Input.GetAxis(input[player - 1].move) > 0)
         {
-            transform.localScale = new Vector3(-1, 1, 1);
             facing = -1.0f;
+            transform.localScale = new Vector3(-1, 1, 1);            
         }
         else if (Input.GetAxis(input[player - 1].move) < 0)
         {
             facing = 1.0f;
-            transform.localScale = new Vector3(1, 1, 1);
-        }
-
+            transform.localScale = new Vector3(1, 1, 1);            
+        }  
         //ジャンプ       
         if (Input.GetKeyDown(input[player - 1].jump) && onGround) {
             rb.velocity = new Vector2(0, jumpPow);
@@ -192,7 +207,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //移動アニメーション
-        if(Input.GetAxis(input[player - 1].move) !=0) animator.SetBool("walking",true);
+        if (Input.GetAxis(input[player - 1].move) != 0) { animator.SetBool("walking", true); }
         else animator.SetBool("walking", false);  
     }
     private void OnCollisionEnter2D(Collision2D collision)
