@@ -11,7 +11,10 @@ public class PlayerController : MonoBehaviour
     public Sprite axe, sword, spear;
     Rigidbody2D rb;
     Animator animator;
-    GameObject otherPlayer;    
+    GameObject otherPlayer;
+
+    public int HP;
+
     float dashing;
     struct KeyBind {
         public string move;
@@ -71,6 +74,8 @@ public class PlayerController : MonoBehaviour
         facing = player == 1 ? -1.0f : 1.0f;
         
         dashing = 0.0f ;
+
+        HP = 100;
     }
 
     // Update is called once per frame
@@ -119,25 +124,19 @@ public class PlayerController : MonoBehaviour
             if (onHoverObject == null)
             {
                 if (equiment == Equiment.AXE)
-                {
-                    weapon.GetComponent<CapsuleCollider2D>().enabled = true;
-                    weapon.GetComponent<CapsuleCollider2D>().size = new Vector2(0.38f, 0.32f);
-                    weapon.GetComponent<CapsuleCollider2D>().offset = new Vector2(-0.1f, 0.35f);
+                {                    
                     animator.SetTrigger("axe");
+                    Invoke("EnableWeapon", 0.24f);
                 }
                 else if (equiment == Equiment.SWORD)
                 {
-                    weapon.GetComponent<CapsuleCollider2D>().enabled = true;
-                    weapon.GetComponent<CapsuleCollider2D>().size = new Vector2(0.27f, 0.8f);
-                    weapon.GetComponent<CapsuleCollider2D>().offset = new Vector2(0, 0.5f);
                     animator.SetTrigger("sword");
+                    Invoke("EnableWeapon", 0.2f);
                 }
                 else if (equiment == Equiment.SPEAR)
                 {
-                    weapon.GetComponent<CapsuleCollider2D>().enabled = true;
-                    weapon.GetComponent<CapsuleCollider2D>().size = new Vector2(0.22f, 0.6f);
-                    weapon.GetComponent<CapsuleCollider2D>().offset = new Vector2(0.008f, 0.85f);
                     animator.SetTrigger("spear");
+                    Invoke("EnableWeapon", 0.1f);
                 }
                 else if (equiment == Equiment.PUNCH)
                 {
@@ -225,8 +224,15 @@ public class PlayerController : MonoBehaviour
         {
             onHoverObject = collision.gameObject;
         }
-        else {
-            Debug.Log(collision.tag);
+        else if (collision.transform.CompareTag("Attack"))
+        {
+            animator.SetTrigger("hurt");
+        }
+        else if (collision.transform.CompareTag("Player1") || collision.transform.CompareTag("Player2")) {
+            weapon.GetComponent<CapsuleCollider2D>().enabled = false;
+            frontArm.GetComponent<CapsuleCollider2D>().enabled = false;
+            backArm.GetComponent<CapsuleCollider2D>().enabled = false;
+            collision.GetComponent<PlayerController>().HP -= 10;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -254,5 +260,25 @@ public class PlayerController : MonoBehaviour
             droppedWeapon.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * -2.0f, 5.0f, 0);
         }
          
+    }
+
+    void EnableWeapon()
+    {        
+        weapon.GetComponent<CapsuleCollider2D>().enabled = true;
+        if (equiment == Equiment.AXE)
+        {           
+            weapon.GetComponent<CapsuleCollider2D>().size = new Vector2(0.38f, 0.32f);
+            weapon.GetComponent<CapsuleCollider2D>().offset = new Vector2(-0.1f, 0.35f);            
+        }
+        else if (equiment == Equiment.SWORD)
+        {           
+            weapon.GetComponent<CapsuleCollider2D>().size = new Vector2(0.27f, 0.8f);
+            weapon.GetComponent<CapsuleCollider2D>().offset = new Vector2(0, 0.5f);            
+        }
+        else if (equiment == Equiment.SPEAR)
+        {
+            weapon.GetComponent<CapsuleCollider2D>().size = new Vector2(0.22f, 0.6f);
+            weapon.GetComponent<CapsuleCollider2D>().offset = new Vector2(0.008f, 0.85f);            
+        }
     }
 }
