@@ -5,7 +5,7 @@ using static UnityEditor.PlayerSettings;
 
 public class PlayerController : MonoBehaviour
 {
-    public GameObject weapon, frontArm, backArm;
+    GameObject weapon, frontArm, backArm;
     public GameObject axePre, swordPre, spearPre;
     public Sprite axe, sword, spear;
     Rigidbody2D rb;
@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
 
     public int player = 1;
     float moveSpeed = 5.0f;
-    float jumpPow = 7.0f;
+    float jumpPow = 10.0f;
     bool onGround;
 
     float facing;
@@ -229,6 +229,7 @@ public class PlayerController : MonoBehaviour
             {
                 animator.SetTrigger("dead");
                 GetComponent<BoxCollider2D>().enabled = false;
+                rb.isKinematic = true;               
             }
         }
         else if (collision.transform.CompareTag("Player1") || collision.transform.CompareTag("Player2")) {

@@ -1250,6 +1250,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Attack
       objectReference: {fileID: 0}
+    - target: {fileID: 6237778755989469581, guid: 5ca9a637cb25972418d7e2f2203c2ba2, type: 3}
+      propertyPath: m_GravityScale
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6314001877870498825, guid: 5ca9a637cb25972418d7e2f2203c2ba2, type: 3}
       propertyPath: maxHP
       value: 100
@@ -1360,6 +1364,10 @@ PrefabInstance:
     - target: {fileID: 2126850785813793097, guid: 9d3f6578fd9f4564697823e9a7512c25, type: 3}
       propertyPath: m_Name
       value: Player1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4655989837624867265, guid: 9d3f6578fd9f4564697823e9a7512c25, type: 3}
+      propertyPath: m_GravityScale
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5704133621961994775, guid: 9d3f6578fd9f4564697823e9a7512c25, type: 3}
       propertyPath: maxHP
