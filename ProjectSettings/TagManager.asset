@@ -10,7 +10,6 @@ TagManager:
   - Sword
   - Axe
   - Spear
-  - Attack
   layers:
   - Default
   - TransparentFX
