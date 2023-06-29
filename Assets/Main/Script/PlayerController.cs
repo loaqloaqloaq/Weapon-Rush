@@ -5,7 +5,8 @@ using static UnityEditor.PlayerSettings;
 
 public class PlayerController : MonoBehaviour
 {
-    public GameObject weapon,axePre,swordPre,spearPre;
+    public GameObject weapon, frontArm, backArm;
+    public GameObject axePre,swordPre,spearPre;
     public Sprite axe, sword, spear;
     Rigidbody2D rb;
     Animator animator;
@@ -32,6 +33,12 @@ public class PlayerController : MonoBehaviour
     {
         equiment=Equiment.PUNCH;        
         weapon = transform.Find("Body/Front arm/Weapon").gameObject;
+        frontArm = transform.Find("Body/Front arm").gameObject;
+        backArm = transform.Find("Body/Back arm").gameObject;
+        weapon.GetComponent<CapsuleCollider2D>().enabled = false ;
+        frontArm.GetComponent<CapsuleCollider2D>().enabled = false;
+        backArm.GetComponent<CapsuleCollider2D>().enabled = false;
+
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         onGround = false;       
@@ -63,7 +70,7 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {        
         //一時停止時はプレイヤーを動けないようにする
         if (Mathf.Approximately(Time.timeScale, 0.0f))
         {
@@ -95,7 +102,12 @@ public class PlayerController : MonoBehaviour
         }
 
         
-        bool attacking = animator.GetCurrentAnimatorStateInfo(0).IsName("punch attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("sword attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("axe attack");
+        bool attacking = animator.GetCurrentAnimatorStateInfo(0).IsName("punch attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("sword attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("axe attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("spear attack");
+        if (!attacking) {
+            weapon.GetComponent<CapsuleCollider2D>().enabled = false;
+            frontArm.GetComponent<CapsuleCollider2D>().enabled = false;
+            backArm.GetComponent<CapsuleCollider2D>().enabled = false;
+        }
         if (Input.GetKeyDown(input[player-1].atk)&& !attacking)
         {
             //攻撃
@@ -103,16 +115,31 @@ public class PlayerController : MonoBehaviour
             {
                 if (equiment == Equiment.AXE)
                 {
+                    weapon.GetComponent<CapsuleCollider2D>().enabled = true;
+                    weapon.GetComponent<CapsuleCollider2D>().size = new Vector2(0.38f, 0.32f);
+                    weapon.GetComponent<CapsuleCollider2D>().offset = new Vector2(-0.1f, 0.35f);
                     animator.SetTrigger("axe");
                 }
                 else if (equiment == Equiment.SWORD)
                 {
+                    weapon.GetComponent<CapsuleCollider2D>().enabled = true;
+                    weapon.GetComponent<CapsuleCollider2D>().size = new Vector2(0.27f, 0.8f);
+                    weapon.GetComponent<CapsuleCollider2D>().offset = new Vector2(0, 0.5f);
                     animator.SetTrigger("sword");
+                }
+                else if (equiment == Equiment.SPEAR)
+                {
+                    weapon.GetComponent<CapsuleCollider2D>().enabled = true;
+                    weapon.GetComponent<CapsuleCollider2D>().size = new Vector2(0.22f, 0.6f);
+                    weapon.GetComponent<CapsuleCollider2D>().offset = new Vector2(0.008f, 0.85f);
+                    animator.SetTrigger("spear");
                 }
                 else if (equiment == Equiment.PUNCH)
                 {
+                    frontArm.GetComponent<CapsuleCollider2D>().enabled = true;
+                    backArm.GetComponent<CapsuleCollider2D>().enabled = true;
                     animator.SetTrigger("punch");
-                }
+                }                
             }
             //武器を拾う
             else if (onHoverObject != null)
@@ -120,17 +147,17 @@ public class PlayerController : MonoBehaviour
                 switch (onHoverObject.tag)
                 {
                     case "Axe":
-                        //DropWeapon();
+                        DropWeapon();
                         equiment = Equiment.AXE;
                         Destroy(onHoverObject);
                         break;
                     case "Sword":
-                        //DropWeapon();
+                        DropWeapon();
                         equiment = Equiment.SWORD;
                         Destroy(onHoverObject);
                         break;
                     case "Spear":
-                        //DropWeapon();
+                        DropWeapon();
                         equiment = Equiment.SPEAR;
                         Destroy(onHoverObject);
                         break;
@@ -179,10 +206,13 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform.CompareTag("Axe")|| collision.transform.CompareTag("Spear")|| collision.transform.CompareTag("Sword"))
+        if (collision.transform.CompareTag("Axe") || collision.transform.CompareTag("Spear") || collision.transform.CompareTag("Sword"))
         {
             onHoverObject = collision.gameObject;
-        }        
+        }
+        else {
+            Debug.Log(collision.tag);
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
