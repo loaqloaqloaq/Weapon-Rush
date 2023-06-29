@@ -7,30 +7,31 @@ using static UnityEditor.PlayerSettings;
 public class PlayerController : MonoBehaviour
 {
     public GameObject weapon, frontArm, backArm;
-    public GameObject axePre,swordPre,spearPre;
+    public GameObject axePre, swordPre, spearPre;
     public Sprite axe, sword, spear;
     Rigidbody2D rb;
     Animator animator;
     GameObject otherPlayer;
 
-    public int HP;
+    public float maxHP;
+    [HideInInspector] public float HP;
 
     float dashing;
     struct KeyBind {
         public string move;
-        public KeyCode atk, jump, drop,dash;
+        public KeyCode atk, jump, drop, dash;
     }
-    KeyBind[] input=new KeyBind[2];
-    enum Equiment { 
-        AXE,SWORD,SPEAR,PUNCH,NON
+    KeyBind[] input = new KeyBind[2];
+    enum Equiment {
+        AXE, SWORD, SPEAR, PUNCH, NON
     };
-    Equiment equiment;   
+    Equiment equiment;
     GameObject onHoverObject;
 
     public int player = 1;
     float moveSpeed = 5.0f;
-    float jumpPow = 7.0f;    
-    bool onGround;    
+    float jumpPow = 7.0f;
+    bool onGround;
 
     float facing;
     // Start is called before the first frame update
@@ -75,7 +76,7 @@ public class PlayerController : MonoBehaviour
         
         dashing = 0.0f ;
 
-        HP = 100;
+        HP = maxHP;
     }
 
     // Update is called once per frame
@@ -232,7 +233,9 @@ public class PlayerController : MonoBehaviour
             weapon.GetComponent<CapsuleCollider2D>().enabled = false;
             frontArm.GetComponent<CapsuleCollider2D>().enabled = false;
             backArm.GetComponent<CapsuleCollider2D>().enabled = false;
-            collision.GetComponent<PlayerController>().HP -= 10;
+            collision.GetComponent<PlayerController>().HP -= 10.0f;
+            var maxHp = collision.GetComponent<PlayerController>().maxHP;
+            UIManager.Instance.UpdatePlayerHealth((UIManager.Player)(collision.GetComponent<PlayerController>().player - 1), collision.GetComponent<PlayerController>().HP, maxHp);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
