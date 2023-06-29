@@ -569,11 +569,11 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00000023841858, y: 0.37950227}
-  m_Size: {x: 0.38000014, y: 1.0800004}
+  m_Offset: {x: 0.008, y: 0.82}
+  m_Size: {x: 0.22, y: 0.6}
   m_Direction: 0
 --- !u!1 &1637542702 stripped
 GameObject:
@@ -890,7 +890,7 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.00000023841858, y: 0.46200022}
@@ -1226,6 +1226,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player2
       objectReference: {fileID: 0}
+    - target: {fileID: 380011351181159330, guid: 5ca9a637cb25972418d7e2f2203c2ba2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300134, guid: 15b2d2faaecad4bfb9edc6585d94f509, type: 3}
     - target: {fileID: 1036166422570890874, guid: 5ca9a637cb25972418d7e2f2203c2ba2, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -1384,6 +1388,10 @@ PrefabInstance:
     - target: {fileID: 256529134461778639, guid: 9d3f6578fd9f4564697823e9a7512c25, type: 3}
       propertyPath: m_TagString
       value: Attack
+      objectReference: {fileID: 0}
+    - target: {fileID: 1268799202080908295, guid: 9d3f6578fd9f4564697823e9a7512c25, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1709870776534457448, guid: 9d3f6578fd9f4564697823e9a7512c25, type: 3}
       propertyPath: m_Sprite
