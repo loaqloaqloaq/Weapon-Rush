@@ -13,9 +13,10 @@ public class PlayerController : MonoBehaviour
     GameObject otherPlayer;
 
     public float maxHP;
-    [HideInInspector] public float HP;
+    float HP;
 
     float dashing;
+    float dashCoolDown;
     struct KeyBind {
         public string move;
         public KeyCode atk, jump, drop, dash;
@@ -65,11 +66,13 @@ public class PlayerController : MonoBehaviour
         input[0].atk = KeyCode.Space;
         input[0].drop = KeyCode.LeftControl;
         input[0].jump = KeyCode.W;
+        input[0].dash = KeyCode.LeftShift;
         //プレイヤー　2
         input[1].move = "Player2_Horizontal";
         input[1].atk = KeyCode.Keypad0;
         input[1].drop = KeyCode.RightControl;
         input[1].jump = KeyCode.UpArrow;
+        input[1].dash = KeyCode.RightShift;
 
         //プレイヤー数値
         HP = maxHP;
@@ -167,15 +170,21 @@ public class PlayerController : MonoBehaviour
             equiment = Equiment.PUNCH;
         }
         //移動とダッシュ
-        float dashTime = 0.2f;
+        float dashTime = 0.15f;
         float dashSpeed = 1.0f;
-        if (Input.GetKeyDown(input[player - 1].dash) && dashing <= 0) dashing = dashTime;
+        float cooldown = 1.0f;
+        if (Input.GetKeyDown(input[player - 1].dash) && dashing <= 0 && dashCoolDown <= 0)
+        {
+            dashing = dashTime;
+            dashCoolDown = cooldown;
+        }
         if (dashing > 0)
         {
-            dashSpeed = 2.5f;
-            dashing -= Time.deltaTime;
+            dashSpeed = 3.5f;
+            dashing -= Time.deltaTime;            
             if (dashing < 0) dashing = 0;
         }
+        if(dashCoolDown > 0) dashCoolDown -= Time.deltaTime;
         Vector3 vec = new Vector3(Input.GetAxis(input[player - 1].move) * moveSpeed * dashSpeed * Time.deltaTime, 0, 0);
         transform.Translate(vec);
         //画像の向きと
@@ -276,7 +285,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     public void TakeDamage(float atk) {
-        this.HP -= atk;
+        HP -= atk;
         UIManager.Instance.UpdatePlayerHealth((UIManager.Player)(player - 1), HP, maxHP);
         if (HP > 0) animator.SetTrigger("hurt");
         else

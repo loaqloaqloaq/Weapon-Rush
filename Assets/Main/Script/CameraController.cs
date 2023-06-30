@@ -8,7 +8,11 @@ public class CameraController : MonoBehaviour
 {
     // Start is called before the first frame update      
     public GameObject p1, p2;
+
+    [SerializeField]
     float[] xMargin= { 0,9.84f};
+
+    [SerializeField]
     float[] yMargin= { 0,5};
 
     private Camera cam;
