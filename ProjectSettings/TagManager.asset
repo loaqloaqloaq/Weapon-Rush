@@ -10,6 +10,7 @@ TagManager:
   - Sword
   - Axe
   - Spear
+  - Attack
   layers:
   - Default
   - TransparentFX
@@ -46,4 +47,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Player
+    uniqueID: 1237236977
     locked: 0

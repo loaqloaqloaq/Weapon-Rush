@@ -32,11 +32,13 @@ public class PlayerController : MonoBehaviour
     float jumpPow = 10.0f;
     bool onGround;
 
+    float attack;
+    float atkMuiltpler;
+
     float facing;
     // Start is called before the first frame update
     void Start()
-    {
-        equiment=Equiment.PUNCH;        
+    {   
         weapon = transform.Find("Body/Front arm/Weapon").gameObject;
         frontArm = transform.Find("Body/Front arm").gameObject;
         backArm = transform.Find("Body/Back arm").gameObject;
@@ -69,45 +71,25 @@ public class PlayerController : MonoBehaviour
         input[1].drop = KeyCode.RightControl;
         input[1].jump = KeyCode.UpArrow;
 
-
+        //プレイヤー数値
         HP = maxHP;
+        attack = 10.0f;
+        atkMuiltpler = 1.0f;
+
+        equiment = Equiment.PUNCH;
+        weapon.SetActive(false);
+        animator.SetBool("using spear", false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //一時停止時はプレイヤーを動けないようにする
-        if (Mathf.Approximately(Time.timeScale, 0.0f))
+        //一時停止時や死んだの時、プレイヤーを動けないようにする 
+        if (Mathf.Approximately(Time.timeScale, 0.0f) || HP<=0)
         {
             return;
         }
-
-        //武器画像
-        if (equiment == Equiment.AXE)
-        {
-            weapon.SetActive(true);
-            weapon.GetComponent<SpriteRenderer>().sprite = axe;
-            animator.SetBool("using spear", false);
-        }
-        else if (equiment == Equiment.SPEAR)
-        {
-            weapon.SetActive(true);
-            weapon.GetComponent<SpriteRenderer>().sprite = spear;
-            animator.SetBool("using spear", true);
-        }
-        else if (equiment == Equiment.SWORD)
-        {
-            weapon.SetActive(true);
-            weapon.GetComponent<SpriteRenderer>().sprite = sword;
-            animator.SetBool("using spear", false);
-        }
-        else if (equiment == Equiment.PUNCH)
-        {
-            weapon.SetActive(false);
-            animator.SetBool("using spear", false);
-        }
-
-
+        //攻撃アニメーションが終わった判定
         bool attacking = animator.GetCurrentAnimatorStateInfo(0).IsName("punch attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("sword attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("axe attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("spear attack");
         if (!attacking)
         {
@@ -150,16 +132,28 @@ public class PlayerController : MonoBehaviour
                     case "Axe":
                         DropWeapon();
                         equiment = Equiment.AXE;
+                        atkMuiltpler = 1.2f;
+                        weapon.SetActive(true);
+                        weapon.GetComponent<SpriteRenderer>().sprite = axe;
+                        animator.SetBool("using spear", false);
                         Destroy(onHoverObject);
                         break;
                     case "Sword":
                         DropWeapon();
                         equiment = Equiment.SWORD;
+                        atkMuiltpler = 1.1f;
+                        weapon.SetActive(true);
+                        weapon.GetComponent<SpriteRenderer>().sprite = sword;
+                        animator.SetBool("using spear", false);                        
                         Destroy(onHoverObject);
                         break;
                     case "Spear":
                         DropWeapon();
                         equiment = Equiment.SPEAR;
+                        atkMuiltpler = 1.1f;
+                        weapon.SetActive(true);
+                        weapon.GetComponent<SpriteRenderer>().sprite = spear;
+                        animator.SetBool("using spear", true);
                         Destroy(onHoverObject);
                         break;
                     default: break;
@@ -218,27 +212,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //武器の上にいます
         if (collision.transform.CompareTag("Axe")|| collision.transform.CompareTag("Spear")|| collision.transform.CompareTag("Sword"))
         {
             onHoverObject = collision.gameObject;
         }
-        else if (collision.transform.CompareTag("Attack"))
-        {
-            if (HP > 0) animator.SetTrigger("hurt");
-            else
-            {
-                animator.SetTrigger("dead");
-                GetComponent<BoxCollider2D>().enabled = false;
-                rb.isKinematic = true;               
-            }
-        }
+        //攻撃受けた
+        else if (collision.transform.CompareTag("Attack")) {}
+        //攻撃した
         else if (collision.transform.CompareTag("Player1") || collision.transform.CompareTag("Player2")) {
             weapon.GetComponent<CapsuleCollider2D>().enabled = false;
             frontArm.GetComponent<CapsuleCollider2D>().enabled = false;
             backArm.GetComponent<CapsuleCollider2D>().enabled = false;
-            collision.GetComponent<PlayerController>().HP -= 10.0f;
-            var maxHp = collision.GetComponent<PlayerController>().maxHP;
-            UIManager.Instance.UpdatePlayerHealth((UIManager.Player)(collision.GetComponent<PlayerController>().player - 1), collision.GetComponent<PlayerController>().HP, maxHp);
+            collision.GetComponent<PlayerController>().TakeDamage(attack * atkMuiltpler);                              
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -266,7 +252,9 @@ public class PlayerController : MonoBehaviour
             GameObject droppedWeapon = Instantiate(spearPre, transform.position, Quaternion.identity);
             droppedWeapon.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * -2.0f, 5.0f, 0);
         }
-
+        weapon.SetActive(false);
+        animator.SetBool("using spear", false);
+        atkMuiltpler = 1.0f;
     }
     void EnableWeapon()
     {
@@ -285,6 +273,17 @@ public class PlayerController : MonoBehaviour
         {
             weapon.GetComponent<CapsuleCollider2D>().size = new Vector2(0.22f, 0.6f);
             weapon.GetComponent<CapsuleCollider2D>().offset = new Vector2(0.008f, 0.85f);
+        }
+    }
+    public void TakeDamage(float atk) {
+        this.HP -= atk;
+        UIManager.Instance.UpdatePlayerHealth((UIManager.Player)(player - 1), HP, maxHP);
+        if (HP > 0) animator.SetTrigger("hurt");
+        else
+        {
+            animator.SetTrigger("dead");
+            GetComponent<BoxCollider2D>().enabled = false;
+            rb.isKinematic = true;
         }
     }
 }
