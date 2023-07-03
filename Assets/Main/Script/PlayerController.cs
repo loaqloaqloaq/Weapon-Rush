@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour
         //プレイヤー数値
         HP = maxHP;
         attack = 10.0f;
-        atkMuiltpler = 1.0f;
+        atkMuiltpler = 0.5f;
 
         equiment = Equiment.PUNCH;
         weapon.SetActive(false);
@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour
                     case "Axe":
                         DropWeapon();
                         equiment = Equiment.AXE;
-                        atkMuiltpler = 1.2f;
+                        atkMuiltpler = 1.5f;
                         weapon.SetActive(true);
                         weapon.GetComponent<SpriteRenderer>().sprite = axe;
                         animator.SetBool("using spear", false);
@@ -144,7 +144,7 @@ public class PlayerController : MonoBehaviour
                     case "Sword":
                         DropWeapon();
                         equiment = Equiment.SWORD;
-                        atkMuiltpler = 1.1f;
+                        atkMuiltpler = 1.0f;
                         weapon.SetActive(true);
                         weapon.GetComponent<SpriteRenderer>().sprite = sword;
                         animator.SetBool("using spear", false);                        
@@ -153,7 +153,7 @@ public class PlayerController : MonoBehaviour
                     case "Spear":
                         DropWeapon();
                         equiment = Equiment.SPEAR;
-                        atkMuiltpler = 1.1f;
+                        atkMuiltpler = 0.8f;
                         weapon.SetActive(true);
                         weapon.GetComponent<SpriteRenderer>().sprite = spear;
                         animator.SetBool("using spear", true);
@@ -167,11 +167,12 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(input[player - 1].drop) && !attacking)
         {
             DropWeapon();
-            equiment = Equiment.PUNCH;
+            equiment = Equiment.PUNCH;           
         }
         //移動とダッシュ
         float dashTime = 0.15f;
         float dashSpeed = 1.0f;
+        //ダッシュ Cool Down
         float cooldown = 1.0f;
         if (Input.GetKeyDown(input[player - 1].dash) && dashing <= 0 && dashCoolDown <= 0)
         {
@@ -181,7 +182,7 @@ public class PlayerController : MonoBehaviour
         if (dashing > 0)
         {
             dashSpeed = 3.5f;
-            dashing -= Time.deltaTime;            
+            dashing -= Time.deltaTime;
             if (dashing < 0) dashing = 0;
         }
         if(dashCoolDown > 0) dashCoolDown -= Time.deltaTime;
@@ -263,7 +264,7 @@ public class PlayerController : MonoBehaviour
         }
         weapon.SetActive(false);
         animator.SetBool("using spear", false);
-        atkMuiltpler = 1.0f;
+        atkMuiltpler = 0.5f;
     }
     void EnableWeapon()
     {
