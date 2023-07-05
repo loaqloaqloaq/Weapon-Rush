@@ -13,7 +13,9 @@ public class PlayerController : MonoBehaviour
     GameObject otherPlayer;
 
     public float maxHP;
-    float HP;
+
+    [HideInInspector]
+    public float HP;
 
     float dashing;
     float dashCoolDown;
@@ -291,6 +293,7 @@ public class PlayerController : MonoBehaviour
         if (HP > 0) animator.SetTrigger("hurt");
         else
         {
+            HP = 0;
             animator.SetTrigger("dead");
             GetComponent<BoxCollider2D>().enabled = false;
             rb.isKinematic = true;

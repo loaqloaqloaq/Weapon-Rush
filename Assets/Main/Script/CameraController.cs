@@ -15,6 +15,8 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     float[] yMargin= { 0,5};
 
+    int camNum = 1;
+
     private Camera cam;
     void Start()
     {
@@ -34,6 +36,12 @@ public class CameraController : MonoBehaviour
         );
         target.x = target.x > xMargin[1] ? xMargin[1] : target.x < xMargin[0] ? xMargin[0] : target.x;
         target.y = target.y > yMargin[1] ? yMargin[1] : target.y < yMargin[0] ? yMargin[0] : target.y;
-        transform.position = target;       
+        transform.position = target;
+
+        float distance = Vector3.Distance(p1.transform.position, p2.transform.position);        
+        if (distance > 17.9f) { 
+            
+        }
+
     }
 }
