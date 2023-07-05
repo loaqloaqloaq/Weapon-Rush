@@ -28,9 +28,9 @@ public class PlayerPointerArrow : MonoBehaviour
     {
        
         Vector3 _direction = (otherPlayer.transform.position - player.transform.position).normalized;
-        transform.position = player.transform.position + _direction;
-        transform.localScale = new Vector3(_direction.x<0?-1:1, 1, 1);
-        //Debug.Log("Player" + playernum + ": "+ _direction.ToString());       
+        transform.position = player.transform.position + _direction + new Vector3(0,1,0);
+       
+        transform.localScale = new Vector3(_direction.x<0?-1:1, 1, 1);            
         Quaternion rotation = Quaternion.LookRotation(_direction);
         transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);        
     }
