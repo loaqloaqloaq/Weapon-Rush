@@ -296,7 +296,7 @@ public class PlayerController : MonoBehaviour
             HP = 0;
             animator.SetTrigger("dead");
             GetComponent<BoxCollider2D>().enabled = false;
-            rb.isKinematic = true;
+            rb.isKinematic = false;
         }
     }
 }
