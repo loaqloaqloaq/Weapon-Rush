@@ -358,8 +358,8 @@ MonoBehaviour:
   - 0
   - 4.09
   xHalfMargin:
-  - 0
-  - 9.84
+  - -5.6
+  - 25.57
   camNum: 1
 --- !u!1 &351490017
 GameObject:
