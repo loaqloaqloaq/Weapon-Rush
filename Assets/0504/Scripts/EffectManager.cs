@@ -16,17 +16,17 @@ public class EffectManager : MonoBehaviour
     //
     public enum EffectType
     {
-        E1,
-        E2,
-        Hit,
+        PunchHit,
+        WeaponHit,
+        GetWeapon
     }
 
     [SerializeField] private ParticleSystem commonHit;
-    [SerializeField] private ParticleSystem E1, E2;
-
+    [SerializeField] private ParticleSystem WeaponHit;
+    [SerializeField] private ParticleSystem GetWeapon;    
     //
     public void PlayEffect(Vector3 pos,
-        EffectType effectType = EffectType.Hit, Transform parent = null)
+        EffectType effectType = EffectType.WeaponHit, Transform parent = null)
     {
         var targetEffect = GetEffect(effectType); 
 
@@ -44,10 +44,10 @@ public class EffectManager : MonoBehaviour
     { 
         switch (effectType)   
         {
-            case EffectType.E1:
-                return E1;
-            case EffectType.E2:
-                return E2;
+            case EffectType.WeaponHit:
+                return WeaponHit;
+            case EffectType.GetWeapon:
+                return GetWeapon;
         }
         return commonHit;
     }

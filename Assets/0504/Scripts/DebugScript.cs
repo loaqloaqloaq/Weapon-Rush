@@ -24,12 +24,12 @@ public class DebugScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             Vector3 pos = GameObject.FindWithTag("Player1").transform.position;
-            EffectManager.Instance.PlayEffect(pos, EffectManager.EffectType.Hit);
+            EffectManager.Instance.PlayEffect(pos, EffectManager.EffectType.WeaponHit);
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             Vector3 pos = GameObject.FindWithTag("Player1").transform.position;
-            EffectManager.Instance.PlayEffect(pos, EffectManager.EffectType.E1);
+            EffectManager.Instance.PlayEffect(pos, EffectManager.EffectType.PunchHit);
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {

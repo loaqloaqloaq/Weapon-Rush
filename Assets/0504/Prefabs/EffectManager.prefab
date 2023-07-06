@@ -44,6 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b74c32e547ce9c4f9cbd1ca35c830b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  commonHit: {fileID: 19800004, guid: f95ff734540a0d749be6571b6cb5b37f, type: 3}
-  E1: {fileID: 19800000, guid: bc98890f6028f444eaa7789bde5e2eeb, type: 3}
+  commonHit: {fileID: 19800000, guid: bc98890f6028f444eaa7789bde5e2eeb, type: 3}
+  WeaponHit: {fileID: 0}
   E2: {fileID: 19800000, guid: bc98890f6028f444eaa7789bde5e2eeb, type: 3}

@@ -72,7 +72,6 @@ public class UIManager : MonoBehaviour
 
     public void UpdatePlayerHealth(Player player, float currentHp, float maxHp)
     {
-        Debug.Log((int)player);
         if (healthManagers.Length <= (int)player) 
         {
             Debug.Log("healthBar array Index out of Range");

@@ -122,8 +122,45 @@ public class PlayerController : MonoBehaviour
             }
             else if (equiment == Equiment.SWORD)
             {
+<<<<<<< Updated upstream
                 animator.SetTrigger("sword");
                 Invoke("EnableWeapon", 0.2f);
+=======
+                switch (onHoverObject.tag)
+                {
+                    case "Axe":
+                        DropWeapon();
+                        equiment = Equiment.AXE;
+                        atkMuiltpler = 1.5f;
+                        weapon.SetActive(true);
+                        weapon.GetComponent<SpriteRenderer>().sprite = axe;
+                        animator.SetBool("using spear", false);
+                        Destroy(onHoverObject);
+                        break;
+                    case "Sword":
+                        DropWeapon();
+                        equiment = Equiment.SWORD;
+                        atkMuiltpler = 1.0f;
+                        weapon.SetActive(true);
+                        weapon.GetComponent<SpriteRenderer>().sprite = sword;
+                        animator.SetBool("using spear", false);                        
+                        Destroy(onHoverObject);
+                        break;
+                    case "Spear":
+                        DropWeapon();
+                        equiment = Equiment.SPEAR;
+                        atkMuiltpler = 0.8f;
+                        weapon.SetActive(true);
+                        weapon.GetComponent<SpriteRenderer>().sprite = spear;
+                        animator.SetBool("using spear", true);
+                        Destroy(onHoverObject);
+                        break;
+                    default: break;
+                }
+
+                EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.GetWeapon);
+                SoundManager.Instance.Play("Sounds/SFX/getWeapon", SoundManager.Sound.P_Effect);
+>>>>>>> Stashed changes
             }
             else if (equiment == Equiment.SPEAR)
             {
@@ -310,12 +347,12 @@ public class PlayerController : MonoBehaviour
 
         PlayAttackSound(equiment);
     }
-    public void TakeDamage(float atk, Equiment equipment) 
+    public void TakeDamage(float atk, Equiment equipment)
     {
         HP -= atk;
-        
+
         UIManager.Instance.UpdatePlayerHealth((UIManager.Player)(player - 1), HP, maxHP);
-        EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.Hit);
+        PlayEffect(equipment);
 
         PlayHitSound(equipment);
 
@@ -329,11 +366,30 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void PlayEffect(Equiment equipment)
+    {
+        switch (equipment)
+        {
+            case Equiment.PUNCH:
+                EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.PunchHit);
+                break;
+            case Equiment.SPEAR:
+                EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.WeaponHit);
+                break;
+            case Equiment.SWORD:
+                EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.WeaponHit);
+                break;
+            case Equiment.AXE:
+                EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.WeaponHit);
+                break;
+        }
+    }
+
     private void PlayHitSound(Equiment equipment)
     { 
         switch (equipment) 
         {
-            case Equiment.PUNCH:
+            case Equiment.NON:
                 SoundManager.Instance.Play("Sounds/SFX/hit_punch", SoundManager.Sound.P_Effect);
                 break;
             case Equiment.SPEAR:
@@ -352,8 +408,8 @@ public class PlayerController : MonoBehaviour
     {
         switch (equipment)
         {
-            case Equiment.PUNCH:
-                //SoundManager.Instance.Play("Sounds/SFX/attack_punch", SoundManager.Sound.P_Effect);
+            case Equiment.NON:
+                SoundManager.Instance.Play("Sounds/SFX/attack_punch", SoundManager.Sound.P_Effect);
                 break;
             case Equiment.SPEAR:
                 SoundManager.Instance.Play("Sounds/SFX/attack_spear", SoundManager.Sound.P_Effect);

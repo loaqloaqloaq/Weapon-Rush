@@ -3657,7 +3657,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3786126294994495413, guid: bc0400a0ef543aa429ccf6f7ba2522cb, type: 3}
       propertyPath: m_Volume
-      value: 0.6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3786126294994495413, guid: bc0400a0ef543aa429ccf6f7ba2522cb, type: 3}
       propertyPath: m_audioClip
@@ -3874,9 +3874,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5144857996173321821, guid: 73df1e4581b1d9b4393344b8370d763a, type: 3}
-      propertyPath: commonHit
+      propertyPath: E2
+      value: 
+      objectReference: {fileID: 19800000, guid: aa3fed151f536ee49b583c6a3ac4a2e1, type: 3}
+    - target: {fileID: 5144857996173321821, guid: 73df1e4581b1d9b4393344b8370d763a, type: 3}
+      propertyPath: GetWeapon
+      value: 
+      objectReference: {fileID: 19800000, guid: aa3fed151f536ee49b583c6a3ac4a2e1, type: 3}
+    - target: {fileID: 5144857996173321821, guid: 73df1e4581b1d9b4393344b8370d763a, type: 3}
+      propertyPath: WeaponHit
       value: 
       objectReference: {fileID: 19800000, guid: bc98890f6028f444eaa7789bde5e2eeb, type: 3}
+    - target: {fileID: 5144857996173321821, guid: 73df1e4581b1d9b4393344b8370d763a, type: 3}
+      propertyPath: commonHit
+      value: 
+      objectReference: {fileID: 19800004, guid: f95ff734540a0d749be6571b6cb5b37f, type: 3}
     - target: {fileID: 5278353937600434969, guid: 73df1e4581b1d9b4393344b8370d763a, type: 3}
       propertyPath: m_Name
       value: EffectManager
@@ -3909,8 +3921,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d1d8bae173636845a4a2eb7c16ddec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< Updated upstream
   Timer_Text: {fileID: 1797072822}
   CountDown_: 0
+=======
+  CountDown: 0
+>>>>>>> Stashed changes
 --- !u!1001 &1886225041
 PrefabInstance:
   m_ObjectHideFlags: 0
