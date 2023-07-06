@@ -4041,18 +4041,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 73df1e4581b1d9b4393344b8370d763a, type: 3}
---- !u!114 &1797072822 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3804563855805497401, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
-  m_PrefabInstance: {fileID: 48962058}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 111066979}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1797072825
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4064,13 +4052,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d1d8bae173636845a4a2eb7c16ddec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< Updated upstream
   Timer_Text: {fileID: 1797072822}
   CountDown_: 0
-=======
-  CountDown: 0
->>>>>>> Stashed changes
---- !u!1001 &1886225041
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2

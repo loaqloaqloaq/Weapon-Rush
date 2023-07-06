@@ -112,6 +112,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*debug
         if (Input.GetButtonDown(gamepad[player - 1].atk)) {
             Debug.Log(gamepad[player - 1].atk + ":" + ": pressed");
         }
@@ -127,7 +128,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log(gamepad[player - 1].dash + ": pressed");
         }
-
+        */
 
         //一時停止時や死んだの時、プレイヤーを動けないようにする 
         if (Mathf.Approximately(Time.timeScale, 0.0f) || HP<=0)
@@ -152,10 +153,6 @@ public class PlayerController : MonoBehaviour
             }
             else if (equiment == Equiment.SWORD)
             {
-<<<<<<< Updated upstream
-                animator.SetTrigger("sword");
-                Invoke("EnableWeapon", 0.2f);
-=======
                 switch (onHoverObject.tag)
                 {
                     case "Axe":
@@ -190,7 +187,6 @@ public class PlayerController : MonoBehaviour
 
                 EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.GetWeapon);
                 SoundManager.Instance.Play("Sounds/SFX/getWeapon", SoundManager.Sound.P_Effect);
->>>>>>> Stashed changes
             }
             else if (equiment == Equiment.SPEAR)
             {
