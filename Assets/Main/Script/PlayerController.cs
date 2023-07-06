@@ -26,11 +26,14 @@ public class PlayerController : MonoBehaviour
     float dashCoolDown;
     struct KeyBind {
         public string move;
-        public KeyCode atk, jump, drop, dash;
-       
+        public KeyCode atk, jump, drop, dash;       
+    }
+    struct GamePadBind {
+        public string atk, jump, drop, dash;
     }
     KeyBind[] input = new KeyBind[2];
-    KeyBind[] gamepad= new KeyBind[2];
+    GamePadBind[] gamepad= new GamePadBind[2];
+    
     public enum Equiment {
         AXE, SWORD, SPEAR, PUNCH, NON
     };
@@ -61,6 +64,7 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         onGround = false;       
         onHoverObject = null;
+        
 
         if (player == 1)
         {
@@ -77,13 +81,23 @@ public class PlayerController : MonoBehaviour
         input[0].drop = KeyCode.LeftControl;
         input[0].jump = KeyCode.W;
         input[0].dash = KeyCode.LeftShift;
-        
+
+        gamepad[0].atk = "Player1_Attack";
+        gamepad[0].drop = "Player1_Drop";
+        gamepad[0].jump = "Player1_Jump";
+        gamepad[0].dash = "Player1_Dash";
+
         //プレイヤー　2
         input[1].move = "Player2_Horizontal";
         input[1].atk = KeyCode.Keypad0;
         input[1].drop = KeyCode.RightControl;
         input[1].jump = KeyCode.UpArrow;
         input[1].dash = KeyCode.RightShift;
+
+        gamepad[1].atk = "Player2_Attack";
+        gamepad[1].drop = "Player2_Drop";
+        gamepad[1].jump = "Player2_Jump";
+        gamepad[1].dash = "Player2_Dash";
 
         //プレイヤー数値
         HP = maxHP;
@@ -98,7 +112,23 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetButtonDown(gamepad[player - 1].atk)) {
+            Debug.Log(gamepad[player - 1].atk + ":" + ": pressed");
+        }
+        if (Input.GetButtonDown(gamepad[player - 1].drop) )
+        {
+            Debug.Log(gamepad[player - 1].drop +": pressed");
+        }
+        if (Input.GetButtonDown(gamepad[player - 1].jump))
+        {
+            Debug.Log(gamepad[player - 1].jump + ": pressed");
+        }
+        if (Input.GetButtonDown(gamepad[player - 1].dash))
+        {
+            Debug.Log(gamepad[player - 1].dash + ": pressed");
+        }
+
+
         //一時停止時や死んだの時、プレイヤーを動けないようにする 
         if (Mathf.Approximately(Time.timeScale, 0.0f) || HP<=0)
         {
@@ -112,7 +142,7 @@ public class PlayerController : MonoBehaviour
             frontArm.GetComponent<CapsuleCollider2D>().enabled = false;
             backArm.GetComponent<CapsuleCollider2D>().enabled = false;
         }
-        if (Input.GetKeyDown(input[player - 1].atk) && !attacking)
+        if ( (Input.GetKeyDown(input[player - 1].atk) || Input.GetButtonDown(gamepad[player - 1].atk)) && !attacking)
         {
             //攻撃            
             if (equiment == Equiment.AXE)
@@ -177,7 +207,7 @@ public class PlayerController : MonoBehaviour
                       
         }
         //武器捨てる and 武器を拾う  
-        if (Input.GetKeyDown(input[player - 1].drop) && !attacking)
+        if ((Input.GetKeyDown(input[player - 1].drop) || Input.GetButtonDown(gamepad[player - 1].drop)) && !attacking)
         {
             if (onHoverObject != null)
             {
@@ -194,7 +224,7 @@ public class PlayerController : MonoBehaviour
         float dashSpeed = 1.0f;
         //ダッシュ Cool Down
         float cooldown = 1.0f;
-        if (Input.GetKeyDown(input[player - 1].dash) && dashing <= 0 && dashCoolDown <= 0)
+        if ((Input.GetKeyDown(input[player - 1].dash) || Input.GetButtonDown(gamepad[player - 1].dash)) && dashing <= 0 && dashCoolDown <= 0)
         {
             dashing = dashTime;
             dashCoolDown = cooldown;
@@ -205,8 +235,7 @@ public class PlayerController : MonoBehaviour
             dashing -= Time.deltaTime;
             if (dashing < 0) dashing = 0;
         }
-        if(dashCoolDown > 0) dashCoolDown -= Time.deltaTime;
-        Debug.Log(Input.GetAxis(input[player - 1].move));
+        if(dashCoolDown > 0) dashCoolDown -= Time.deltaTime;     
         if (Input.GetAxis(input[player - 1].move) > 0.2f || Input.GetAxis(input[player - 1].move) < -0.2f)
         {
             Vector3 vec = new Vector3(Input.GetAxis(input[player - 1].move) * moveSpeed * dashSpeed * Time.deltaTime, 0, 0);
@@ -230,7 +259,7 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(1, 1, 1);
         }
         //ジャンプ       
-        if (Input.GetKeyDown(input[player - 1].jump) && onGround)
+        if ((Input.GetKeyDown(input[player - 1].jump) || Input.GetButtonDown(gamepad[player - 1].jump)) && onGround)
         {
             rb.velocity = new Vector2(0, jumpPow);
             onGround = false;

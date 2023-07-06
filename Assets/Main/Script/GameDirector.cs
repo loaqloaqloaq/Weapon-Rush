@@ -10,6 +10,7 @@ public class GameDirector : MonoBehaviour
 {
     public PlayerController player1, player2;
     Timer_CountDown timer;
+    [SerializeField]
     GameObject timeup;
 
     float loadSceneDelay;
