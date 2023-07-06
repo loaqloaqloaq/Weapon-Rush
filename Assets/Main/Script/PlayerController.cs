@@ -153,40 +153,8 @@ public class PlayerController : MonoBehaviour
             }
             else if (equiment == Equiment.SWORD)
             {
-                switch (onHoverObject.tag)
-                {
-                    case "Axe":
-                        DropWeapon();
-                        equiment = Equiment.AXE;
-                        atkMuiltpler = 1.5f;
-                        weapon.SetActive(true);
-                        weapon.GetComponent<SpriteRenderer>().sprite = axe;
-                        animator.SetBool("using spear", false);
-                        Destroy(onHoverObject);
-                        break;
-                    case "Sword":
-                        DropWeapon();
-                        equiment = Equiment.SWORD;
-                        atkMuiltpler = 1.0f;
-                        weapon.SetActive(true);
-                        weapon.GetComponent<SpriteRenderer>().sprite = sword;
-                        animator.SetBool("using spear", false);                        
-                        Destroy(onHoverObject);
-                        break;
-                    case "Spear":
-                        DropWeapon();
-                        equiment = Equiment.SPEAR;
-                        atkMuiltpler = 0.8f;
-                        weapon.SetActive(true);
-                        weapon.GetComponent<SpriteRenderer>().sprite = spear;
-                        animator.SetBool("using spear", true);
-                        Destroy(onHoverObject);
-                        break;
-                    default: break;
-                }
-
-                EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.GetWeapon);
-                SoundManager.Instance.Play("Sounds/SFX/getWeapon", SoundManager.Sound.P_Effect);
+                animator.SetTrigger("sword");
+                Invoke("EnableWeapon", 0.24f);                
             }
             else if (equiment == Equiment.SPEAR)
             {
@@ -326,6 +294,8 @@ public class PlayerController : MonoBehaviour
                 break;
             default: break;
         }
+        EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.GetWeapon);
+        SoundManager.Instance.Play("Sounds/SFX/getWeapon", SoundManager.Sound.P_Effect);
     }
     private void DropWeapon()
     {
@@ -414,7 +384,7 @@ public class PlayerController : MonoBehaviour
     { 
         switch (equipment) 
         {
-            case Equiment.NON:
+            case Equiment.PUNCH:
                 SoundManager.Instance.Play("Sounds/SFX/hit_punch", SoundManager.Sound.P_Effect);
                 break;
             case Equiment.SPEAR:
@@ -433,7 +403,7 @@ public class PlayerController : MonoBehaviour
     {
         switch (equipment)
         {
-            case Equiment.NON:
+            case Equiment.PUNCH:
                 SoundManager.Instance.Play("Sounds/SFX/attack_punch", SoundManager.Sound.P_Effect);
                 break;
             case Equiment.SPEAR:
