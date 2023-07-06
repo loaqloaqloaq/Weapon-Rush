@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
     }
     KeyBind[] input = new KeyBind[2];
     KeyBind[] gamepad= new KeyBind[2];
-    enum Equiment {
+    public enum Equiment {
         AXE, SWORD, SPEAR, PUNCH, NON
     };
     Equiment equiment;
@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
     float attack;
     float atkMuiltpler;
 
-    float facing;
+    float facing;    
     // Start is called before the first frame update
     void Start()
     {   
