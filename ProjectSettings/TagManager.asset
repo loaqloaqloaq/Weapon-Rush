@@ -11,6 +11,7 @@ TagManager:
   - Axe
   - Spear
   - Attack
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
@@ -50,4 +51,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 1237236977
+    locked: 0
+  - name: Effect
+    uniqueID: 1005821785
     locked: 0

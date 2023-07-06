@@ -24,12 +24,12 @@ public class DebugScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             Vector3 pos = GameObject.FindWithTag("Player1").transform.position;
-            EffectManager.Instance.PlayHitEffect(pos, EffectManager.EffectType.Hit);
+            EffectManager.Instance.PlayEffect(pos, EffectManager.EffectType.Hit);
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             Vector3 pos = GameObject.FindWithTag("Player1").transform.position;
-            EffectManager.Instance.PlayHitEffect(pos, EffectManager.EffectType.E1);
+            EffectManager.Instance.PlayEffect(pos, EffectManager.EffectType.E1);
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
@@ -38,7 +38,7 @@ public class DebugScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             Vector3 pos = GameObject.FindWithTag("Player1").transform.position;
-            SoundManager.Instance.Play("Sounds/SFX/hit", SoundManager.Sound.P1_Effect);
+            SoundManager.Instance.Play("Sounds/SFX/hit", SoundManager.Sound.P_Effect);
         }
     }
 }

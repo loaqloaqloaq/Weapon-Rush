@@ -21,22 +21,16 @@ public class EffectManager : MonoBehaviour
         Hit,
     }
 
-    [SerializeField] private ParticleSystem commonHitEffectPrefab;
+    [SerializeField] private ParticleSystem commonHit;
     [SerializeField] private ParticleSystem E1, E2;
 
     //
-    public void PlayHitEffect(Vector3 pos,
+    public void PlayEffect(Vector3 pos,
         EffectType effectType = EffectType.Hit, Transform parent = null)
     {
-        var targetPrefab = commonHitEffectPrefab;
+        var targetEffect = GetEffect(effectType); 
 
-        if (effectType == EffectType.E1)
-            targetPrefab = E2;
-
-        if (effectType == EffectType.E2)
-            targetPrefab = E2;
-
-        var effect = Instantiate(targetPrefab, pos, Quaternion.identity);
+        var effect = Instantiate(targetEffect, pos, Quaternion.identity);
 
         if (parent != null)
         {
@@ -44,5 +38,17 @@ public class EffectManager : MonoBehaviour
         }
 
         effect.Play();
+    }
+
+    private ParticleSystem GetEffect(EffectType effectType)
+    { 
+        switch (effectType)   
+        {
+            case EffectType.E1:
+                return E1;
+            case EffectType.E2:
+                return E2;
+        }
+        return commonHit;
     }
 }

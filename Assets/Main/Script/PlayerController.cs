@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static PlayerController;
 using static UnityEditor.PlayerSettings;
 
 public class PlayerController : MonoBehaviour
@@ -11,6 +12,9 @@ public class PlayerController : MonoBehaviour
     Rigidbody2D rb;
     Animator animator;
     GameObject otherPlayer;
+
+    //エフェクトを表示する位置
+    private Transform effectTransform; 
 
     public float maxHP;
 
@@ -24,7 +28,7 @@ public class PlayerController : MonoBehaviour
         public KeyCode atk, jump, drop, dash;
     }
     KeyBind[] input = new KeyBind[2];
-    enum Equiment {
+    public enum Equiment {
         AXE, SWORD, SPEAR, PUNCH, NON
     };
     Equiment equiment;
@@ -45,6 +49,7 @@ public class PlayerController : MonoBehaviour
         weapon = transform.Find("Body/Front arm/Weapon").gameObject;
         frontArm = transform.Find("Body/Front arm").gameObject;
         backArm = transform.Find("Body/Back arm").gameObject;
+        effectTransform = transform.Find("Body");
         weapon.GetComponent<CapsuleCollider2D>().enabled = false;
         frontArm.GetComponent<CapsuleCollider2D>().enabled = false;
         backArm.GetComponent<CapsuleCollider2D>().enabled = false;
@@ -163,6 +168,8 @@ public class PlayerController : MonoBehaviour
                         break;
                     default: break;
                 }
+
+                SoundManager.Instance.Play("Sounds/SFX/getWeapon", SoundManager.Sound.P_Effect);
             }
         }
         //武器捨てる
@@ -236,7 +243,7 @@ public class PlayerController : MonoBehaviour
             weapon.GetComponent<CapsuleCollider2D>().enabled = false;
             frontArm.GetComponent<CapsuleCollider2D>().enabled = false;
             backArm.GetComponent<CapsuleCollider2D>().enabled = false;
-            collision.GetComponent<PlayerController>().TakeDamage(attack * atkMuiltpler);                              
+            collision.GetComponent<PlayerController>().TakeDamage(attack * atkMuiltpler, equiment);                              
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -286,10 +293,18 @@ public class PlayerController : MonoBehaviour
             weapon.GetComponent<CapsuleCollider2D>().size = new Vector2(0.22f, 0.6f);
             weapon.GetComponent<CapsuleCollider2D>().offset = new Vector2(0.008f, 0.85f);
         }
+
+        PlayAttackSound(equiment);
     }
-    public void TakeDamage(float atk) {
+    public void TakeDamage(float atk, Equiment equipment) 
+    {
         HP -= atk;
+        
         UIManager.Instance.UpdatePlayerHealth((UIManager.Player)(player - 1), HP, maxHP);
+        EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.Hit);
+
+        PlayHitSound(equipment);
+
         if (HP > 0) animator.SetTrigger("hurt");
         else
         {
@@ -297,6 +312,44 @@ public class PlayerController : MonoBehaviour
             animator.SetTrigger("dead");
             GetComponent<BoxCollider2D>().enabled = false;
             rb.isKinematic = true;
+        }
+    }
+
+    private void PlayHitSound(Equiment equipment)
+    { 
+        switch (equipment) 
+        {
+            case Equiment.PUNCH:
+                SoundManager.Instance.Play("Sounds/SFX/hit_punch", SoundManager.Sound.P_Effect);
+                break;
+            case Equiment.SPEAR:
+                SoundManager.Instance.Play("Sounds/SFX/hit_spear", SoundManager.Sound.P_Effect);
+                break;
+            case Equiment.SWORD:
+                SoundManager.Instance.Play("Sounds/SFX/hit_sword", SoundManager.Sound.P_Effect);
+                break;
+            case Equiment.AXE:
+                SoundManager.Instance.Play("Sounds/SFX/hit_axe", SoundManager.Sound.P_Effect);
+                break;
+        }
+    }
+
+    private void PlayAttackSound(Equiment equipment)
+    {
+        switch (equipment)
+        {
+            case Equiment.PUNCH:
+                //SoundManager.Instance.Play("Sounds/SFX/attack_punch", SoundManager.Sound.P_Effect);
+                break;
+            case Equiment.SPEAR:
+                SoundManager.Instance.Play("Sounds/SFX/attack_spear", SoundManager.Sound.P_Effect);
+                break;
+            case Equiment.SWORD:
+                SoundManager.Instance.Play("Sounds/SFX/attack_sword", SoundManager.Sound.P_Effect);
+                break;
+            case Equiment.AXE:
+                SoundManager.Instance.Play("Sounds/SFX/attack_axe", SoundManager.Sound.P_Effect);
+                break;
         }
     }
 }

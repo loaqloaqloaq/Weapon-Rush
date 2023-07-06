@@ -84,7 +84,6 @@ public class UIManager : MonoBehaviour
         {
             amount = 0f;
         }
-        Debug.Log(amount);
         healthManagers[(int)player].targetAmount = amount;
     }
 

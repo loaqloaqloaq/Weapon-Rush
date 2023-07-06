@@ -23,8 +23,7 @@ public class SoundManager : MonoBehaviour
     public enum Sound
     {
         BGM,
-        P1_Effect,
-        P2_Effect,
+        P_Effect,
         UI,
         MaxCount,  //Length
     }
@@ -47,14 +46,14 @@ public class SoundManager : MonoBehaviour
     }
 
     //directoryを受けてこのスクリプトの内で再生させる
-    public void Play(string path, Sound type = Sound.P1_Effect, float pitch = 1.0f)
+    public void Play(string path, Sound type = Sound.P_Effect, float pitch = 1.0f)
     {
         AudioClip audioClip = GetOrAddAudioClip(path, type); //リソースを取得
         Play(audioClip, type, pitch);
     }
 
     //サウンド再生（リソースあり）
-    private void Play(AudioClip audioClip, Sound type = Sound.P1_Effect, float pitch = 1.0f)
+    private void Play(AudioClip audioClip, Sound type = Sound.P_Effect, float pitch = 1.0f)
     {
         if (audioClip == null || audioSources.Length <= (int)type)
             return;
@@ -78,7 +77,7 @@ public class SoundManager : MonoBehaviour
     }
 
     //サウンドリソース取得
-    AudioClip GetOrAddAudioClip(string path, Sound type = Sound.P1_Effect)
+    AudioClip GetOrAddAudioClip(string path, Sound type = Sound.P_Effect)
     {
         if (path.Contains("Sounds/") == false)
             path = $"Sounds/{path}"; // directoryに"Sounds/"が含まれていない場合追加
