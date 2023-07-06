@@ -1,9 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Windows.Input;
 using UnityEngine;
-using static PlayerController;
-using static UnityEditor.PlayerSettings;
 
 public class PlayerController : MonoBehaviour
 {

@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; //タイマー(UI)表示に使う
-using UnityEngine.SceneManagement;
 using TMPro;
 
 public class Timer_CountDown : MonoBehaviour

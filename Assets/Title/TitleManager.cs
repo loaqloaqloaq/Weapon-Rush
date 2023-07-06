@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,21 +21,24 @@ public class TitleManager : MonoBehaviour
     //    }
 
     //PVPボタンを押したとき
-    void OnClickButton_PVP()
+    public void OnClickButton_PVP()
     {
         SceneManager.LoadScene("main");
     }
 
     //操作説明ボタンを押したとき
-    void OnClickButton_Explanation()
+    public void OnClickButton_Explanation()
     {
         Title_Display.SetActive(false);
         Explanation.SetActive(true);
     }
 
     //ゲームを終了ボタンを押したとき
-    void OnClickButton_GameEnd()
-    {
-        Application.Quit();
+    public void OnClickButton_GameEnd()
+    {        
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #endif
+            Application.Quit();
     }
 }
