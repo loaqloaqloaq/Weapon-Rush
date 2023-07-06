@@ -1,36 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; //タイマー(UI)表示に使う
-using UnityEngine.SceneManagement;
-using TMPro;
+using UnityEngine.SceneManagement; //シーンの読み込み
 
 public class Timer_CountDown : MonoBehaviour
 {
-    //制限時間を表示するText
-    public TextMeshProUGUI Timer_Text;
-    //タイムアップテキスト
-    // public Text TimeUp_Text;
-    //カウントダウン (60sec)    
-    [HideInInspector]
-    public float CountDown_;
+    //Inspector上で見えないようにする
+   [HideInInspector]
+    //制限時間 (カウントダウン方式)
+    public float CountDown;
 
     private void Start()
     {
-        CountDown_ = 60f;
+        //時間の初期設定
+        CountDown = 60.0f;
     }
-
-    void Update()
+    private void Update()
     {
-        //制限時間を表示する+        
-        Timer_Text =GetComponent<TextMeshProUGUI>();
-        Timer_Text.text = CountDown_.ToString("00");
-        
-        //Count_Down_が0超過のとき
-        if(CountDown_ > 0.0f)
+        //制限時間を表示する
+        UIManager.Instance.UpdateTimerText((int)CountDown);
+
+        //制限時間が0超過のとき
+        if (CountDown > 0.0f)
         {
             //カウントダウン
-            CountDown_ -= Time.deltaTime;
-        }               
+            CountDown -= Time.deltaTime;
+        }
+        //制限時間が0以下になったとき
+        else if (CountDown <= 0.0f)
+        {
+            //TimeUpTextを表示
+            UIManager.Instance.SetActiveTimeUpText();
+        }
     }
 }

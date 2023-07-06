@@ -33,8 +33,7 @@ public class GameDirector : MonoBehaviour
         if (player1.HP <= 0 || player2.HP <= 0) {           
             end = true;
         }
-        if (timer.CountDown_ <= 0) {
-            timeup.SetActive(true);
+        if (timer.CountDown <= 0) {
             end = true;
         }
         if (end) {
