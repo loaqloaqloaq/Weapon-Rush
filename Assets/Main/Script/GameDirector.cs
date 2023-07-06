@@ -33,6 +33,9 @@ public class GameDirector : MonoBehaviour
         if (player1.HP <= 0 || player2.HP <= 0) {           
             end = true;
         }
+        if (timer.CountDown <= 0) {
+            end = true;
+        }
         if (end) {
             PlayerPrefs.SetFloat("player1HP", player1.HP);
             PlayerPrefs.SetFloat("player2HP", player2.HP);
