@@ -20,30 +20,37 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     int camNum = 0;
 
+    GameObject border;
+
     private Camera cam;
     void Start()
     {
         p1 = GameObject.Find("Player1");
         p2 = GameObject.Find("Player2");
 
-        cam = GetComponent<Camera>();        
+        cam = GetComponent<Camera>();
+
+        border = GameObject.Find("border");
     }
 
     // Update is called once per frame
     void Update()
     {
         Vector3 target = Vector3.zero;
-        float distance = Vector3.Distance(p1.transform.position, p2.transform.position);
-        if (distance > 17.9f)
+        float distance = Vector3.Distance(p1.transform.position, p2.transform.position);        
+        if (distance > 9.23f)
         {
+            border.SetActive(true);
             target = camNum == 0 ? p1.transform.position : p2.transform.position;
             target.z = -10;
-            cam.rect = new Rect((float)camNum*0.5f, 0, 0.5f, 1);
+            float viewPortLR = p1.transform.position.x > p2.transform.position.x ? (camNum == 1 ? 0 : 0.5f): (camNum == 1 ? 0.5f : 0) ;
+            cam.rect = new Rect(viewPortLR, 0, 0.5f, 1);
 
             target.x = target.x > xHalfMargin[1] ? xHalfMargin[1] : target.x < xHalfMargin[0] ? xHalfMargin[0] : target.x;            
         }
         else
         {
+            border.SetActive(false);
             cam.rect = new Rect(camNum, 0, 1, 1);
             target = new Vector3(
                 (p1.transform.position.x + p2.transform.position.x) / 2,
