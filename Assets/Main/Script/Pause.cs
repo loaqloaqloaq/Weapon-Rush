@@ -1,40 +1,73 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Pause : MonoBehaviour
 {
-    //ƒ|[ƒY‚É•\¦‚·‚éUI (BackGroundŠÜ‚Ş)
+    //ãƒãƒ¼ã‚ºæ™‚ã«è¡¨ç¤ºã™ã‚‹UI (BackGroundå«ã‚€)
     public GameObject PauseUI;
-    //ƒ|[ƒY‚É•\¦‚·‚éƒeƒLƒXƒg
+    //ãƒãƒ¼ã‚ºæ™‚ã«è¡¨ç¤ºã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆ
     public GameObject PauseText;
-    //ƒ^ƒCƒgƒ‹‚É–ß‚é‚©ÅIŠm”F‚·‚éƒeƒLƒXƒg
+    //ã‚¿ã‚¤ãƒˆãƒ«ã«æˆ»ã‚‹ã‹æœ€çµ‚ç¢ºèªã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆ
     public GameObject ConfirmationText;
 
+    //AIè¨­å®š
+    public GameObject AiSettingPanel;
+    public GameObject EnableWalk, EnableAttack;
+    public Text walkText, attackText;
+    Button walkButton, attackButton;
+
+    private void Start()
+    {
+        GameObject AI = GameObject.Find("Player1").GetComponent<PlayerController>().player == 3 ? GameObject.Find("Player1") : 
+            GameObject.Find("Player2").GetComponent<PlayerController>().player == 3? GameObject.Find("Player2") :
+            null;
+        if (AI != null) { 
+            AiSettingPanel.SetActive(true);
+            walkButton = EnableWalk.GetComponent<Button>();
+            attackButton = EnableAttack.GetComponent<Button>();
+
+            walkButton.onClick.AddListener(() =>
+            {
+                AI.GetComponent<AIController>().enableWalk = !AI.GetComponent<AIController>().enableWalk;
+                walkText.text = AI.GetComponent<AIController>().enableWalk ? "ã¯ã„" : "ã„ã„ãˆ";
+            });
+            attackButton.onClick.AddListener(() =>
+            {
+                AI.GetComponent<AIController>().enableAttack = !AI.GetComponent<AIController>().enableAttack;
+                attackText.text = AI.GetComponent<AIController>().enableAttack ? "ã¯ã„" : "ã„ã„ãˆ";
+            });
+        }
+        else AiSettingPanel.SetActive(false);
+
+       
+    }
     void Update()
     {
-        //EscapeƒL[‚ª‰Ÿ‚³‚ê‚½uŠÔ
+        //Escapeã‚­ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸç¬é–“
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            //ƒ|[ƒYUI‚Ì•\¦A”ñ•\¦‚ğØ‚è‘Ö‚¦
+            //ãƒãƒ¼ã‚ºUIã®è¡¨ç¤ºã€éè¡¨ç¤ºã‚’åˆ‡ã‚Šæ›¿ãˆ
             PauseUI.SetActive(!PauseUI.activeSelf);
 
-            //ƒ|[ƒYUI•\¦
+            //ãƒãƒ¼ã‚ºUIè¡¨ç¤ºæ™‚
             if (PauseUI.activeSelf == true)
             {
-                //ˆê’â~
+                //ä¸€æ™‚åœæ­¢
                 Time.timeScale = 0.0f;
-                //ƒ|[ƒYƒeƒLƒXƒg‚ğ•\¦
+                //ãƒãƒ¼ã‚ºãƒ†ã‚­ã‚¹ãƒˆã‚’è¡¨ç¤º
                 PauseText.SetActive(true);
             }
-            //ƒ|[ƒYUI”ñ•\¦
+            //ãƒãƒ¼ã‚ºUIéè¡¨ç¤ºæ™‚
             else
             {
-                //ÄŠJ
+                //å†é–‹
                 Time.timeScale = 1.0f;
-                //ÅIŠm”F‚·‚éƒeƒLƒXƒg‚ğ”ñ•\¦
+                //æœ€çµ‚ç¢ºèªã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆã‚’éè¡¨ç¤º
                 ConfirmationText.SetActive(false);
             }
         }
     }
+    
 }

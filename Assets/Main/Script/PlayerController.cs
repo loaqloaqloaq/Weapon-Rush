@@ -6,8 +6,7 @@ public class PlayerController : MonoBehaviour
     public GameObject axePre, swordPre, spearPre;
     public Sprite axe, sword, spear;
     Rigidbody2D rb;
-    Animator animator;
-    GameObject otherPlayer;
+    Animator animator; 
 
     //エフェクトを表示する位置
     private Transform effectTransform; 
@@ -20,24 +19,22 @@ public class PlayerController : MonoBehaviour
     float dashing;
     float dashCoolDown;
     struct KeyBind {
-        public string move;
-        public KeyCode atk, jump, drop, dash;       
-    }
-    struct GamePadBind {
-        public string atk, jump, drop, dash;
-    }
-    KeyBind[] input = new KeyBind[2];
-    GamePadBind[] gamepad= new GamePadBind[2];
+        public string move, atk, jump, drop, dash;        
+    }   
+    KeyBind[] input = new KeyBind[2];   
     
     public enum Equiment {
         AXE, SWORD, SPEAR, PUNCH, NON
     };
-    Equiment equiment;
+    public Equiment equiment;
     GameObject onHoverObject;
 
+    // 1＝プレイヤー１ ／ 2＝プレイヤー２ ／ 3＝CPU
     public int player = 1;
-    float moveSpeed = 5.0f;
-    float jumpPow = 10.0f;
+
+    [HideInInspector]
+    public float moveSpeed, jumpPow, dashMaxSpeed;
+   
     bool onGround;
 
     float attack;
@@ -51,6 +48,7 @@ public class PlayerController : MonoBehaviour
         frontArm = transform.Find("Body/Front arm").gameObject;
         backArm = transform.Find("Body/Back arm").gameObject;
         effectTransform = transform.Find("Body");
+
         weapon.GetComponent<CapsuleCollider2D>().enabled = false;
         frontArm.GetComponent<CapsuleCollider2D>().enabled = false;
         backArm.GetComponent<CapsuleCollider2D>().enabled = false;
@@ -58,191 +56,139 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         onGround = false;       
-        onHoverObject = null;
-        
-
-        if (player == 1)
-        {
-            otherPlayer = GameObject.Find("Player2");
-        }
-        else {
-            otherPlayer = GameObject.Find("Player1");
-        }
+        onHoverObject = null;      
 
         //キーバインド
         //プレイヤー　１
         input[0].move = "Player1_Horizontal";
-        input[0].atk = KeyCode.Space;
-        input[0].drop = KeyCode.LeftControl;
-        input[0].jump = KeyCode.W;
-        input[0].dash = KeyCode.LeftShift;
-
-        gamepad[0].atk = "Player1_Attack";
-        gamepad[0].drop = "Player1_Drop";
-        gamepad[0].jump = "Player1_Jump";
-        gamepad[0].dash = "Player1_Dash";
+        input[0].atk = "Player1_Attack";
+        input[0].drop = "Player1_Drop";
+        input[0].jump = "Player1_Jump";
+        input[0].dash = "Player1_Dash";
 
         //プレイヤー　2
-        input[1].move = "Player2_Horizontal";
-        input[1].atk = KeyCode.Keypad0;
-        input[1].drop = KeyCode.RightControl;
-        input[1].jump = KeyCode.UpArrow;
-        input[1].dash = KeyCode.RightShift;
-
-        gamepad[1].atk = "Player2_Attack";
-        gamepad[1].drop = "Player2_Drop";
-        gamepad[1].jump = "Player2_Jump";
-        gamepad[1].dash = "Player2_Dash";
+        input[1].move = "Player2_Horizontal";  
+        input[1].atk = "Player2_Attack";
+        input[1].drop = "Player2_Drop";
+        input[1].jump = "Player2_Jump";
+        input[1].dash = "Player2_Dash";
 
         //プレイヤー数値
         HP = maxHP;
         attack = 10.0f;
         atkMuiltpler = 0.5f;
-
+        moveSpeed = 5.0f;
+        jumpPow = 10.0f;
+        dashMaxSpeed = 3.5f;
+        //初期武器
         equiment = Equiment.PUNCH;
         weapon.SetActive(false);
         animator.SetBool("using spear", false);
+
+        if (player < 3)
+        {
+            GetComponent<AIController>().enabled = false;
+        }
+        else {
+            GetComponent<AIController>().enabled = true;
+            GetComponent<AIController>().setJumpPow(jumpPow);
+            GetComponent<AIController>().setMoveSpeed(moveSpeed);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*debug
-        if (Input.GetButtonDown(gamepad[player - 1].atk)) {
-            Debug.Log(gamepad[player - 1].atk + ":" + ": pressed");
-        }
-        if (Input.GetButtonDown(gamepad[player - 1].drop) )
-        {
-            Debug.Log(gamepad[player - 1].drop +": pressed");
-        }
-        if (Input.GetButtonDown(gamepad[player - 1].jump))
-        {
-            Debug.Log(gamepad[player - 1].jump + ": pressed");
-        }
-        if (Input.GetButtonDown(gamepad[player - 1].dash))
-        {
-            Debug.Log(gamepad[player - 1].dash + ": pressed");
-        }
-        */
-
         //一時停止時や死んだの時、プレイヤーを動けないようにする 
-        if (Mathf.Approximately(Time.timeScale, 0.0f) || HP<=0)
+        if (Mathf.Approximately(Time.timeScale, 0.0f) || HP <= 0)
         {
             return;
         }
-        //攻撃アニメーションが終わった判定
-        bool attacking = animator.GetCurrentAnimatorStateInfo(0).IsName("punch attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("sword attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("axe attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("spear attack");
-        if (!attacking)
-        {
-            weapon.GetComponent<CapsuleCollider2D>().enabled = false;
-            frontArm.GetComponent<CapsuleCollider2D>().enabled = false;
-            backArm.GetComponent<CapsuleCollider2D>().enabled = false;
-        }
-        if ( (Input.GetKeyDown(input[player - 1].atk) || Input.GetButtonDown(gamepad[player - 1].atk)) && !attacking)
-        {
-            //攻撃            
-            if (equiment == Equiment.AXE)
+        if (player < 3) { 
+            //攻撃アニメーションが終わった判定
+            bool attacking = animator.GetCurrentAnimatorStateInfo(0).IsName("punch attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("sword attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("axe attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("spear attack");
+            if (!attacking)
             {
-                animator.SetTrigger("axe");
-                Invoke("EnableWeapon", 0.24f);
+               DisableWeapon();
             }
-            else if (equiment == Equiment.SWORD)
+            //攻撃  
+            if (Input.GetButtonDown(input[player - 1].atk) && !attacking)
             {
-                animator.SetTrigger("sword");
-                Invoke("EnableWeapon", 0.24f);                
+                Attack();
             }
-            else if (equiment == Equiment.SPEAR)
+            //武器捨てる and 武器を拾う  
+            if (Input.GetButtonDown(input[player - 1].drop) && !attacking)
             {
-                animator.SetTrigger("spear");
-                Invoke("EnableWeapon", 0.05f);
+                if (onHoverObject != null)
+                {
+                    GetWeapon(onHoverObject);
+                }
+                else
+                {
+                    DropWeapon();
+                    equiment = Equiment.PUNCH;
+                }
             }
-            else if (equiment == Equiment.PUNCH)
+            //ダッシュ処理
+            float dashTime = 0.15f;
+            float dashSpeed = 1.0f;
+            //ダッシュ Cool Down
+            float cooldown = 1.0f;
+            if (Input.GetButtonDown(input[player - 1].dash) && dashing <= 0 && dashCoolDown <= 0)
             {
-                frontArm.GetComponent<CapsuleCollider2D>().enabled = true;
-                backArm.GetComponent<CapsuleCollider2D>().enabled = true;
-                animator.SetTrigger("punch");
+                dashing = dashTime;
+                dashCoolDown = cooldown;
             }
-            
-                      
-        }
-        //武器捨てる and 武器を拾う  
-        if ((Input.GetKeyDown(input[player - 1].drop) || Input.GetButtonDown(gamepad[player - 1].drop)) && !attacking)
-        {
-            if (onHoverObject != null)
+            if (dashing > 0)
             {
-                GetWeapon(onHoverObject);                
+                dashSpeed = dashMaxSpeed;
+                dashing -= Time.deltaTime;
+                if (dashing < 0) dashing = 0;
+            }
+            if (dashCoolDown > 0) dashCoolDown -= Time.deltaTime;
+            //移動処理
+            if (Input.GetAxis(input[player - 1].move) > 0.2f || Input.GetAxis(input[player - 1].move) < -0.2f)
+            {
+                Vector3 vec = new Vector3(Input.GetAxis(input[player - 1].move) * moveSpeed * dashSpeed * Time.deltaTime, 0, 0);
+                transform.Translate(vec);
+                animator.SetBool("walking", true);
             }
             else
             {
-                DropWeapon();
-                equiment = Equiment.PUNCH;
+                animator.SetBool("walking", false);
+            }
+
+            //画像の向き
+            if (Input.GetAxis(input[player - 1].move) > 0.2f)
+            {
+                facing = -1.0f;
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+            else if (Input.GetAxis(input[player - 1].move) < -0.2f)
+            {
+                facing = 1.0f;
+                transform.localScale = new Vector3(1, 1, 1);
+            }
+            //ジャンプ       
+            if (Input.GetButtonDown(input[player - 1].jump) && onGround)
+            {
+                Jump();
             }
         }
-        //移動とダッシュ
-        float dashTime = 0.15f;
-        float dashSpeed = 1.0f;
-        //ダッシュ Cool Down
-        float cooldown = 1.0f;
-        if ((Input.GetKeyDown(input[player - 1].dash) || Input.GetButtonDown(gamepad[player - 1].dash)) && dashing <= 0 && dashCoolDown <= 0)
-        {
-            dashing = dashTime;
-            dashCoolDown = cooldown;
-        }
-        if (dashing > 0)
-        {
-            dashSpeed = 3.5f;
-            dashing -= Time.deltaTime;
-            if (dashing < 0) dashing = 0;
-        }
-        if(dashCoolDown > 0) dashCoolDown -= Time.deltaTime;     
-        if (Input.GetAxis(input[player - 1].move) > 0.2f || Input.GetAxis(input[player - 1].move) < -0.2f)
-        {
-            Vector3 vec = new Vector3(Input.GetAxis(input[player - 1].move) * moveSpeed * dashSpeed * Time.deltaTime, 0, 0);
-            transform.Translate(vec);
-            animator.SetBool("walking", true);
-        }
-        else
-        {
-            animator.SetBool("walking", false);
-        }
-
-        //画像の向きと
-        if (Input.GetAxis(input[player - 1].move) > 0.2f)
-        {
-            facing = -1.0f;
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
-        else if (Input.GetAxis(input[player - 1].move) < -0.2f)
-        {
-            facing = 1.0f;
-            transform.localScale = new Vector3(1, 1, 1);
-        }
-        //ジャンプ       
-        if ((Input.GetKeyDown(input[player - 1].jump) || Input.GetButtonDown(gamepad[player - 1].jump)) && onGround)
-        {
-            rb.velocity = new Vector2(0, jumpPow);
-            onGround = false;
-        }
-    }
+    }   
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
-       if (collision.transform.CompareTag("Floor")) {
+       if (collision.transform.CompareTag("Floor") || collision.transform.CompareTag("Block")) {
             onGround = true;
         }       
         
     }
-
     private void OnTriggerEnter2D(Collider2D collision)
-    {
-        //武器の上にいます
-        if (collision.transform.CompareTag("Axe")|| collision.transform.CompareTag("Spear")|| collision.transform.CompareTag("Sword"))
-        {
-            onHoverObject = collision.gameObject;
-        }
+    {        
         //攻撃受けた
-        else if (collision.transform.CompareTag("Attack")) {}
-        //攻撃した
+        if (collision.transform.CompareTag("Attack")) {}
+        //攻撃当たった
         else if (collision.transform.CompareTag("Player1") || collision.transform.CompareTag("Player2")) {
             weapon.GetComponent<CapsuleCollider2D>().enabled = false;
             frontArm.GetComponent<CapsuleCollider2D>().enabled = false;
@@ -250,11 +196,24 @@ public class PlayerController : MonoBehaviour
             collision.GetComponent<PlayerController>().TakeDamage(attack * atkMuiltpler, equiment);                              
         }
     }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        //武器の近くにいる
+        if (collision.transform.CompareTag("Axe") || collision.transform.CompareTag("Spear") || collision.transform.CompareTag("Sword"))
+        {
+            onHoverObject = collision.gameObject;
+        }
+    }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        onHoverObject = null;
+        //武器から離れた
+        if (collision.transform.CompareTag("Axe") || collision.transform.CompareTag("Spear") || collision.transform.CompareTag("Sword"))
+        {
+            onHoverObject = null;
+        }        
     }
-    private void GetWeapon(GameObject weaponObject) {
+    //武器を拾う
+    public void GetWeapon(GameObject weaponObject) {
         switch (weaponObject.tag)
         {
             case "Axe":
@@ -265,7 +224,7 @@ public class PlayerController : MonoBehaviour
                 weapon.GetComponent<SpriteRenderer>().sprite = axe;
                 animator.SetBool("using spear", false);
                 weapon.transform.localScale = Vector3.one;
-                Destroy(onHoverObject);
+                Destroy(weaponObject);
                 break;
             case "Sword":
                 DropWeapon();
@@ -275,7 +234,7 @@ public class PlayerController : MonoBehaviour
                 weapon.GetComponent<SpriteRenderer>().sprite = sword;
                 animator.SetBool("using spear", false);
                 weapon.transform.localScale = Vector3.one;
-                Destroy(onHoverObject);
+                Destroy(weaponObject);
                 break;
             case "Spear":
                 DropWeapon();
@@ -285,13 +244,14 @@ public class PlayerController : MonoBehaviour
                 weapon.GetComponent<SpriteRenderer>().sprite = spear;
                 animator.SetBool("using spear", true);
                 weapon.transform.localScale = new Vector3(1,1.3f,1);
-                Destroy(onHoverObject);
+                Destroy(weaponObject);
                 break;
             default: break;
         }
         EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.GetWeapon);
         SoundManager.Instance.Play("Sounds/SFX/getWeapon", SoundManager.Sound.P_Effect);
     }
+    //武器を捨てる
     private void DropWeapon()
     {
         if (equiment == Equiment.PUNCH) return;
@@ -316,6 +276,45 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("using spear", false);
         atkMuiltpler = 0.5f;
     }
+    //ジャンプ
+    public void Jump() {
+        if (onGround)
+        {
+            rb.velocity = new Vector2(0, jumpPow);
+            onGround = false;
+        }
+    }
+    //攻撃
+    public void Attack()
+    {
+        if (equiment == Equiment.AXE)
+        {
+            animator.SetTrigger("axe");
+            Invoke("EnableWeapon", 0.24f);
+        }
+        else if (equiment == Equiment.SWORD)
+        {
+            animator.SetTrigger("sword");
+            Invoke("EnableWeapon", 0.24f);
+        }
+        else if (equiment == Equiment.SPEAR)
+        {
+            animator.SetTrigger("spear");
+            Invoke("EnableWeapon", 0.05f);
+        }
+        else if (equiment == Equiment.PUNCH)
+        {
+            frontArm.GetComponent<CapsuleCollider2D>().enabled = true;
+            backArm.GetComponent<CapsuleCollider2D>().enabled = true;
+            animator.SetTrigger("punch");
+        }
+    }
+    //武器の攻撃判定
+    public void DisableWeapon() {
+        weapon.GetComponent<CapsuleCollider2D>().enabled = false;
+        frontArm.GetComponent<CapsuleCollider2D>().enabled = false;
+        backArm.GetComponent<CapsuleCollider2D>().enabled = false;
+    }
     void EnableWeapon()
     {
         weapon.GetComponent<CapsuleCollider2D>().enabled = true;
@@ -337,15 +336,16 @@ public class PlayerController : MonoBehaviour
 
         PlayAttackSound(equiment);
     }
+    //ダメージを受ける
     public void TakeDamage(float atk, Equiment equipment)
     {
         HP -= atk;
 
-        UIManager.Instance.UpdatePlayerHealth((UIManager.Player)(player - 1), HP, maxHP);
+        int playerNum = 0;
+        if (transform.CompareTag("Player2")) playerNum = 1;
+        UIManager.Instance.UpdatePlayerHealth((UIManager.Player)playerNum, HP, maxHP);
         PlayEffect(equipment);
-
         PlayHitSound(equipment);
-
         if (HP > 0) animator.SetTrigger("hurt");
         else
         {
@@ -354,8 +354,7 @@ public class PlayerController : MonoBehaviour
             GetComponent<BoxCollider2D>().enabled = false;
             rb.isKinematic = true;
         }
-    }
-
+    }    
     private void PlayEffect(Equiment equipment)
     {
         switch (equipment)
@@ -411,5 +410,9 @@ public class PlayerController : MonoBehaviour
                 SoundManager.Instance.Play("Sounds/SFX/attack_axe", SoundManager.Sound.P_Effect);
                 break;
         }
+    }
+
+    public Equiment CurrentWeapon() {
+        return equiment;
     }
 }

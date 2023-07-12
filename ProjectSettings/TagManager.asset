@@ -12,6 +12,7 @@ TagManager:
   - Spear
   - Attack
   - FxTemporaire
+  - Block
   layers:
   - Default
   - TransparentFX
