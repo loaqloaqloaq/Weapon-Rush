@@ -13,8 +13,7 @@ public class AIController : MonoBehaviour
     GameObject[] walls;
     string[] weapons = { "Axe","Spear","Sword"};
     string weapon;
-    bool startAttack;
-
+    bool startAttack;   
     float walkaround;
 
     [HideInInspector]
@@ -25,6 +24,7 @@ public class AIController : MonoBehaviour
         animator = GetComponent<Animator>();
         if (transform.CompareTag("Player1")) other = GameObject.Find("Player2");
         else other = GameObject.Find("Player1");
+        
         moveSpeed = GetComponent<PlayerController>().moveSpeed;
         jumpPow = GetComponent<PlayerController>().jumpPow;
         blocks = GameObject.FindGameObjectsWithTag("Block");
@@ -55,24 +55,30 @@ public class AIController : MonoBehaviour
         cpuHorizontalPosition.x = 0;
         Vector3 otherVerticalPosition = other.transform.position;
         otherHorizontalPosition.x = 0;
+
         float verticalDistance = cpuVertialPosition.y - otherVerticalPosition.y;
-        if (verticalDistance < 0) verticalDistance *= -1;
-        Debug.Log(verticalDistance);
+        float unsignedVerticalDistance = verticalDistance;
+        if (verticalDistance < 0) unsignedVerticalDistance *= -1;
+
+        Debug.Log(unsignedVerticalDistance);
         //’Ç‚Á‚ÄUŒ‚‚·‚é
-        if (horizontalDistance < 1.5f && verticalDistance < 1) startAttack = true;
-        else if (horizontalDistance > 2.5f && verticalDistance > 1) startAttack = false;        
+        if (horizontalDistance < 1.5f && unsignedVerticalDistance < 1) startAttack = true;
+        else if (horizontalDistance > 2.0f && unsignedVerticalDistance > 1) startAttack = false;
+
+        if (!attacking)
+        {
+            GetComponent<PlayerController>().DisableWeapon();
+            if (GetComponent<PlayerController>().lastAtk < 0) GetComponent<PlayerController>().lastAtk = 0;
+        }
 
         if (!startAttack)
-        {
-            if (!attacking) { 
-                GetComponent<PlayerController>().DisableWeapon();               
-            }
+        {            
             if (enableWalk)
             {
                 //ˆÚ“®
                 //ƒvƒŒƒCƒ„[‚ÌY‚ª“¯‚¶‚­‚ç‚¢
                 float direction = 1;                               
-                if (verticalDistance > -2f && verticalDistance < 2f) {
+                if (verticalDistance > -1.5f && verticalDistance < 1.5f) {
                     //ˆÚ“®•ûŒü                    
                     if (other.transform.position.x < transform.position.x) direction = -1;
                     walkaround = direction;
@@ -92,11 +98,11 @@ public class AIController : MonoBehaviour
                     foreach (var wall in walls)
                     {
                         float XdistanceToWall = transform.position.x - wall.transform.position.x;
-                        if (walkaround == 1 && XdistanceToWall >= -1f && XdistanceToWall <= 0)
+                        if (walkaround == 1 && XdistanceToWall >= -1.5f && XdistanceToWall <= 0)
                         {
                             walkaround *= -1;
                         }
-                        else if (walkaround == -11 && XdistanceToWall >= 0 && XdistanceToWall <= 1f)
+                        else if (walkaround == -11 && XdistanceToWall >= 0 && XdistanceToWall <= 1.5f)
                         {
                             walkaround *= -1;
                         }

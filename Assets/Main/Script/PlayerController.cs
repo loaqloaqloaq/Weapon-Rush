@@ -42,7 +42,8 @@ public class PlayerController : MonoBehaviour
 
     float facing;
 
-    float lastAtk;
+    [HideInInspector]
+    public float lastAtk;
     float axeCD, swordCD, spearCD;
     // Start is called before the first frame update
     void Start()
@@ -120,7 +121,7 @@ public class PlayerController : MonoBehaviour
             if (!attacking)
             {
                 DisableWeapon();  
-                if(lastAtk <0) lastAtk = 0;
+                if(lastAtk < 0) lastAtk = 0;
             }
             //攻撃  
             if (Input.GetButtonDown(input[player - 1].atk) && !attacking)
@@ -303,6 +304,7 @@ public class PlayerController : MonoBehaviour
     //攻撃
     public void Attack()
     {
+        Debug.Log(player.ToString()+": Attacking "+ lastAtk.ToString());
         if (equiment == Equiment.AXE)
         {
             if (lastAtk < axeCD) return;
