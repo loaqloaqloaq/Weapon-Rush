@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,22 +9,17 @@ public class TitleManager : MonoBehaviour
     public GameObject Title_Display;
     //操作説明テキスト
     public GameObject Explanation;
-    //    // Start is called before the first frame update
-    //    void Start()
-    //    {
 
-    //    }
-
-    //    // Update is called once per frame
-    //    void Update()
-    //    {
-
-    //    }
+    private void Start()
+    {
+        GameData.Initialize();
+    }
 
     //PVPボタンを押したとき
     public void OnClickButton_PVP()
     {
-        SceneManager.LoadScene("main");
+        //SceneManager.LoadScene("main");
+        LoadingSceneController.LoadScene("main");
     }
 
     //操作説明ボタンを押したとき
