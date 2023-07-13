@@ -18,10 +18,16 @@ public class Pause : MonoBehaviour
     public Text walkText, attackText;
     Button walkButton, attackButton;
 
+    GameObject p1, p2;
+
+    int pausePlayer;
+
     private void Start()
     {
-        GameObject AI = GameObject.Find("Player1").GetComponent<PlayerController>().player == 3 ? GameObject.Find("Player1") : 
-            GameObject.Find("Player2").GetComponent<PlayerController>().player == 3? GameObject.Find("Player2") :
+        p1 = GameObject.Find("Player1");
+        p2 = GameObject.Find("Player2");
+        GameObject AI = p1.GetComponent<PlayerController>().player == 3 ? p1 :
+            p2.GetComponent<PlayerController>().player == 3? p2 :
             null;
         if (AI != null) { 
             AiSettingPanel.SetActive(true);
@@ -46,10 +52,30 @@ public class Pause : MonoBehaviour
     void Update()
     {
         //Escapeキーが押された瞬間
-        if (Input.GetKeyDown(KeyCode.Escape))
+        bool p1Pause = (Input.GetButtonDown("Player1_Pause") && p1.GetComponent<PlayerController>().player != 3);
+        bool p2Pause = (Input.GetButtonDown("Player2_Pause") && p2.GetComponent<PlayerController>().player != 3);
+        if (p1Pause && pausePlayer == 0) pausePlayer = 1;
+        else if(p2Pause && pausePlayer == 0) pausePlayer = 2;
+        if (p1Pause || p2Pause)
         {
-            //ポーズUIの表示、非表示を切り替え
-            PauseUI.SetActive(!PauseUI.activeSelf);
+
+            if (pausePlayer == 1 && p1Pause && PauseUI.activeSelf)
+            {
+                //ポーズUIの非表示
+                PauseUI.SetActive(false);
+                pausePlayer = 0;
+            }
+            else if (pausePlayer == 2 && p1Pause && PauseUI.activeSelf)
+            {
+                //ポーズUIの非表示
+                PauseUI.SetActive(false);
+                pausePlayer = 0;
+            }
+            else {
+                //ポーズUIの表示
+                PauseUI.SetActive(true);
+            }
+            
 
             //ポーズUI表示時
             if (PauseUI.activeSelf == true)
