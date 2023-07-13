@@ -26,12 +26,21 @@ public class PlayerPointerArrow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
-        Vector3 _direction = (otherPlayer.transform.position - player.transform.position).normalized;
-        transform.position = player.transform.position + _direction + new Vector3(0,1,0);
-       
-        transform.localScale = new Vector3(_direction.x<0?-1:1, 1, 1);            
-        Quaternion rotation = Quaternion.LookRotation(_direction);
-        transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);        
+
+        float distance = Vector3.Distance(player.transform.position, otherPlayer.transform.position);
+
+        if (distance > 9.23f)
+        {
+            GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+            Vector3 _direction = (otherPlayer.transform.position - player.transform.position).normalized;
+            transform.position = player.transform.position + _direction + new Vector3(0, 1, 0);
+
+            transform.localScale = new Vector3(_direction.x < 0 ? -1 : 1, 1, 1);
+            Quaternion rotation = Quaternion.LookRotation(_direction);
+            transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
+        }
+        else {
+            GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+        }
     }
 }
