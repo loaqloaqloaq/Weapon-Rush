@@ -248,6 +248,9 @@ public class PlayerController : MonoBehaviour
                 break;
             default: break;
         }
+
+        if (player == 1) { GameData.p1.weaponCount++; }
+        else { GameData.p2.weaponCount++; }
         EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.GetWeapon);
         SoundManager.Instance.Play("Sounds/SFX/getWeapon", SoundManager.Sound.P_Effect);
     }

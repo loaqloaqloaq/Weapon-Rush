@@ -38,7 +38,20 @@ public class GameDirector : MonoBehaviour
             PlayerPrefs.SetFloat("player2HP", player2.HP);
             loadSceneDelay += Time.deltaTime;
         }
-        if (loadSceneDelay >= 2f) {
+        if (loadSceneDelay >= 2f) 
+        {
+            if (player1.HP > player2.HP)
+            {
+                GameData.winnerId = 1;
+                GameData.p1.victoryCount++;
+            }
+            else 
+            {
+                GameData.winnerId = 2;
+                GameData.p2.victoryCount++;
+            }
+
+
             SceneManager.LoadScene("Result");
         }
     }   
