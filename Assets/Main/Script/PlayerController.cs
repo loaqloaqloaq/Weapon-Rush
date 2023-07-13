@@ -304,7 +304,6 @@ public class PlayerController : MonoBehaviour
     //攻撃
     public void Attack()
     {
-        Debug.Log(player.ToString()+": Attacking "+ lastAtk.ToString());
         if (equiment == Equiment.AXE)
         {
             if (lastAtk < axeCD) return;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,9 @@ public class AIController : MonoBehaviour
 
     [HideInInspector]
     public bool enableAttack, enableWalk;
+
+    float prePosX;
+    float testStuckTimer;
     // Start is called before the first frame update
     void Start()
     {  
@@ -29,18 +33,20 @@ public class AIController : MonoBehaviour
         jumpPow = GetComponent<PlayerController>().jumpPow;
         blocks = GameObject.FindGameObjectsWithTag("Block");
         walls = GameObject.FindGameObjectsWithTag("Wall");
-        weapon = weapons[Random.Range(0,2)];       
+        weapon = weapons[UnityEngine.Random.Range(0,2)];       
         startAttack = false;
         // weapons = GameObject.Find("Weapons").GetComponentsInChildren<GameObject>();  
         enableAttack = true;
         enableWalk = true;
 
         walkaround = 1;
+        testStuckTimer = 0;
+        prePosX = transform.position.x;
     }
 
     // Update is called once per frame
     void Update()
-    {
+    {              
         if (GetComponent<PlayerController>().HP <= 0) return;
         
         bool attacking = animator.GetCurrentAnimatorStateInfo(0).IsName("punch attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("sword attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("axe attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("spear attack");
@@ -57,28 +63,35 @@ public class AIController : MonoBehaviour
         otherHorizontalPosition.x = 0;
 
         float verticalDistance = cpuVertialPosition.y - otherVerticalPosition.y;
-        float unsignedVerticalDistance = verticalDistance;
-        if (verticalDistance < 0) unsignedVerticalDistance *= -1;
-
-        Debug.Log(unsignedVerticalDistance);
+        float absVerticalDistance = Math.Abs(verticalDistance); 
+        
         //追って攻撃する
-        if (horizontalDistance < 1.5f && unsignedVerticalDistance < 1) startAttack = true;
-        else if (horizontalDistance > 2.0f && unsignedVerticalDistance > 1) startAttack = false;
+        if (horizontalDistance < 1.5f && absVerticalDistance < 1) startAttack = true;
+        else if (horizontalDistance > 2.0f && absVerticalDistance > 1) startAttack = false;
 
         if (!attacking)
         {
             GetComponent<PlayerController>().DisableWeapon();
             if (GetComponent<PlayerController>().lastAtk < 0) GetComponent<PlayerController>().lastAtk = 0;
-        }
+        } 
 
         if (!startAttack)
         {            
             if (enableWalk)
             {
+                testStuckTimer += Time.deltaTime;
+                if (testStuckTimer >= 0.5f) {
+                    float movedX = Math.Abs(prePosX - transform.position.x)/ testStuckTimer;                    
+                    prePosX = transform.position.x;
+                    testStuckTimer = 0;
+                    if(movedX < 2) GetComponent<PlayerController>().Jump();
+                }
+
                 //移動
-                //プレイヤーのYが同じくらい
+                //プレイヤーのYが同じくらい   
                 float direction = 1;                               
-                if (verticalDistance > -1.5f && verticalDistance < 1.5f) {
+                if (verticalDistance > -1f && verticalDistance < 1f) {
+                    Debug.Log("水平");
                     //移動方向                    
                     if (other.transform.position.x < transform.position.x) direction = -1;
                     walkaround = direction;
@@ -91,22 +104,14 @@ public class AIController : MonoBehaviour
                 //プレイヤーが上か下 
                 else
                 {
-                    if (cpuVertialPosition.y < otherVerticalPosition.y) GetComponent<PlayerController>().Jump();
-                    transform.localScale = new Vector3(walkaround * -1, 1, 1);
-                    Vector3 vec = new Vector3(walkaround * moveSpeed * Time.deltaTime, 0, 0);
-                    transform.Translate(vec);
-                    foreach (var wall in walls)
-                    {
-                        float XdistanceToWall = transform.position.x - wall.transform.position.x;
-                        if (walkaround == 1 && XdistanceToWall >= -1.5f && XdistanceToWall <= 0)
-                        {
-                            walkaround *= -1;
-                        }
-                        else if (walkaround == -11 && XdistanceToWall >= 0 && XdistanceToWall <= 1.5f)
-                        {
-                            walkaround *= -1;
-                        }
-                    }
+                    
+                    if (cpuVertialPosition.y < otherVerticalPosition.y) GetComponent<PlayerController>().Jump();                    
+                    if (transform.position.x >= 29.3f) walkaround = -1;
+                    if (transform.position.x <= -9.3f) walkaround = 1;
+                    Debug.Log(walkaround);
+                    transform.localScale = new Vector3(walkaround * -1, 1, 1);                    
+                    transform.Translate(new Vector3(walkaround * moveSpeed * Time.deltaTime, 0, 0));
+                    
                     animator.SetBool("walking", true);
                 }
                
@@ -130,8 +135,7 @@ public class AIController : MonoBehaviour
                             GetComponent<PlayerController>().Jump();
                         }
                     }
-                }
-
+                } 
             }
             else {
                 //方向
