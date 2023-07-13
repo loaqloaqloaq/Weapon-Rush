@@ -40,7 +40,10 @@ public class PlayerController : MonoBehaviour
     float attack;
     float atkMuiltpler;
 
-    float facing;    
+    float facing;
+
+    float lastAtk;
+    float axeCD, swordCD, spearCD;
     // Start is called before the first frame update
     void Start()
     {   
@@ -94,11 +97,18 @@ public class PlayerController : MonoBehaviour
             GetComponent<AIController>().setJumpPow(jumpPow);
             GetComponent<AIController>().setMoveSpeed(moveSpeed);
         }
+
+        //武器数値
+        lastAtk = 1f;
+        axeCD = 0.8f;
+        swordCD = 0.5f;
+        spearCD = 0.3f;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(lastAtk>=0) lastAtk += Time.deltaTime;
         //一時停止時や死んだの時、プレイヤーを動けないようにする 
         if (Mathf.Approximately(Time.timeScale, 0.0f) || HP <= 0)
         {
@@ -109,7 +119,8 @@ public class PlayerController : MonoBehaviour
             bool attacking = animator.GetCurrentAnimatorStateInfo(0).IsName("punch attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("sword attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("axe attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("spear attack");
             if (!attacking)
             {
-               DisableWeapon();
+                DisableWeapon();  
+                if(lastAtk <0) lastAtk = 0;
             }
             //攻撃  
             if (Input.GetButtonDown(input[player - 1].atk) && !attacking)
@@ -214,6 +225,7 @@ public class PlayerController : MonoBehaviour
     }
     //武器を拾う
     public void GetWeapon(GameObject weaponObject) {
+        lastAtk = 1f;
         switch (weaponObject.tag)
         {
             case "Axe":
@@ -257,6 +269,7 @@ public class PlayerController : MonoBehaviour
     //武器を捨てる
     private void DropWeapon()
     {
+        lastAtk = 1f;
         if (equiment == Equiment.PUNCH) return;
 
 
@@ -292,18 +305,24 @@ public class PlayerController : MonoBehaviour
     {
         if (equiment == Equiment.AXE)
         {
+            if (lastAtk < axeCD) return;
             animator.SetTrigger("axe");
             Invoke("EnableWeapon", 0.24f);
+            lastAtk = -1;
         }
         else if (equiment == Equiment.SWORD)
         {
+            if (lastAtk < swordCD) return;
             animator.SetTrigger("sword");
             Invoke("EnableWeapon", 0.24f);
+            lastAtk = -1;
         }
         else if (equiment == Equiment.SPEAR)
         {
+            if (lastAtk < spearCD) return;
             animator.SetTrigger("spear");
             Invoke("EnableWeapon", 0.05f);
+            lastAtk = -1;
         }
         else if (equiment == Equiment.PUNCH)
         {
@@ -335,8 +354,7 @@ public class PlayerController : MonoBehaviour
         {
             weapon.GetComponent<CapsuleCollider2D>().size = new Vector2(0.232f, 0.469f);
             weapon.GetComponent<CapsuleCollider2D>().offset = new Vector2(0.003f, 0.8835f);
-        }
-
+        }        
         PlayAttackSound(equiment);
     }
     //ダメージを受ける

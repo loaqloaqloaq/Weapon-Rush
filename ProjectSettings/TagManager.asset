@@ -13,6 +13,7 @@ TagManager:
   - Attack
   - FxTemporaire
   - Block
+  - Wall
   layers:
   - Default
   - TransparentFX
