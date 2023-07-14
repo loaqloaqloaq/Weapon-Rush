@@ -22,13 +22,24 @@ public class Pause : MonoBehaviour
 
     int pausePlayer;
 
+    GameObject selecting;
+    int selectingIndex;
+    int interacting;
+    [SerializeField]
+    GameObject[] PauseMenu,AiMenu;
+    GameObject[][] menus = new GameObject[2][];
+
+    [HideInInspector]
+    public static int confirmButtonindex;
+    public GameObject[] confirmButtons;
+    GameObject confirmButton;    
+
     private void Start()
     {
         p1 = GameObject.Find("Player1");
         p2 = GameObject.Find("Player2");
-        GameObject AI = p1.GetComponent<PlayerController>().player == 3 ? p1 :
-            p2.GetComponent<PlayerController>().player == 3? p2 :
-            null;
+        Debug.Log(PlayerPrefs.GetString("mode"));
+        GameObject AI = PlayerPrefs.GetString("mode") == "PVE" ? p2 : null;           
         if (AI != null) { 
             AiSettingPanel.SetActive(true);
             walkButton = EnableWalk.GetComponent<Button>();
@@ -47,7 +58,10 @@ public class Pause : MonoBehaviour
         }
         else AiSettingPanel.SetActive(false);
 
-       
+        menus[0] = PauseMenu;
+        menus[1] = AiMenu;
+
+        confirmButtonindex = 0;
     }
     void Update()
     {
@@ -58,7 +72,6 @@ public class Pause : MonoBehaviour
         else if(p2Pause && pausePlayer == 0) pausePlayer = 2;
         if (p1Pause || p2Pause)
         {
-
             if (pausePlayer == 1 && p1Pause && PauseUI.activeSelf)
             {
                 //ポーズUIの非表示
@@ -73,10 +86,8 @@ public class Pause : MonoBehaviour
             }
             else {
                 //ポーズUIの表示
-                PauseUI.SetActive(true);
-            }
-            
-
+                PauseUI.SetActive(true);   
+            }    
             //ポーズUI表示時
             if (PauseUI.activeSelf == true)
             {
@@ -84,6 +95,10 @@ public class Pause : MonoBehaviour
                 Time.timeScale = 0.0f;
                 //ポーズテキストを表示
                 PauseText.SetActive(true);
+
+                selectingIndex = 0;
+                interacting = 0;
+                ChangedSelecting();
             }
             //ポーズUI非表示時
             else
@@ -94,6 +109,115 @@ public class Pause : MonoBehaviour
                 ConfirmationText.SetActive(false);
             }
         }
+        //キーボードやゲームパッドで操作
+        if (PauseUI.activeSelf) {
+            string pl = "Player" + pausePlayer.ToString() + "_";
+            if (Input.GetButtonDown(pl + "Vertical") && Input.GetAxisRaw(pl + "Vertical") < 0) 
+            {
+                selectingIndex--;
+                if (selectingIndex < 0) selectingIndex = 0;
+                ChangedSelecting();               
+            }
+            else if (Input.GetButtonDown(pl + "Vertical") && Input.GetAxisRaw(pl + "Vertical") > 0)
+            {
+                selectingIndex++;
+                if (selectingIndex > (menus[interacting].Length - 1)) selectingIndex = (menus[interacting].Length - 1);
+                ChangedSelecting();                
+            }
+            if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") > 0)
+            {
+                interacting++;
+                selectingIndex = 0;
+                if (interacting > 1) interacting = 1;
+                ChangedSelecting();                
+            }
+            else if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") < 0)
+            {
+                interacting--;
+                selectingIndex = 0;
+                if (interacting < 0) interacting = 0;
+                ChangedSelecting();
+            }
+            if (Input.GetButtonDown(pl + "Attack")) { 
+                selecting.GetComponent<Button>().onClick.Invoke();
+            }            
+        }
+        if (ConfirmationText.activeSelf) {
+            string pl = "Player" + pausePlayer.ToString() + "_";
+            confirmButton = confirmButtons[confirmButtonindex];
+            if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") > 0)
+            {
+                confirmButtonindex++;                
+                if (confirmButtonindex > 1) confirmButtonindex = 1;
+                ConfirmationButtonEffect();
+            }
+            else if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") < 0)
+            {
+                confirmButtonindex--;                
+                if (confirmButtonindex < 0) confirmButtonindex = 0;
+                ConfirmationButtonEffect();
+            }
+        }
     }
-    
+
+    //選択エフェクト
+    private void ChangeButtonEffect()
+    {
+        foreach (var button in PauseMenu)
+        {
+            var img = button.GetComponent<Image>();
+            if (button == selecting)
+            {
+                img.color = new Color(1, 1, 1, 1);
+            }
+            else
+            {
+                img.color = new Color(1, 1, 1, 0.5f);
+            }
+        }
+        if (AiSettingPanel.activeSelf)
+        {
+            foreach (var button in AiMenu)
+            {
+                var img = button.GetComponent<Image>();
+                if (button == selecting)
+                {
+                    img.color = new Color(1, 1, 1, 1);
+                }
+                else
+                {
+                    img.color = new Color(1, 1, 1, 0.5f);
+                }
+            }
+        }
+    }
+    private void ConfirmationButtonEffect() {
+        foreach (var button in confirmButtons)
+        {
+            var img = button.GetComponent<Image>();
+            if (button == confirmButton)
+            {
+                img.color = new Color(1, 1, 1, 1);
+            }
+            else
+            {
+                img.color = new Color(1, 1, 1, 0.5f);
+            }
+        }
+    }
+
+    private void ChangedSelecting() {
+        Debug.Log("Interacting: " + interacting.ToString());
+        Debug.Log("Index: " + selectingIndex.ToString());
+        selecting = menus[interacting][selectingIndex];
+        ChangeButtonEffect();
+    }
+
+    public void OnClick_Continue() {
+        PauseUI.SetActive(false);
+        pausePlayer = 0;
+        Time.timeScale = 1.0f;
+        ConfirmationText.SetActive(false);
+    }
+
 }

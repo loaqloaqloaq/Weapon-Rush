@@ -18,12 +18,14 @@ public class OnClickButton : MonoBehaviour
         PauseText.SetActive(false); 
         //最終確認するテキストを表示
         ConfirmationText.SetActive(true);  
-    }
-
+        Pause.confirmButtonindex = 0;
+    }  
+   
     //はいが押された場合
     public void OnClick_Yes_Button()
     {
         //タイトルシーンに切り替え
+        Time.timeScale = 1.0f;
         SceneManager.LoadScene("Title");
     }
 

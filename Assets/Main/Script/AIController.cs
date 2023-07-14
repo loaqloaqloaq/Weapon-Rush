@@ -50,7 +50,7 @@ public class AIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {              
-        if (GetComponent<PlayerController>().HP <= 0 || otherPl.GetComponent<PlayerController>().HP <= 0) return;
+        if (GetComponent<PlayerController>().HP <= 0 || otherPl.GetComponent<PlayerController>().HP <= 0 || GameDirector.end) return;
         GameObject other = otherPl;
 
         if (GetComponent<PlayerController>().equiment == PlayerController.Equiment.PUNCH)
@@ -82,8 +82,8 @@ public class AIController : MonoBehaviour
         float verticalDistance = cpuVertialPosition.y - otherVerticalPosition.y;
         float absVerticalDistance = Math.Abs(verticalDistance);        
         //í«Ç¡ÇƒçUåÇÇ∑ÇÈ
-        if (horizontalDistance < 1.5f && absVerticalDistance < 1f && GetComponent<PlayerController>().equiment != PlayerController.Equiment.PUNCH) startAttack = true;
-        else if (horizontalDistance > 2.0f || absVerticalDistance > 1f) startAttack = false;
+        if (horizontalDistance < 1.5f && absVerticalDistance < 1.7f && GetComponent<PlayerController>().equiment != PlayerController.Equiment.PUNCH) startAttack = true;
+        else if (horizontalDistance > 2.0f || absVerticalDistance > 1.7f) startAttack = false;
 
         if (!attacking)
         {

@@ -9,11 +9,13 @@ public class GameDirector : MonoBehaviour
     GameObject timeup;
 
     float loadSceneDelay;
-    bool end;
+    public static bool end;
 
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 1.0f;
+
         player1 = GameObject.Find("Player1").GetComponent<PlayerController>();
         player2 = GameObject.Find("Player2").GetComponent<PlayerController>();
         timer = GameObject.Find("Canvas/UIPanel/Panel/Text_Timer").GetComponent<Timer_CountDown>();
