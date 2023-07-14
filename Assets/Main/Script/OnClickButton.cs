@@ -9,16 +9,15 @@ public class OnClickButton : MonoBehaviour
     //ポーズ時に表示するテキスト
     public GameObject PauseText;
     //タイトルに戻るか最終確認するテキスト
-    public GameObject ConfirmationText;
+    public GameObject ConfirmationText;   
 
     //タイトルに戻るボタンが押されたとき
     public void OnClick_BacktoTitle_Button()
     {
         //ポーズテキストを非表示
-        PauseText.SetActive(false); 
+        PauseText.SetActive(false);        
         //最終確認するテキストを表示
-        ConfirmationText.SetActive(true);  
-        Pause.confirmButtonindex = 0;
+        ConfirmationText.SetActive(true);          
     }  
    
     //はいが押された場合

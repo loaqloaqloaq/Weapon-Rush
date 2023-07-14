@@ -30,15 +30,14 @@ public class Pause : MonoBehaviour
     GameObject[][] menus = new GameObject[2][];
 
     [HideInInspector]
-    public static int confirmButtonindex;
+    public static int confirmButtonIndex;
     public GameObject[] confirmButtons;
     GameObject confirmButton;    
 
     private void Start()
     {
         p1 = GameObject.Find("Player1");
-        p2 = GameObject.Find("Player2");
-        Debug.Log(PlayerPrefs.GetString("mode"));
+        p2 = GameObject.Find("Player2");       
         GameObject AI = PlayerPrefs.GetString("mode") == "PVE" ? p2 : null;           
         if (AI != null) { 
             AiSettingPanel.SetActive(true);
@@ -61,7 +60,9 @@ public class Pause : MonoBehaviour
         menus[0] = PauseMenu;
         menus[1] = AiMenu;
 
-        confirmButtonindex = 0;
+        confirmButtonIndex = 1;
+        confirmButton = confirmButtons[1];
+        ConfirmationButtonEffect();
     }
     void Update()
     {
@@ -111,53 +112,65 @@ public class Pause : MonoBehaviour
         }
         //キーボードやゲームパッドで操作
         if (PauseUI.activeSelf) {
+            
             string pl = "Player" + pausePlayer.ToString() + "_";
-            if (Input.GetButtonDown(pl + "Vertical") && Input.GetAxisRaw(pl + "Vertical") < 0) 
-            {
-                selectingIndex--;
-                if (selectingIndex < 0) selectingIndex = 0;
-                ChangedSelecting();               
+            if (ConfirmationText.activeSelf)
+            {                
+                if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") > 0)
+                {
+                    confirmButtonIndex++;
+                    if (confirmButtonIndex > 1) confirmButtonIndex = 1;
+                    confirmButton = confirmButtons[confirmButtonIndex];
+                    ConfirmationButtonEffect();
+                }
+                else if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") < 0)
+                {
+                    confirmButtonIndex--;
+                    if (confirmButtonIndex < 0) confirmButtonIndex = 0;
+                    confirmButton = confirmButtons[confirmButtonIndex];
+                    ConfirmationButtonEffect();
+                }
+                if (Input.GetButtonDown(pl + "Attack"))
+                {
+                    confirmButton.GetComponent<Button>().onClick.Invoke();
+                }
             }
-            else if (Input.GetButtonDown(pl + "Vertical") && Input.GetAxisRaw(pl + "Vertical") > 0)
+            else
             {
-                selectingIndex++;
-                if (selectingIndex > (menus[interacting].Length - 1)) selectingIndex = (menus[interacting].Length - 1);
-                ChangedSelecting();                
+                confirmButtonIndex = 1;
+                confirmButton = confirmButtons[1];
+                if (Input.GetButtonDown(pl + "Vertical") && Input.GetAxisRaw(pl + "Vertical") < 0)
+                {
+                    selectingIndex--;
+                    if (selectingIndex < 0) selectingIndex = 0;
+                    ChangedSelecting();
+                }
+                else if (Input.GetButtonDown(pl + "Vertical") && Input.GetAxisRaw(pl + "Vertical") > 0)
+                {
+                    selectingIndex++;
+                    if (selectingIndex > (menus[interacting].Length - 1)) selectingIndex = (menus[interacting].Length - 1);
+                    ChangedSelecting();
+                }
+                if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") > 0)
+                {
+                    interacting++;
+                    selectingIndex = 0;
+                    if (interacting > 1) interacting = 1;
+                    ChangedSelecting();
+                }
+                else if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") < 0)
+                {
+                    interacting--;
+                    selectingIndex = 0;
+                    if (interacting < 0) interacting = 0;
+                    ChangedSelecting();
+                }
+                if (Input.GetButtonDown(pl + "Attack"))
+                {
+                    selecting.GetComponent<Button>().onClick.Invoke();
+                }
             }
-            if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") > 0)
-            {
-                interacting++;
-                selectingIndex = 0;
-                if (interacting > 1) interacting = 1;
-                ChangedSelecting();                
-            }
-            else if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") < 0)
-            {
-                interacting--;
-                selectingIndex = 0;
-                if (interacting < 0) interacting = 0;
-                ChangedSelecting();
-            }
-            if (Input.GetButtonDown(pl + "Attack")) { 
-                selecting.GetComponent<Button>().onClick.Invoke();
-            }            
-        }
-        if (ConfirmationText.activeSelf) {
-            string pl = "Player" + pausePlayer.ToString() + "_";
-            confirmButton = confirmButtons[confirmButtonindex];
-            if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") > 0)
-            {
-                confirmButtonindex++;                
-                if (confirmButtonindex > 1) confirmButtonindex = 1;
-                ConfirmationButtonEffect();
-            }
-            else if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") < 0)
-            {
-                confirmButtonindex--;                
-                if (confirmButtonindex < 0) confirmButtonindex = 0;
-                ConfirmationButtonEffect();
-            }
-        }
+        } 
     }
 
     //選択エフェクト
@@ -168,11 +181,11 @@ public class Pause : MonoBehaviour
             var img = button.GetComponent<Image>();
             if (button == selecting)
             {
-                img.color = new Color(1, 1, 1, 1);
+                img.color = new Color(img.color.r, img.color.g, img.color.b, 1);
             }
             else
             {
-                img.color = new Color(1, 1, 1, 0.5f);
+                img.color = new Color(img.color.r, img.color.g, img.color.b, 0.5f);
             }
         }
         if (AiSettingPanel.activeSelf)
@@ -182,11 +195,11 @@ public class Pause : MonoBehaviour
                 var img = button.GetComponent<Image>();
                 if (button == selecting)
                 {
-                    img.color = new Color(1, 1, 1, 1);
+                    img.color = new Color(img.color.r, img.color.g, img.color.b, 1);                    
                 }
                 else
                 {
-                    img.color = new Color(1, 1, 1, 0.5f);
+                    img.color = new Color(img.color.r, img.color.g, img.color.b, 0.5f);
                 }
             }
         }
@@ -197,11 +210,11 @@ public class Pause : MonoBehaviour
             var img = button.GetComponent<Image>();
             if (button == confirmButton)
             {
-                img.color = new Color(1, 1, 1, 1);
+                img.color = new Color(img.color.r, img.color.g, img.color.b, 1);
             }
             else
             {
-                img.color = new Color(1, 1, 1, 0.5f);
+                img.color = new Color(img.color.r, img.color.g, img.color.b, 0.5f);
             }
         }
     }

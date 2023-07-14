@@ -1775,10 +1775,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7173414610025263873}
-  - {fileID: 5121442596651203922}
   - {fileID: 5384618091380805439}
+  - {fileID: 5121442596651203922}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1860,7 +1860,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Timer_Text: {fileID: 0}
-  TimeUp_Text: {fileID: 0}
+  CountDown_: 0
 --- !u!114 &2263629794517756228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1876,3 +1876,11 @@ MonoBehaviour:
   PauseUI: {fileID: 2953445215428641236}
   PauseText: {fileID: 5552246537559001663}
   ConfirmationText: {fileID: 120212062084405567}
+  AiSettingPanel: {fileID: 0}
+  EnableWalk: {fileID: 0}
+  EnableAttack: {fileID: 0}
+  walkText: {fileID: 0}
+  attackText: {fileID: 0}
+  PauseMenu: []
+  AiMenu: []
+  confirmButtons: []
