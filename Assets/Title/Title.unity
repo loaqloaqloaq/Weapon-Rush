@@ -3931,6 +3931,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Title_Display: {fileID: 108458432}
   Explanation: {fileID: 1469963995}
+  buttons:
+  - {fileID: 207977728}
+  - {fileID: 1672789727}
+  - {fileID: 1280186419}
+  - {fileID: 1769161503}
 --- !u!4 &2043388270
 Transform:
   m_ObjectHideFlags: 0
