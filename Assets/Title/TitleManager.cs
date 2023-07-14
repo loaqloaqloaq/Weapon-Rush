@@ -64,6 +64,13 @@ public class TitleManager : MonoBehaviour
     {
         //SceneManager.LoadScene("main");
         LoadingSceneController.LoadScene("main");
+        PlayerPrefs.SetString("mode", "PVP");
+    }
+    public void OnClickButton_PVE()
+    {
+        //SceneManager.LoadScene("main");
+        LoadingSceneController.LoadScene("main");
+        PlayerPrefs.SetString("mode", "PVE");
     }
 
     //‘€ìà–¾ƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚Æ‚«

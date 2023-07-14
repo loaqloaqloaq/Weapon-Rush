@@ -47,7 +47,11 @@ public class PlayerController : MonoBehaviour
     float axeCD, swordCD, spearCD;
     // Start is called before the first frame update
     void Start()
-    {   
+    {
+        if (transform.CompareTag("Player1")) player = 1;
+        else if (PlayerPrefs.GetString("mode") == "PVE") player = 3;
+        else if (PlayerPrefs.GetString("mode") == "PVP") player = 2;
+
         weapon = transform.Find("Body/Front arm/Weapon").gameObject;
         frontArm = transform.Find("Body/Front arm").gameObject;
         backArm = transform.Find("Body/Back arm").gameObject;
