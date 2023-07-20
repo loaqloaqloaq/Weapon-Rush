@@ -31,7 +31,14 @@ public class TitleManager : MonoBehaviour
         }
         if (Input.GetButtonDown("Submit") && explanation == false) {
             nowButton.GetComponent<Button>().onClick.Invoke();
-        }       
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+            #endif
+            Application.Quit();
+        }
     }
 
     //�I���G�t�F�N�g
