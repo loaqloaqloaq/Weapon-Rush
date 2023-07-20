@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class OnClickButton : MonoBehaviour
@@ -17,7 +18,8 @@ public class OnClickButton : MonoBehaviour
         //ポーズテキストを非表示
         PauseText.SetActive(false);        
         //最終確認するテキストを表示
-        ConfirmationText.SetActive(true);          
+        ConfirmationText.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(GameObject.Find("Yes"));
     }  
    
     //はいが押された場合
@@ -35,5 +37,6 @@ public class OnClickButton : MonoBehaviour
         ConfirmationText.SetActive(false);
         //ポーズテキストを表示
         PauseText.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(GameObject.Find("Pause/Continue"));
     }
 }

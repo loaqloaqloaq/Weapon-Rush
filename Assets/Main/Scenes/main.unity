@@ -235,6 +235,10 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 889483668912324608, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
+      propertyPath: m_Colors.m_NormalColor.a
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 889483668912324608, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
       objectReference: {fileID: 192491116}
@@ -249,7 +253,7 @@ PrefabInstance:
     - target: {fileID: 889483668912324608, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
-      objectReference: {fileID: 1414880663}
+      objectReference: {fileID: 1116090376}
     - target: {fileID: 2263629794517756228, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
       propertyPath: walkText
       value: 
@@ -306,9 +310,17 @@ PrefabInstance:
       propertyPath: confirmButtons.Array.data[1]
       value: 
       objectReference: {fileID: 48962063}
+    - target: {fileID: 2712457717833412458, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
+      propertyPath: m_Colors.m_NormalColor.a
+      value: 0.5019608
+      objectReference: {fileID: 0}
     - target: {fileID: 2953445215428641236, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2993203642774936604, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
+      propertyPath: m_Color.g
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4915634271872366088, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
       propertyPath: m_UiScaleMode
@@ -321,6 +333,10 @@ PrefabInstance:
     - target: {fileID: 4915634271872366088, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
       propertyPath: m_ReferenceResolution.y
       value: 1080
+      objectReference: {fileID: 0}
+    - target: {fileID: 4994247467532008284, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
+      propertyPath: m_Colors.m_NormalColor.a
+      value: 0.5019608
       objectReference: {fileID: 0}
     - target: {fileID: 5112463153697079561, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
       propertyPath: m_IsActive
@@ -636,7 +652,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 1116090376}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 0.5019608}
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1126,7 +1142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 192491113}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &351490020

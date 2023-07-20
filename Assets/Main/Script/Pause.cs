@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Pause : MonoBehaviour
@@ -62,7 +63,7 @@ public class Pause : MonoBehaviour
 
         confirmButtonIndex = 1;
         confirmButton = confirmButtons[1];
-        ConfirmationButtonEffect();
+        
     }
     void Update()
     {
@@ -107,69 +108,72 @@ public class Pause : MonoBehaviour
                 //再開
                 Time.timeScale = 1.0f;
                 //最終確認するテキストを非表示
-                ConfirmationText.SetActive(false);
+                ConfirmationText.SetActive(false);                
             }
         }
         //キーボードやゲームパッドで操作
         if (PauseUI.activeSelf) {
+            selecting = EventSystem.current.currentSelectedGameObject;
             
-            string pl = "Player" + pausePlayer.ToString() + "_";
-            if (ConfirmationText.activeSelf)
-            {                
-                if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") > 0)
-                {
-                    confirmButtonIndex++;
-                    if (confirmButtonIndex > 1) confirmButtonIndex = 1;
-                    confirmButton = confirmButtons[confirmButtonIndex];
-                    ConfirmationButtonEffect();
-                }
-                else if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") < 0)
-                {
-                    confirmButtonIndex--;
-                    if (confirmButtonIndex < 0) confirmButtonIndex = 0;
-                    confirmButton = confirmButtons[confirmButtonIndex];
-                    ConfirmationButtonEffect();
-                }
-                if (Input.GetButtonDown(pl + "Attack"))
-                {
-                    confirmButton.GetComponent<Button>().onClick.Invoke();
-                }
-            }
-            else
-            {
-                confirmButtonIndex = 1;
-                confirmButton = confirmButtons[1];
-                if (Input.GetButtonDown(pl + "Vertical") && Input.GetAxisRaw(pl + "Vertical") < 0)
-                {
-                    selectingIndex--;
-                    if (selectingIndex < 0) selectingIndex = 0;
-                    ChangedSelecting();
-                }
-                else if (Input.GetButtonDown(pl + "Vertical") && Input.GetAxisRaw(pl + "Vertical") > 0)
-                {
-                    selectingIndex++;
-                    if (selectingIndex > (menus[interacting].Length - 1)) selectingIndex = (menus[interacting].Length - 1);
-                    ChangedSelecting();
-                }
-                if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") > 0)
-                {
-                    interacting++;
-                    selectingIndex = 0;
-                    if (interacting > 1) interacting = 1;
-                    ChangedSelecting();
-                }
-                else if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") < 0)
-                {
-                    interacting--;
-                    selectingIndex = 0;
-                    if (interacting < 0) interacting = 0;
-                    ChangedSelecting();
-                }
-                if (Input.GetButtonDown(pl + "Attack"))
-                {
-                    selecting.GetComponent<Button>().onClick.Invoke();
-                }
-            }
+            //string pl = "Player" + pausePlayer.ToString() + "_";
+            //if (ConfirmationText.activeSelf)
+            //{
+            //    confirmButton = EventSystem.current.currentSelectedGameObject;
+
+            //    if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") > 0)
+            //    {
+            //        confirmButtonIndex++;
+            //        if (confirmButtonIndex > 1) confirmButtonIndex = 1;
+            //        confirmButton = confirmButtons[confirmButtonIndex];
+            //        ConfirmationButtonEffect();
+            //    }
+            //    else if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") < 0)
+            //    {
+            //        confirmButtonIndex--;
+            //        if (confirmButtonIndex < 0) confirmButtonIndex = 0;
+            //        confirmButton = confirmButtons[confirmButtonIndex];
+            //        ConfirmationButtonEffect();
+            //    }
+            //    if (Input.GetButtonDown(pl + "Attack"))
+            //    {
+            //        confirmButton.GetComponent<Button>().onClick.Invoke();
+            //    }
+            //}
+            //else
+            //{
+            //    confirmButtonIndex = 1;
+            //    confirmButton = confirmButtons[1];
+            //    if (Input.GetButtonDown(pl + "Vertical") && Input.GetAxisRaw(pl + "Vertical") < 0)
+            //    {
+            //        selectingIndex--;
+            //        if (selectingIndex < 0) selectingIndex = 0;
+            //        ChangedSelecting();
+            //    }
+            //    else if (Input.GetButtonDown(pl + "Vertical") && Input.GetAxisRaw(pl + "Vertical") > 0)
+            //    {
+            //        selectingIndex++;
+            //        if (selectingIndex > (menus[interacting].Length - 1)) selectingIndex = (menus[interacting].Length - 1);
+            //        ChangedSelecting();
+            //    }
+            //    if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") > 0)
+            //    {
+            //        interacting++;
+            //        selectingIndex = 0;
+            //        if (interacting > 1) interacting = 1;
+            //        ChangedSelecting();
+            //    }
+            //    else if (Input.GetButtonDown(pl + "Horizontal") && Input.GetAxisRaw(pl + "Horizontal") < 0)
+            //    {
+            //        interacting--;
+            //        selectingIndex = 0;
+            //        if (interacting < 0) interacting = 0;
+            //        ChangedSelecting();
+            //    }
+            //    if (Input.GetButtonDown(pl + "Attack"))
+            //    {
+            //        selecting.GetComponent<Button>().onClick.Invoke();
+            //    }
+            //}
         } 
     }
 
@@ -222,8 +226,7 @@ public class Pause : MonoBehaviour
     private void ChangedSelecting() {
         Debug.Log("Interacting: " + interacting.ToString());
         Debug.Log("Index: " + selectingIndex.ToString());
-        selecting = menus[interacting][selectingIndex];
-        ChangeButtonEffect();
+        selecting = EventSystem.current.currentSelectedGameObject;
     }
 
     public void OnClick_Continue() {
