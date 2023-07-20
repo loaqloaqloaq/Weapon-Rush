@@ -1,10 +1,10 @@
 # チーム： 5B
 
 チームメンバー：
-- 22CI0504　李 炳 周
-- 22CI0519　窪田 篤郎
-- 22CI0527　髙野 和音
-- 22CI0532　張 皓 嵐
+- 22CI0504　李 炳 周　　	タイトル画面とリザルト画面のUI
+- 22CI0519　窪田 篤郎　	ゲーム画面UIとシステム
+- 22CI0527　髙野 和音　	リーダー、マップ制作、バランス調整
+- 22CI0532　張 皓 嵐 	プレイヤーとCPU
 
 # ゲーム
 - ゲーム名：Weapon Rush
@@ -46,9 +46,14 @@
 - 攻撃：B
 
 システム：
-- PAUSE：ESC  
+- PAUSE：ESC
 
-お借りした素材：
+# PRポイント
+- バランス調整に力を入れました。
+- 独自要素として武器を拾ったり捨てたりすることができます。
+- PVEを実装しました。 
+
+# お借りした素材：
 
 1. BGMやサウンドエフェクト
 - https://maou.audio 
@@ -58,5 +63,11 @@
 - https://assetstore.unity.com/packages/2d/characters/miniature-army-2d-v-1-medieval-style-72935
 
 3. マップ：
-- https://assetstore.unity.com/packages/2d/textures-materials/tiles/2d-casual-background-hd-v-2-83678			
+- https://assetstore.unity.com/packages/2d/textures-materials/tiles/2d-casual-background-hd-v-2-83678	
+
+4. ボタン：
+- https://jp.freepik.com/
+
+5. フォント：
+- https://www.dafont.com/		
 
