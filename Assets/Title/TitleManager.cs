@@ -7,9 +7,9 @@ using UnityEngine.UI;
 
 public class TitleManager : MonoBehaviour
 {
-    //ƒ^ƒCƒgƒ‹‚Ì•\¦ (ƒeƒLƒXƒgAƒ{ƒ^ƒ“)
+    //ï¿½^ï¿½Cï¿½gï¿½ï¿½ï¿½Ì•\ï¿½ï¿½ (ï¿½eï¿½Lï¿½Xï¿½gï¿½Aï¿½{ï¿½^ï¿½ï¿½)
     public GameObject Title_Display;
-    //‘€ìà–¾ƒeƒLƒXƒg
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½eï¿½Lï¿½Xï¿½g
     public GameObject Explanation;
 
     GameObject nowButton;
@@ -34,7 +34,7 @@ public class TitleManager : MonoBehaviour
         }       
     }
 
-    //‘I‘ğƒGƒtƒFƒNƒg
+    //ï¿½Iï¿½ï¿½ï¿½Gï¿½tï¿½Fï¿½Nï¿½g
     private void ChangeButtonEffect()
     {
         nowButton.GetComponent<Image>().color = new Color(1, 1, 1, 1);
@@ -51,7 +51,7 @@ public class TitleManager : MonoBehaviour
         }
     }
 
-    //PVPƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚Æ‚«
+    //PVPï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½
     public void OnClickButton_PVP()
     {
         //SceneManager.LoadScene("main");
@@ -65,7 +65,7 @@ public class TitleManager : MonoBehaviour
         PlayerPrefs.SetString("mode", "PVE");
     }
 
-    //‘€ìà–¾ƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚Æ‚«
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½
     public void OnClickButton_Explanation()
     {
         Title_Display.SetActive(false);
@@ -80,7 +80,7 @@ public class TitleManager : MonoBehaviour
         explanation=false;
     }
 
-    //ƒQ[ƒ€‚ğI—¹ƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚Æ‚«
+    //ï¿½Qï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½
     public void OnClickButton_GameEnd()
     {        
         #if UNITY_EDITOR
