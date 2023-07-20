@@ -15,7 +15,6 @@ public class ResultDirector : MonoBehaviour
     GameObject nowButton;
     float defaultOpacity = 0.8f;
 
-
     void Start()
     {
         /*
@@ -50,7 +49,6 @@ public class ResultDirector : MonoBehaviour
             }
         }
     }
-
     private void SetInformText()
     {
         text_victory[0].text = GameData.p1.victoryCount.ToString();
@@ -67,15 +65,16 @@ public class ResultDirector : MonoBehaviour
 
     private void SetWinnerText()
     {
-        if (!winnerText) 
+        if (!winnerText)
         {
             Debug.Log("Null reference");
-            return; 
+            return;
         }
-        
+
         if (GameData.winnerId == 1)
         { winnerText.text = "Player1" + " Win"; }
-        else { winnerText.text = "Player2" + " Win"; }
+        else if (GameData.winnerId == 2) { winnerText.text = "Player2" + " Win"; }
+        else { winnerText.text = "DRAW!!"; }
     }
 
     private void SetActiveWinnerSprite()
