@@ -36,7 +36,7 @@ public class AIController : MonoBehaviour
         blocks = GameObject.FindGameObjectsWithTag("Block");
         walls = GameObject.FindGameObjectsWithTag("Wall");
         weapon = weapons[UnityEngine.Random.Range(0,3)];
-        Debug.Log(weapon);
+       
         startAttack = false;         
         enableAttack = true;
         enableWalk = true;

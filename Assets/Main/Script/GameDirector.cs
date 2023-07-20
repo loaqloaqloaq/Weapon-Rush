@@ -27,6 +27,8 @@ public class GameDirector : MonoBehaviour
         timeup = GameObject.Find("Canvas/UIPanel/Text_TimeUp");
         timeup.SetActive(false);
         end = false;
+
+        Pause.pausePlayer = 0;
     }
 
     // Update is called once per frame

@@ -113,6 +113,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown("l")) HP = 0;
         if(lastAtk>=0) lastAtk += Time.deltaTime;
         //一時停止時や死んだの時、プレイヤーを動けないようにする 
         if (Mathf.Approximately(Time.timeScale, 0.0f) || HP <= 0 || GameDirector.end)

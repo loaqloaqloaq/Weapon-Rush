@@ -32,6 +32,10 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Pause.pausePlayer != 0) {
+            border.SetActive(false);
+            return;
+        } 
         Vector3 target = Vector3.zero;
         float distance = Vector3.Distance(p1.transform.position, p2.transform.position);        
         if (distance > 9.23f)

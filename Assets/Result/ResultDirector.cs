@@ -82,8 +82,7 @@ public class ResultDirector : MonoBehaviour
         int winner = GameData.winnerId;
         if (!(winner == 1 || winner == 2) || playerImages.Length < 2)
         {
-            Debug.Log("n");
-            return;
+           return;
         }
 
         if (winner == 1)
