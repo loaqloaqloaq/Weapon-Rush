@@ -1,5 +1,7 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ResultDirector : MonoBehaviour
 {
@@ -9,6 +11,10 @@ public class ResultDirector : MonoBehaviour
     [SerializeField] private TextMeshProUGUI[] text_score;
     // Start is called before the first frame update
     [SerializeField] private GameObject[] playerImages;
+
+    GameObject nowButton;
+    float defaultOpacity = 0.8f;
+
 
     void Start()
     {
@@ -21,6 +27,28 @@ public class ResultDirector : MonoBehaviour
         SetActiveWinnerSprite();
         SetWinnerText();
         SetInformText();
+    }
+
+    private void Update()
+    {
+        nowButton = EventSystem.current.currentSelectedGameObject;
+        ChangeButtonEffect();
+    }
+
+    private void ChangeButtonEffect()
+    {
+        nowButton.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+        foreach (Button button in FindObjectsOfType<Button>())
+        {
+            if (button.gameObject != nowButton)
+            {
+                Image image = button.GetComponent<Image>();
+                if (image != null)
+                {
+                    image.color = new Color(1, 1, 1, defaultOpacity);
+                }
+            }
+        }
     }
 
     private void SetInformText()

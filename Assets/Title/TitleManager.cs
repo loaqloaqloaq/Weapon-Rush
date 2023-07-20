@@ -1,5 +1,7 @@
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -10,51 +12,41 @@ public class TitleManager : MonoBehaviour
     //操作説明テキスト
     public GameObject Explanation;
 
-    [SerializeField]
-    GameObject[] buttons;
+    GameObject nowButton;
+    float defaultOpacity = 0.8f;
 
-    int selecting;
+    bool explanation = false;
 
     private void Start()
     {
         GameData.Initialize();
-
-        selecting = 0;
-        ChangeButtonEffect();
     }
 
     private void Update()
     {
+        nowButton = EventSystem.current.currentSelectedGameObject;
+        ChangeButtonEffect();
         if (Explanation.activeSelf && Input.GetButtonDown("Cancel")) {
             OnClickButton_CloseExplanation();
         }
-        if (Input.GetButtonDown("Vertical") && Input.GetAxis("Vertical") < 0) {            
-            selecting--;
-            if (selecting < 0) selecting = 0;
-            ChangeButtonEffect();
-        }
-        else if(Input.GetButtonDown("Vertical") && Input.GetAxis("Vertical") > 0) {            
-            selecting++;
-            if (selecting > (buttons.Length-1)) selecting = (buttons.Length - 1);
-            ChangeButtonEffect();
-        }
-        if (Input.GetButtonDown("Submit")) {
-            buttons[selecting].GetComponent<Button>().onClick.Invoke();
-        }
-        
+        if (Input.GetButtonDown("Submit") && explanation == false) {
+            nowButton.GetComponent<Button>().onClick.Invoke();
+        }       
     }
 
     //選択エフェクト
     private void ChangeButtonEffect()
     {
-        foreach (var button in buttons) {
-            var img = button.GetComponent<Image>();
-            if (button == buttons[selecting])
+        nowButton.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+        foreach (Button button in FindObjectsOfType<Button>())
+        {
+            if (button.gameObject != nowButton)
             {
-                img.color = new Color(1, 1, 1, 1);
-            }
-            else {
-                img.color = new Color(1, 1, 1, 0.8f);
+                Image image = button.GetComponent<Image>();
+                if (image != null)
+                {
+                    image.color = new Color(1, 1, 1, defaultOpacity);
+                }
             }
         }
     }
@@ -78,12 +70,14 @@ public class TitleManager : MonoBehaviour
     {
         Title_Display.SetActive(false);
         Explanation.SetActive(true);
+        explanation = true;
     }
 
     public void OnClickButton_CloseExplanation()
     {
         Title_Display.SetActive(true);
         Explanation.SetActive(false);
+        explanation=false;
     }
 
     //ゲームを終了ボタンを押したとき
