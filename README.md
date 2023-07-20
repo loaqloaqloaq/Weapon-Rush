@@ -1,8 +1,15 @@
+# チーム： 5B
+
+チームメンバー：
+- 22CI0504　李 炳 周
+- 22CI0519　窪田 篤郎
+- 22CI0527　髙野 和音
+- 22CI0532　張 皓 嵐
+
 # ゲーム
-- ゲーム名：未定
+- ゲーム名：Weapon Rush
 - 勝利条件：相手を倒すか時間切れる時HPが高い方
 - 制限時間：60秒
-
 
 # 操作
 
@@ -41,4 +48,15 @@
 システム：
 - PAUSE：ESC  
 
- 
+お借りした素材：
+
+1. BGMやサウンドエフェクト
+- https://maou.audio 
+- https://pixabay.com/ja/
+
+2. キャラクター：
+- https://assetstore.unity.com/packages/2d/characters/miniature-army-2d-v-1-medieval-style-72935
+
+3. マップ：
+- https://assetstore.unity.com/packages/2d/textures-materials/tiles/2d-casual-background-hd-v-2-83678			
+
