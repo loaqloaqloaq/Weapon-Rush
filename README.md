@@ -17,6 +17,9 @@
 実行環境：
 - Windows
 
+実行ファイル：
+- https://github.com/loaqloaqloaq/Weapon-Rush/releases
+
 # ゲーム
 - ゲーム名：Weapon Rush
 - 勝利条件：相手を倒すか時間切れる時HPが高い方
