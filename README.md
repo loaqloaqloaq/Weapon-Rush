@@ -63,7 +63,10 @@
 ## PRポイント
 - バランス調整に力を入れました。
 - 独自要素として武器を拾ったり捨てたりすることができます。
-- ライブラリーなしでCPUを実装しました。 
+- ライブラリーなしでCPUを実装しました。
+
+## CPUフローチャート
+![CPUフローチャート](https://firebasestorage.googleapis.com/v0/b/test123412-2e54b.appspot.com/o/CPU_FlowChart.png?alt=media&token=c13cbdb7-6621-4199-96c0-80689e1507a4 "CPUフローチャート")
 
 ## お借りした素材：
 
