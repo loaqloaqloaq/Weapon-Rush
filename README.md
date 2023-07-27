@@ -1,4 +1,4 @@
-#  Weapon　Rush
+#  Weapon Rush
 
 チーム： 5B
 
