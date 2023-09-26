@@ -242,6 +242,7 @@ public class PlayerController : MonoBehaviour
                 weapon.GetComponent<SpriteRenderer>().sprite = axe;
                 animator.SetBool("using spear", false);
                 weapon.transform.localScale = Vector3.one;
+                moveSpeed = 4.5f;
                 Destroy(weaponObject);
                 break;
             case "Sword":
@@ -252,6 +253,7 @@ public class PlayerController : MonoBehaviour
                 weapon.GetComponent<SpriteRenderer>().sprite = sword;
                 animator.SetBool("using spear", false);
                 weapon.transform.localScale = Vector3.one;
+                moveSpeed = 5.0f;
                 Destroy(weaponObject);
                 break;
             case "Spear":
@@ -262,6 +264,7 @@ public class PlayerController : MonoBehaviour
                 weapon.GetComponent<SpriteRenderer>().sprite = spear;
                 animator.SetBool("using spear", true);
                 weapon.transform.localScale = new Vector3(1,1.3f,1);
+                moveSpeed = 5.5f;
                 Destroy(weaponObject);
                 break;
             default: break;
