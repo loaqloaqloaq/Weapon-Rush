@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour
 
         //武器数値
         lastAtk = 1f;
-        axeCD = 0.8f;
+        axeCD = 0.7f;
         swordCD = 0.5f;
         spearCD = 0.3f;
     }
@@ -237,7 +237,7 @@ public class PlayerController : MonoBehaviour
             case "Axe":
                 DropWeapon();
                 equiment = Equiment.AXE;
-                atkMuiltpler = 1.5f;
+                atkMuiltpler = 1.8f;
                 weapon.SetActive(true);
                 weapon.GetComponent<SpriteRenderer>().sprite = axe;
                 animator.SetBool("using spear", false);
@@ -247,7 +247,7 @@ public class PlayerController : MonoBehaviour
             case "Sword":
                 DropWeapon();
                 equiment = Equiment.SWORD;
-                atkMuiltpler = 1.0f;
+                atkMuiltpler = 1.1f;
                 weapon.SetActive(true);
                 weapon.GetComponent<SpriteRenderer>().sprite = sword;
                 animator.SetBool("using spear", false);
@@ -379,7 +379,9 @@ public class PlayerController : MonoBehaviour
         UIManager.Instance.UpdatePlayerHealth((UIManager.Player)playerNum, HP, maxHP);
         PlayEffect(equipment);
         PlayHitSound(equipment);
-        if (HP > 0) animator.SetTrigger("hurt");
+        if (HP > 0) {
+            if(this.equiment != Equiment.AXE) animator.SetTrigger("hurt");
+        } 
         else
         {
             HP = 0;
