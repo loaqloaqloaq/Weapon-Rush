@@ -14,6 +14,8 @@ TagManager:
   - FxTemporaire
   - Block
   - Wall
+  - Map
+  - Traps
   layers:
   - Default
   - TransparentFX
