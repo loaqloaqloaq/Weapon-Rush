@@ -25,6 +25,12 @@ public class TitleManager : MonoBehaviour
     private void Update()
     {
         nowButton = EventSystem.current.currentSelectedGameObject;
+
+        if (nowButton == null)
+        {
+            return;
+        }
+
         ChangeButtonEffect();
         if (Explanation.activeSelf && Input.GetButtonDown("Cancel")) {
             OnClickButton_CloseExplanation();
