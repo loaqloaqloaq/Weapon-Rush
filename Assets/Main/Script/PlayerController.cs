@@ -278,22 +278,28 @@ public class PlayerController : MonoBehaviour
         lastAtk = 1f;
         if (equiment == Equiment.PUNCH) return;
 
-
+        GameObject droppedWeapon;
+        float forceX = -2.0f, forceY = 5.0f;
         if (equiment == Equiment.AXE)
         {
-            GameObject droppedWeapon = Instantiate(axePre, transform.position, Quaternion.identity);
-            droppedWeapon.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * -2.0f, 5.0f, 0);
+            droppedWeapon = Instantiate(axePre, transform.position, Quaternion.identity);            
         }
         else if (equiment == Equiment.SWORD)
         {
-            GameObject droppedWeapon = Instantiate(swordPre, transform.position, Quaternion.identity);
-            droppedWeapon.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * -2.0f, 5.0f, 0);
+            Vector3 pos = transform.position;
+            pos.y += 0.5f;
+            droppedWeapon = Instantiate(swordPre, pos, Quaternion.identity);
+            droppedWeapon.transform.rotation = Quaternion.Euler(0.0f, 0.0f, facing*90);
+            forceX = -10.0f;
+            forceY = 3.0f;
+            droppedWeapon.GetComponent<swordController>().throwSword(transform.tag);
         }
         else if (equiment == Equiment.SPEAR)
-        {
-            GameObject droppedWeapon = Instantiate(spearPre, transform.position, Quaternion.identity);
-            droppedWeapon.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * -2.0f, 5.0f, 0);
+        {            
+            droppedWeapon = Instantiate(spearPre, transform.position, Quaternion.identity);           
         }
+        else droppedWeapon = null;
+        if (droppedWeapon != null) droppedWeapon.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * forceX, forceY, 0);
         weapon.SetActive(false);
         animator.SetBool("using spear", false);
         atkMuiltpler = 0.5f;
