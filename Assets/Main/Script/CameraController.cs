@@ -16,6 +16,7 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     int camNum = 0;
 
+    [SerializeField]
     GameObject border;
 
     private Camera cam;
@@ -36,12 +37,14 @@ public class CameraController : MonoBehaviour
             border.SetActive(false);
             return;
         } 
+        GameObject targetObj = camNum == 0 ? p1 : p2;
+        if (targetObj.GetComponent<PlayerController>().HP <= 0) return;
         Vector3 target = Vector3.zero;
         float distance = Vector3.Distance(p1.transform.position, p2.transform.position);        
         if (distance > 9.23f)
         {
             border.SetActive(true);
-            target = camNum == 0 ? p1.transform.position : p2.transform.position;
+            target = targetObj.transform.position;
             target.z = -10;
             float viewPortLR = p1.transform.position.x > p2.transform.position.x ? (camNum == 1 ? 0 : 0.5f): (camNum == 1 ? 0.5f : 0) ;
             cam.rect = new Rect(viewPortLR, 0, 0.5f, 1);

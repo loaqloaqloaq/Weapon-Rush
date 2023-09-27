@@ -60,14 +60,11 @@ public class PlayerController : MonoBehaviour
             player = 1;
             otherPlayer = GameObject.Find("Player2");
         }
-        else if (PlayerPrefs.GetString("mode") == "PVE")
+        else
         {
-            player = 3;
-            otherPlayer = GameObject.Find("Player1");
-        }
-        else if (PlayerPrefs.GetString("mode") == "PVP")
-        {
-            player = 2;
+            if (PlayerPrefs.GetString("mode") == "PVE") player = 3;  
+            else if (PlayerPrefs.GetString("mode") == "PVP") player = 2;
+
             otherPlayer = GameObject.Find("Player1");
         }
 
@@ -192,6 +189,7 @@ public class PlayerController : MonoBehaviour
                 }
                 if ((Input.GetButtonUp(input[player - 1].atk) || holdTime >= chargeAttackTime) && !chargeAttacked) {
                     animator.speed = 1;
+                    chargeAttacked = true;
                     if (holdTime >= chargeAttackTime) {
                         if (equiment == Equiment.SWORD)
                         {
@@ -205,8 +203,7 @@ public class PlayerController : MonoBehaviour
                         else if(equiment == Equiment.SPEAR)
                         {                             
                             spearSpecialAttack = 0.2f;
-                        }
-                        chargeAttacked = true;
+                        }                        
                     }                    
                 }
             }
@@ -274,24 +271,26 @@ public class PlayerController : MonoBehaviour
                 {
                     animator.SetBool("walking", false);
                 }
-
-                //画像の向き
-                if (Input.GetAxis(input[player - 1].move) > 0.2f)
-                {
-                    facing = -1.0f;
-                    transform.localScale = new Vector3(-1, 1, 1);
-                }
-                else if (Input.GetAxis(input[player - 1].move) < -0.2f)
-                {
-                    facing = 1.0f;
-                    transform.localScale = new Vector3(1, 1, 1);
-                }
                 //ジャンプ       
                 if (Input.GetButtonDown(input[player - 1].jump) && onGround)
                 {
                     Jump();
                 }
+
             }
+
+            //画像の向き
+            if (Input.GetAxis(input[player - 1].move) > 0.2f)
+            {
+                facing = -1.0f;
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+            else if (Input.GetAxis(input[player - 1].move) < -0.2f)
+            {
+                facing = 1.0f;
+                transform.localScale = new Vector3(1, 1, 1);
+            }
+            
         }
     }   
     private void OnCollisionEnter2D(Collision2D collision)
