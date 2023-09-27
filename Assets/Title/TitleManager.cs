@@ -1,8 +1,6 @@
-using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TitleManager : MonoBehaviour
@@ -13,6 +11,10 @@ public class TitleManager : MonoBehaviour
     public GameObject Explanation;
     public GameObject MapSelect;
     public GameObject stage1;
+
+    //SE
+    [SerializeField] private AudioClip enterSE;
+    [SerializeField] private AudioClip exitSE;
 
 
     GameObject nowButton;
@@ -87,12 +89,16 @@ public class TitleManager : MonoBehaviour
         Title_Display.SetActive(false);
         Invoke("SelectMap", 0.2f);
         PlayerPrefs.SetString("mode", "PVP");
+
+        SoundManager.Instance.Play(enterSE, SoundManager.Sound.UI);
     }
     public void OnClickButton_PVE()
     {
         Title_Display.SetActive(false);
         Invoke("SelectMap", 0.2f);
         PlayerPrefs.SetString("mode", "PVE");
+
+        SoundManager.Instance.Play(enterSE, SoundManager.Sound.UI);
     }
 
     //��������{�^�����������Ƃ�
@@ -101,6 +107,8 @@ public class TitleManager : MonoBehaviour
         Title_Display.SetActive(false);
         Explanation.SetActive(true);
         explanation = true;
+
+        SoundManager.Instance.Play(enterSE, SoundManager.Sound.UI);
     }
 
     public void OnClickButton_CloseExplanation()
@@ -109,6 +117,8 @@ public class TitleManager : MonoBehaviour
         MapSelect.SetActive(false);
         Explanation.SetActive(false);
         explanation=false;
+
+        SoundManager.Instance.Play(exitSE, SoundManager.Sound.UI);
     }
 
     //�Q�[�����I���{�^�����������Ƃ�
@@ -116,8 +126,11 @@ public class TitleManager : MonoBehaviour
     {        
         #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
-        #endif
-            Application.Quit();
+#endif
+
+        SoundManager.Instance.Play(exitSE, SoundManager.Sound.UI);
+
+        Application.Quit();
     }
     public void Stage1()
     {
@@ -131,8 +144,8 @@ public class TitleManager : MonoBehaviour
     }
     public void OnClickButton_Exit1()
     {
-        
-
         Invoke("MapExit", 0.2f);
+
+        SoundManager.Instance.Play(exitSE, SoundManager.Sound.UI);
     }
 }
