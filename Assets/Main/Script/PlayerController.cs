@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector]
     public float lastAtk;
-    float axeCD, swordCD, spearCD;
+    float axeCD, swordCD, spearCD,puncCD;
     // Start is called before the first frame update
     void Start()
     {
@@ -108,6 +108,7 @@ public class PlayerController : MonoBehaviour
         axeCD = 0.7f;
         swordCD = 0.5f;
         spearCD = 0.3f;
+        puncCD = 0.5f;
     }
 
     // Update is called once per frame
@@ -341,9 +342,11 @@ public class PlayerController : MonoBehaviour
         }
         else if (equiment == Equiment.PUNCH)
         {
+            if (lastAtk < puncCD) return;
             frontArm.GetComponent<CapsuleCollider2D>().enabled = true;
             backArm.GetComponent<CapsuleCollider2D>().enabled = true;
             animator.SetTrigger("punch");
+            lastAtk = -1;
         }
     }
     //武器の攻撃判定
