@@ -11,6 +11,9 @@ public class TitleManager : MonoBehaviour
     public GameObject Title_Display;
     //��������e�L�X�g
     public GameObject Explanation;
+    public GameObject MapSelect;
+    public GameObject stage1;
+
 
     GameObject nowButton;
     float defaultOpacity = 0.8f;
@@ -20,11 +23,13 @@ public class TitleManager : MonoBehaviour
     private void Start()
     {
         GameData.Initialize();
+        
     }
 
     private void Update()
     {
         nowButton = EventSystem.current.currentSelectedGameObject;
+        
 
         if (nowButton == null)
         {
@@ -64,17 +69,29 @@ public class TitleManager : MonoBehaviour
         }
     }
 
+    private void SelectMap()
+    {
+        MapSelect.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(GameObject.Find("Stage_1"));
+
+    }
+    private void MapExit()
+    {
+        Title_Display.SetActive(true);
+        MapSelect.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(GameObject.Find("Button_PVP"));
+    }
     //PVP�{�^�����������Ƃ�
     public void OnClickButton_PVP()
     {
-        //SceneManager.LoadScene("main");
-        LoadingSceneController.LoadScene("main");
+        Title_Display.SetActive(false);
+        Invoke("SelectMap", 1);
         PlayerPrefs.SetString("mode", "PVP");
     }
     public void OnClickButton_PVE()
     {
-        //SceneManager.LoadScene("main");
-        LoadingSceneController.LoadScene("main");
+        Title_Display.SetActive(false);
+        Invoke("SelectMap", 1);
         PlayerPrefs.SetString("mode", "PVE");
     }
 
@@ -89,6 +106,7 @@ public class TitleManager : MonoBehaviour
     public void OnClickButton_CloseExplanation()
     {
         Title_Display.SetActive(true);
+        MapSelect.SetActive(false);
         Explanation.SetActive(false);
         explanation=false;
     }
@@ -100,5 +118,21 @@ public class TitleManager : MonoBehaviour
             UnityEditor.EditorApplication.isPlaying = false;
         #endif
             Application.Quit();
+    }
+    public void Stage1()
+    {
+        LoadingSceneController.LoadScene("main");
+        PlayerPrefs.SetInt("map", 1);
+    }
+    public void Stage2()
+    {
+        LoadingSceneController.LoadScene("main");
+        PlayerPrefs.SetInt("map", 2);
+    }
+    public void OnClickButton_Exit1()
+    {
+        
+
+        Invoke("MapExit", 1);
     }
 }
