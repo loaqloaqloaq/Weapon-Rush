@@ -23,6 +23,7 @@ public class swordController : MonoBehaviour
         throwing = false;
         plTag = "";
         transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
+        transform.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
