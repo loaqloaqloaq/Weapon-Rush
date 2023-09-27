@@ -33,6 +33,7 @@ public class GameDirector : MonoBehaviour
 
         Pause.pausePlayer = 0;
 
+        map = PlayerPrefs.GetInt("map");
         List<GameObject> maps = new List<GameObject>();
         if (GameObject.Find("Map1")) maps.Add(GameObject.Find("Map1"));
         if (GameObject.Find("Map2")) maps.Add(GameObject.Find("Map2"));

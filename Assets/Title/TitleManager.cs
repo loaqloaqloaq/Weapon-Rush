@@ -85,13 +85,13 @@ public class TitleManager : MonoBehaviour
     public void OnClickButton_PVP()
     {
         Title_Display.SetActive(false);
-        Invoke("SelectMap", 1);
+        Invoke("SelectMap", 0.2f);
         PlayerPrefs.SetString("mode", "PVP");
     }
     public void OnClickButton_PVE()
     {
         Title_Display.SetActive(false);
-        Invoke("SelectMap", 1);
+        Invoke("SelectMap", 0.2f);
         PlayerPrefs.SetString("mode", "PVE");
     }
 
@@ -133,6 +133,6 @@ public class TitleManager : MonoBehaviour
     {
         
 
-        Invoke("MapExit", 1);
+        Invoke("MapExit", 0.2f);
     }
 }

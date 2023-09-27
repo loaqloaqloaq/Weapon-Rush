@@ -196,7 +196,7 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
-       if (collision.transform.CompareTag("Floor") || collision.transform.CompareTag("Block")) {
+       if (collision.transform.CompareTag("Floor") || collision.transform.CompareTag("Block") || collision.transform.CompareTag("Cloud")) {
             onGround = true;
         }       
         
@@ -242,7 +242,7 @@ public class PlayerController : MonoBehaviour
                 weapon.GetComponent<SpriteRenderer>().sprite = axe;
                 animator.SetBool("using spear", false);
                 weapon.transform.localScale = Vector3.one;
-                moveSpeed = 4.5f;
+                moveSpeed = 4.0f;
                 Destroy(weaponObject);
                 break;
             case "Sword":
@@ -253,7 +253,7 @@ public class PlayerController : MonoBehaviour
                 weapon.GetComponent<SpriteRenderer>().sprite = sword;
                 animator.SetBool("using spear", false);
                 weapon.transform.localScale = Vector3.one;
-                moveSpeed = 5.0f;
+                moveSpeed = 6.0f;
                 Destroy(weaponObject);
                 break;
             case "Spear":
@@ -264,7 +264,7 @@ public class PlayerController : MonoBehaviour
                 weapon.GetComponent<SpriteRenderer>().sprite = spear;
                 animator.SetBool("using spear", true);
                 weapon.transform.localScale = new Vector3(1,1.3f,1);
-                moveSpeed = 5.5f;
+                moveSpeed = 5.0f;
                 Destroy(weaponObject);
                 break;
             default: break;

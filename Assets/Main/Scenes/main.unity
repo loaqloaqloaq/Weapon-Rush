@@ -2637,7 +2637,7 @@ GameObject:
   - component: {fileID: 623429538}
   m_Layer: 0
   m_Name: Cloud
-  m_TagString: Block
+  m_TagString: Cloud
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -2925,11 +2925,11 @@ Transform:
   - {fileID: 1998738273}
   - {fileID: 774222137}
   - {fileID: 1297257267}
+  - {fileID: 1405055633}
+  - {fileID: 1044447984}
   - {fileID: 1095963047}
   - {fileID: 623429537}
   - {fileID: 1133438906}
-  - {fileID: 1405055633}
-  - {fileID: 1044447984}
   - {fileID: 1955437023}
   - {fileID: 1159608228}
   - {fileID: 1182100676}
@@ -4193,7 +4193,7 @@ GameObject:
   - component: {fileID: 1065579511}
   m_Layer: 0
   m_Name: Cloud
-  m_TagString: Block
+  m_TagString: Cloud
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -4487,7 +4487,7 @@ GameObject:
   - component: {fileID: 1095963048}
   m_Layer: 0
   m_Name: Cloud
-  m_TagString: Block
+  m_TagString: Cloud
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -4995,7 +4995,7 @@ GameObject:
   - component: {fileID: 1133438907}
   m_Layer: 0
   m_Name: Cloud
-  m_TagString: Block
+  m_TagString: Cloud
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -5344,7 +5344,7 @@ GameObject:
   - component: {fileID: 1159608229}
   m_Layer: 0
   m_Name: Cloud
-  m_TagString: Block
+  m_TagString: Cloud
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -5759,7 +5759,7 @@ GameObject:
   - component: {fileID: 1182100677}
   m_Layer: 0
   m_Name: Cloud
-  m_TagString: Block
+  m_TagString: Cloud
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -8484,7 +8484,7 @@ GameObject:
   - component: {fileID: 1913891827}
   m_Layer: 0
   m_Name: Cloud
-  m_TagString: Block
+  m_TagString: Cloud
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -8788,7 +8788,7 @@ GameObject:
   - component: {fileID: 1955437024}
   m_Layer: 0
   m_Name: Cloud
-  m_TagString: Block
+  m_TagString: Cloud
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -8984,7 +8984,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1976892783
 Transform:
   m_ObjectHideFlags: 0

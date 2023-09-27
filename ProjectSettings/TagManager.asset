@@ -16,6 +16,7 @@ TagManager:
   - Wall
   - Map
   - Traps
+  - Cloud
   layers:
   - Default
   - TransparentFX
