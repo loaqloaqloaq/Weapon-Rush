@@ -180,7 +180,7 @@ public class PlayerController : MonoBehaviour
                     }
                     else if (equiment == Equiment.SPEAR) {
                         var aniTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
-                        if (aniTime > (1f / 38.0f))
+                        if (aniTime > (5.0f / 38.0f))
                         {
                             holdTime += Time.deltaTime;
                             animator.speed = 0;                           
@@ -257,8 +257,8 @@ public class PlayerController : MonoBehaviour
                 UIManager.Instance.UpdateDash((UIManager.Player)playerNum, dashCoolDown);
             } 
 
-            //not charging
-            if ( holdTime <=0 )
+            //not charging or using spear
+            if ( holdTime <= (equiment == Equiment.SPEAR ? 0.15f:0f) )
             {
                 //移動処理
                 if (Input.GetAxis(input[player - 1].move) > 0.2f || Input.GetAxis(input[player - 1].move) < -0.2f)
@@ -278,17 +278,19 @@ public class PlayerController : MonoBehaviour
                 }
 
             }
-
-            //画像の向き
-            if (Input.GetAxis(input[player - 1].move) > 0.2f)
+            if (spearSpecialAttack <= 0)
             {
-                facing = -1.0f;
-                transform.localScale = new Vector3(-1, 1, 1);
-            }
-            else if (Input.GetAxis(input[player - 1].move) < -0.2f)
-            {
-                facing = 1.0f;
-                transform.localScale = new Vector3(1, 1, 1);
+                //画像の向き
+                if (Input.GetAxis(input[player - 1].move) > 0.2f)
+                {
+                    facing = -1.0f;
+                    transform.localScale = new Vector3(-1, 1, 1);
+                }
+                else if (Input.GetAxis(input[player - 1].move) < -0.2f)
+                {
+                    facing = 1.0f;
+                    transform.localScale = new Vector3(1, 1, 1);
+                }
             }
             
         }
@@ -436,7 +438,7 @@ public class PlayerController : MonoBehaviour
         {
             if (lastAtk < spearCD) return;
             animator.SetTrigger("spear");
-            Invoke("EnableWeapon", 0.05f);
+            Invoke("EnableWeapon", 0.2f);
             lastAtk = -1;
         }
         else if (equiment == Equiment.PUNCH)
