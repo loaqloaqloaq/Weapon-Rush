@@ -1,4 +1,5 @@
 using UnityEngine;
+using static PlayerController;
 
 public class PlayerController : MonoBehaviour
 {
@@ -162,7 +163,14 @@ public class PlayerController : MonoBehaviour
                 dashing -= Time.deltaTime;
                 if (dashing < 0) dashing = 0;
             }
-            if (dashCoolDown > 0) dashCoolDown -= Time.deltaTime;
+            if (dashCoolDown > 0)
+            {
+                dashCoolDown -= Time.deltaTime;
+                int playerNum = 0;
+                if (transform.CompareTag("Player2")) playerNum = 1;
+                UIManager.Instance.UpdateDash((UIManager.Player)playerNum, dashCoolDown);
+            //
+            }
             //移動処理
             if (Input.GetAxis(input[player - 1].move) > 0.2f || Input.GetAxis(input[player - 1].move) < -0.2f)
             {

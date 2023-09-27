@@ -57,6 +57,17 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void UpdateDash(Player player, float amount)
+    {
+        if (healthManagers[(int)player].dashCoolDownImage == null)
+        {
+            Debug.Log("dashCoolDownImage is Null!");
+            return;
+        }
+        healthManagers[(int)player].dashCoolDownImage.fillAmount = amount;
+    }
+
+
     private void UpdateHealthAmount(HealthManager hm)
     {
         hm.healthAmount = Mathf.Lerp(hm.healthAmount, hm.targetAmount, interporate);

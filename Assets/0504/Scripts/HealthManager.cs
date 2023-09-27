@@ -6,4 +6,5 @@ public class HealthManager
     [HideInInspector] public float healthAmount;
     [HideInInspector] public float targetAmount;
     public Image healthBarGauge;
+    public Image dashCoolDownImage;
 }
