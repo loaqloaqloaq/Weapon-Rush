@@ -137,6 +137,7 @@ public class PlayerController : MonoBehaviour
             {
                 DisableWeapon();
                 holdTime = 0;
+                animator.speed = 1;
                 chargeAttacked = false;
                 if (lastAtk < 0) lastAtk = 0;
             }
@@ -422,8 +423,7 @@ public class PlayerController : MonoBehaviour
     //ダメージを受ける
     public void TakeDamage(float atk, Equiment equipment)
     {
-        HP -= atk;
-
+        HP -= atk;        
         int playerNum = 0;
         if (transform.CompareTag("Player2")) playerNum = 1;
         UIManager.Instance.UpdatePlayerHealth((UIManager.Player)playerNum, HP, maxHP);
