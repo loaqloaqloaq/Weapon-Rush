@@ -1,10 +1,11 @@
 using UnityEngine;
-using static PlayerController;
 
 public class PlayerController : MonoBehaviour
 {
     GameObject weapon, frontArm, backArm;
     public GameObject axePre, swordPre, spearPre;
+    public GameObject effect_sword;
+    public GameObject otherPlayer;
     public Sprite axe, sword, spear;
     Rigidbody2D rb;
     Animator animator; 
@@ -45,13 +46,31 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector]
     public float lastAtk;
-    float axeCD, swordCD, spearCD;
+    float axeCD, swordCD, spearCD,puncCD;
+    float chargeAttackTime,holdTime;
+
+    float spearSpecialAttack;
+    bool chargeAttacked;
+    
     // Start is called before the first frame update
     void Start()
     {
-        if (transform.CompareTag("Player1")) player = 1;
-        else if (PlayerPrefs.GetString("mode") == "PVE") player = 3;
-        else if (PlayerPrefs.GetString("mode") == "PVP") player = 2;
+        if (transform.CompareTag("Player1"))
+        {
+            player = 1;
+            otherPlayer = GameObject.Find("Player2");
+        }
+        else if (PlayerPrefs.GetString("mode") == "PVE")
+        {
+            player = 3;
+            otherPlayer = GameObject.Find("Player1");
+        }
+        else if (PlayerPrefs.GetString("mode") == "PVP")
+        {
+            player = 2;
+            otherPlayer = GameObject.Find("Player1");
+        }
+
 
         weapon = transform.Find("Body/Front arm/Weapon").gameObject;
         frontArm = transform.Find("Body/Front arm").gameObject;
@@ -109,6 +128,11 @@ public class PlayerController : MonoBehaviour
         axeCD = 0.7f;
         swordCD = 0.5f;
         spearCD = 0.3f;
+        puncCD = 0.5f;
+        
+        chargeAttackTime = 0.5f;
+        holdTime = 0;
+        
     }
 
     // Update is called once per frame
@@ -126,8 +150,73 @@ public class PlayerController : MonoBehaviour
             bool attacking = animator.GetCurrentAnimatorStateInfo(0).IsName("punch attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("sword attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("axe attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("spear attack");
             if (!attacking)
             {
-                DisableWeapon();  
-                if(lastAtk < 0) lastAtk = 0;
+                DisableWeapon();
+                holdTime = 0;
+                animator.speed = 1;
+                chargeAttacked = false;                
+                if (equiment!=Equiment.SPEAR) weapon.transform.localScale = Vector3.one;
+                if (lastAtk < 0) lastAtk = 0;
+            }
+            //charge attack
+            else
+            {                
+                if (Input.GetButton(input[player - 1].atk) && !chargeAttacked)
+                {
+                    if (equiment == Equiment.SWORD)
+                    {
+                        var aniTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                        if (aniTime > (15.0f / 38.0f))
+                        {
+                            holdTime += Time.deltaTime;
+                            animator.speed = 0;
+                        }
+                    }
+                    else if (equiment == Equiment.AXE)
+                    {
+                        var aniTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                        if (aniTime > (15.0f / 38.0f))
+                        {
+                            holdTime += Time.deltaTime;
+                            animator.speed = 0;
+                            weapon.transform.localScale += new Vector3(2, 2, 2) * Time.deltaTime;
+                        }
+                    }
+                    else if (equiment == Equiment.SPEAR) {
+                        var aniTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                        if (aniTime > (1f / 38.0f))
+                        {
+                            holdTime += Time.deltaTime;
+                            animator.speed = 0;                           
+                        }
+                    }
+                }
+                if ((Input.GetButtonUp(input[player - 1].atk) || holdTime >= chargeAttackTime) && !chargeAttacked) {
+                    animator.speed = 1;
+                    if (holdTime >= chargeAttackTime) {
+                        if (equiment == Equiment.SWORD)
+                        {
+                            var pos = transform.position;
+                            pos.y += 0.81f;
+                            pos.x += 0.81f * transform.localScale.x * -1;
+                            var effect = Instantiate(effect_sword, pos, Quaternion.identity);
+                            effect.transform.localScale = new Vector3(0.3f * transform.localScale.x * -1, 0.3f, 1);
+                            effect.GetComponent<swordEffectController>().attacker = transform.tag;
+                        }
+                        else if(equiment == Equiment.SPEAR)
+                        {                             
+                            spearSpecialAttack = 0.2f;
+                        }
+                        chargeAttacked = true;
+                    }                    
+                }
+            }
+            //槍チャージ攻撃
+            if (spearSpecialAttack > 0f) {
+                var target = (otherPlayer.transform.position - transform.position).normalized;
+                target.z = 0f;
+                transform.Translate(target*Time.deltaTime*20);
+                transform.localScale= new Vector3(target.x>0?-1:1,1,1);
+                spearSpecialAttack -= Time.deltaTime;
             }
             //攻撃  
             if (Input.GetButtonDown(input[player - 1].atk) && !attacking)
@@ -163,41 +252,39 @@ public class PlayerController : MonoBehaviour
                 dashing -= Time.deltaTime;
                 if (dashing < 0) dashing = 0;
             }
-            if (dashCoolDown > 0)
-            {
-                dashCoolDown -= Time.deltaTime;
-                int playerNum = 0;
-                if (transform.CompareTag("Player2")) playerNum = 1;
-                UIManager.Instance.UpdateDash((UIManager.Player)playerNum, dashCoolDown);
-            //
-            }
-            //移動処理
-            if (Input.GetAxis(input[player - 1].move) > 0.2f || Input.GetAxis(input[player - 1].move) < -0.2f)
-            {
-                Vector3 vec = new Vector3(Input.GetAxis(input[player - 1].move) * moveSpeed * dashSpeed * Time.deltaTime, 0, 0);
-                transform.Translate(vec);
-                animator.SetBool("walking", true);
-            }
-            else
-            {
-                animator.SetBool("walking", false);
-            }
+            if (dashCoolDown > 0) dashCoolDown -= Time.deltaTime;
 
-            //画像の向き
-            if (Input.GetAxis(input[player - 1].move) > 0.2f)
+            //not charging
+            if ( holdTime <=0 )
             {
-                facing = -1.0f;
-                transform.localScale = new Vector3(-1, 1, 1);
-            }
-            else if (Input.GetAxis(input[player - 1].move) < -0.2f)
-            {
-                facing = 1.0f;
-                transform.localScale = new Vector3(1, 1, 1);
-            }
-            //ジャンプ       
-            if (Input.GetButtonDown(input[player - 1].jump) && onGround)
-            {
-                Jump();
+                //移動処理
+                if (Input.GetAxis(input[player - 1].move) > 0.2f || Input.GetAxis(input[player - 1].move) < -0.2f)
+                {
+                    Vector3 vec = new Vector3(Input.GetAxis(input[player - 1].move) * moveSpeed * dashSpeed * Time.deltaTime, 0, 0);
+                    transform.Translate(vec);
+                    animator.SetBool("walking", true);
+                }
+                else
+                {
+                    animator.SetBool("walking", false);
+                }
+
+                //画像の向き
+                if (Input.GetAxis(input[player - 1].move) > 0.2f)
+                {
+                    facing = -1.0f;
+                    transform.localScale = new Vector3(-1, 1, 1);
+                }
+                else if (Input.GetAxis(input[player - 1].move) < -0.2f)
+                {
+                    facing = 1.0f;
+                    transform.localScale = new Vector3(1, 1, 1);
+                }
+                //ジャンプ       
+                if (Input.GetButtonDown(input[player - 1].jump) && onGround)
+                {
+                    Jump();
+                }
             }
         }
     }   
@@ -349,9 +436,11 @@ public class PlayerController : MonoBehaviour
         }
         else if (equiment == Equiment.PUNCH)
         {
+            if (lastAtk < puncCD) return;
             frontArm.GetComponent<CapsuleCollider2D>().enabled = true;
             backArm.GetComponent<CapsuleCollider2D>().enabled = true;
             animator.SetTrigger("punch");
+            lastAtk = -1;
         }
     }
     //武器の攻撃判定
@@ -383,8 +472,7 @@ public class PlayerController : MonoBehaviour
     //ダメージを受ける
     public void TakeDamage(float atk, Equiment equipment)
     {
-        HP -= atk;
-
+        HP -= atk;        
         int playerNum = 0;
         if (transform.CompareTag("Player2")) playerNum = 1;
         UIManager.Instance.UpdatePlayerHealth((UIManager.Player)playerNum, HP, maxHP);

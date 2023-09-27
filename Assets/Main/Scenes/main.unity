@@ -10995,7 +10995,7 @@ MonoBehaviour:
   player1: {fileID: 0}
   player2: {fileID: 0}
   timeup: {fileID: 996050296}
-  map: 2
+  map: 1
 --- !u!4 &2115471317
 Transform:
   m_ObjectHideFlags: 0
@@ -11390,6 +11390,10 @@ PrefabInstance:
       propertyPath: player
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 436987580789451609, guid: 5ca9a637cb25972418d7e2f2203c2ba2, type: 3}
+      propertyPath: effect_sword
+      value: 
+      objectReference: {fileID: 1559750545465684225, guid: 6a6cb3dd903ed8d4faf78281c1d3c6eb, type: 3}
     - target: {fileID: 1728700547191150014, guid: 5ca9a637cb25972418d7e2f2203c2ba2, type: 3}
       propertyPath: m_SortingLayer
       value: 1
@@ -11527,6 +11531,10 @@ PrefabInstance:
       propertyPath: player
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3963098907645440566, guid: 270943998cbc4b74f959b8673e67f8ac, type: 3}
+      propertyPath: effect_sword
+      value: 
+      objectReference: {fileID: 1559750545465684225, guid: 6a6cb3dd903ed8d4faf78281c1d3c6eb, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1252632630002562761, guid: 270943998cbc4b74f959b8673e67f8ac, type: 3}
