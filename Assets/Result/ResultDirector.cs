@@ -73,7 +73,8 @@ public class ResultDirector : MonoBehaviour
 
         if (GameData.winnerId == 1)
         { winnerText.text = "Player1" + " Win"; }
-        else if (GameData.winnerId == 2) { winnerText.text = "Player2" + " Win"; }
+        else if (GameData.winnerId == 2) 
+        { winnerText.text = "Player2" + " Win"; }
         else { winnerText.text = "DRAW!!"; }
     }
 
