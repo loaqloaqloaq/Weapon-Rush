@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,6 +11,7 @@ public class GameDirector : MonoBehaviour
 
     float loadSceneDelay;
     public static bool end;
+    public int map = 1;
 
     private float checkTimer;
     private float delay = 2.0f;
@@ -29,6 +31,24 @@ public class GameDirector : MonoBehaviour
         end = false;
 
         Pause.pausePlayer = 0;
+
+        map = PlayerPrefs.GetInt("map");
+        GameObject[] maps = {
+            GameObject.Find("Map1"),
+            GameObject.Find("Map2")
+        };
+        foreach (GameObject map in maps) { 
+            map.SetActive(false);
+        }
+        try
+        {
+            maps[map - 1].SetActive(true);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+            maps[0].SetActive(true);
+        }
     }
 
     // Update is called once per frame
