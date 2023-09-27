@@ -12,7 +12,7 @@ public class swordEffectController : MonoBehaviour
     void Start()
     {
         time = 0;
-        disTime = 0.2f;
+        disTime = 0.3f;
     }
 
     // Update is called once per frame
