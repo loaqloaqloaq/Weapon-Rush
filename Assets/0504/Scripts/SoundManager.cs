@@ -24,6 +24,7 @@ public class SoundManager : MonoBehaviour
     {
         BGM,
         P_Effect,
+        I_Effect,
         UI,
         MaxCount,  //Length
     }
@@ -53,7 +54,7 @@ public class SoundManager : MonoBehaviour
     }
 
     //サウンド再生（リソースあり）
-    private void Play(AudioClip audioClip, Sound type = Sound.P_Effect, float pitch = 1.0f)
+    public void Play(AudioClip audioClip, Sound type = Sound.P_Effect, float pitch = 1.0f)
     {
         if (audioClip == null || audioSources.Length <= (int)type)
             return;
