@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -32,11 +33,10 @@ public class GameDirector : MonoBehaviour
 
         Pause.pausePlayer = 0;
 
-        map = PlayerPrefs.GetInt("map");
-        GameObject[] maps = {
-            GameObject.Find("Map1"),
-            GameObject.Find("Map2")
-        };
+        List<GameObject> maps = new List<GameObject>();
+        if (GameObject.Find("Map1")) maps.Add(GameObject.Find("Map1"));
+        if (GameObject.Find("Map2")) maps.Add(GameObject.Find("Map2"));
+
         foreach (GameObject map in maps) { 
             map.SetActive(false);
         }
