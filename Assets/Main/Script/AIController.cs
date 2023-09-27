@@ -28,9 +28,12 @@ public class AIController : MonoBehaviour
     void Start()
     {  
         animator = GetComponent<Animator>();
+
+        //find enemy
         if (transform.CompareTag("Player1")) otherPl = GameObject.Find("Player2");
         else otherPl = GameObject.Find("Player1");
         
+        //get parameter from player controller
         moveSpeed = GetComponent<PlayerController>().moveSpeed;
         jumpPow = GetComponent<PlayerController>().jumpPow;
         blocks = GameObject.FindGameObjectsWithTag("Block");
@@ -49,10 +52,12 @@ public class AIController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {              
+    {          
+        //stop when someone die
         if (GetComponent<PlayerController>().HP <= 0 || otherPl.GetComponent<PlayerController>().HP <= 0 || GameDirector.end) return;
         GameObject other = otherPl;
 
+        //find weapon if don't have
         if (GetComponent<PlayerController>().equiment == PlayerController.Equiment.PUNCH)
         {
             int allWeaponCnt = GameObject.FindGameObjectsWithTag("Axe").Length + GameObject.FindGameObjectsWithTag("Spear").Length + GameObject.FindGameObjectsWithTag("Sword").Length;
@@ -65,7 +70,7 @@ public class AIController : MonoBehaviour
                 other = targetWeapon;
             }
         }
-        
+        //check if attack is finished
         bool attacking = animator.GetCurrentAnimatorStateInfo(0).IsName("punch attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("sword attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("axe attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("spear attack");
         //‹——£‚ð‘ª‚é
         Vector3 cpuHorizontalPosition = transform.position;
@@ -197,8 +202,7 @@ public class AIController : MonoBehaviour
         {
             var tmp = GameObject.FindGameObjectsWithTag(tag);
             weaponsObj.AddRange(tmp);
-        }
-        //Debug.Log(weaponsObj.Count);
+        }        
         targetWeapon = null;
         foreach (var w in weaponsObj)
         {

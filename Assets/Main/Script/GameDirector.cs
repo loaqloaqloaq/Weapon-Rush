@@ -46,7 +46,7 @@ public class GameDirector : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError(e);
+            Debug.Log(e);
             maps[0].SetActive(true);
         }
     }
