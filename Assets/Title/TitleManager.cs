@@ -24,8 +24,7 @@ public class TitleManager : MonoBehaviour
 
     private void Start()
     {
-        GameData.Initialize();
-        
+        GameData.Initialize();       
     }
 
     private void Update()

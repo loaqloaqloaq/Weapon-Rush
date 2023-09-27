@@ -22,7 +22,7 @@ public class trapsController : MonoBehaviour
     {
         if (collision.transform.tag.StartsWith("Player"))
         {
-            collision.gameObject.GetComponent<PlayerController>().TakeDamage(1000, PlayerController.Equiment.PUNCH);
+            collision.gameObject.GetComponent<PlayerController>().TakeDamage(1000, PlayerController.Equiment.NON);
             
             //‰¼
             SoundManager.Instance.Play(se, SoundManager.Sound.P_Effect, 1.0f);

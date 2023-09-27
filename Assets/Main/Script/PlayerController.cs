@@ -4,6 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     GameObject weapon, frontArm, backArm;
     public GameObject axePre, swordPre, spearPre;
+    public GameObject effect_sword;
     public Sprite axe, sword, spear;
     Rigidbody2D rb;
     Animator animator; 
@@ -45,6 +46,9 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public float lastAtk;
     float axeCD, swordCD, spearCD;
+    float chargeAttackTime,holdTime;
+
+    bool chargeAttacked;
     // Start is called before the first frame update
     void Start()
     {
@@ -108,6 +112,9 @@ public class PlayerController : MonoBehaviour
         axeCD = 0.7f;
         swordCD = 0.5f;
         spearCD = 0.3f;
+
+        chargeAttackTime = 0.5f;
+        holdTime = 0;
     }
 
     // Update is called once per frame
@@ -125,8 +132,38 @@ public class PlayerController : MonoBehaviour
             bool attacking = animator.GetCurrentAnimatorStateInfo(0).IsName("punch attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("sword attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("axe attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("spear attack");
             if (!attacking)
             {
-                DisableWeapon();  
-                if(lastAtk < 0) lastAtk = 0;
+                DisableWeapon();
+                holdTime = 0;
+                chargeAttacked = false;
+                if (lastAtk < 0) lastAtk = 0;
+            }
+            //charge attack
+            else
+            {                
+                if (Input.GetButton(input[player - 1].atk) && !chargeAttacked)
+                {                    
+                    if (equiment == Equiment.SWORD)
+                    {                        
+                        var aniTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;                        
+                        if (aniTime > (15.0f / 38.0f))
+                        {
+                            holdTime += Time.deltaTime;
+                            animator.speed = 0;  
+                        }
+                    }
+                }
+                if ((Input.GetButtonUp(input[player - 1].atk) || holdTime >= chargeAttackTime) && !chargeAttacked) {
+                    animator.speed = 1;
+                    if (holdTime >= chargeAttackTime) {
+                        var pos = transform.position;
+                        pos.y += 0.81f;                        
+                        pos.x += 0.81f * transform.localScale.x * -1;
+                        var effect = Instantiate(effect_sword, pos, Quaternion.identity);
+                        effect.transform.localScale = new Vector3(0.3f* transform.localScale.x*-1,0.3f,1);
+                        effect.GetComponent<swordEffectController>().attacker = transform.tag;
+                        chargeAttacked = true;
+                    }                    
+                }
             }
             //攻撃  
             if (Input.GetButtonDown(input[player - 1].atk) && !attacking)
@@ -163,33 +200,38 @@ public class PlayerController : MonoBehaviour
                 if (dashing < 0) dashing = 0;
             }
             if (dashCoolDown > 0) dashCoolDown -= Time.deltaTime;
-            //移動処理
-            if (Input.GetAxis(input[player - 1].move) > 0.2f || Input.GetAxis(input[player - 1].move) < -0.2f)
-            {
-                Vector3 vec = new Vector3(Input.GetAxis(input[player - 1].move) * moveSpeed * dashSpeed * Time.deltaTime, 0, 0);
-                transform.Translate(vec);
-                animator.SetBool("walking", true);
-            }
-            else
-            {
-                animator.SetBool("walking", false);
-            }
 
-            //画像の向き
-            if (Input.GetAxis(input[player - 1].move) > 0.2f)
+            //not charging
+            if ( holdTime <=0 )
             {
-                facing = -1.0f;
-                transform.localScale = new Vector3(-1, 1, 1);
-            }
-            else if (Input.GetAxis(input[player - 1].move) < -0.2f)
-            {
-                facing = 1.0f;
-                transform.localScale = new Vector3(1, 1, 1);
-            }
-            //ジャンプ       
-            if (Input.GetButtonDown(input[player - 1].jump) && onGround)
-            {
-                Jump();
+                //移動処理
+                if (Input.GetAxis(input[player - 1].move) > 0.2f || Input.GetAxis(input[player - 1].move) < -0.2f)
+                {
+                    Vector3 vec = new Vector3(Input.GetAxis(input[player - 1].move) * moveSpeed * dashSpeed * Time.deltaTime, 0, 0);
+                    transform.Translate(vec);
+                    animator.SetBool("walking", true);
+                }
+                else
+                {
+                    animator.SetBool("walking", false);
+                }
+
+                //画像の向き
+                if (Input.GetAxis(input[player - 1].move) > 0.2f)
+                {
+                    facing = -1.0f;
+                    transform.localScale = new Vector3(-1, 1, 1);
+                }
+                else if (Input.GetAxis(input[player - 1].move) < -0.2f)
+                {
+                    facing = 1.0f;
+                    transform.localScale = new Vector3(1, 1, 1);
+                }
+                //ジャンプ       
+                if (Input.GetButtonDown(input[player - 1].jump) && onGround)
+                {
+                    Jump();
+                }
             }
         }
     }   
