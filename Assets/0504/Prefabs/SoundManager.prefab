@@ -170,8 +170,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
+  m_audioClip: {fileID: 8300000, guid: 1437541daf97dcf4ea7ea1275c34ca93, type: 3}
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
@@ -287,10 +287,10 @@ Transform:
   m_Children:
   - {fileID: 3245275956269892151}
   - {fileID: 6969661677548933334}
-  - {fileID: 2814376025455200766}
+  - {fileID: 2653708378064381675}
   - {fileID: 6895588601714617952}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5602345585914520229
 MonoBehaviour:
@@ -307,9 +307,9 @@ MonoBehaviour:
   audioSources:
   - {fileID: 3786126294994495413}
   - {fileID: 6600224566148862326}
-  - {fileID: 2053107457073730319}
+  - {fileID: 6635274539694172059}
   - {fileID: 8857355971914491274}
---- !u!1 &5038744562516785011
+--- !u!1 &6039840834139874993
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -317,22 +317,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2814376025455200766}
-  - component: {fileID: 2053107457073730319}
+  - component: {fileID: 6969661677548933334}
+  - component: {fileID: 6600224566148862326}
   m_Layer: 0
-  m_Name: Sfx_Player2
+  m_Name: Sfx_Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2814376025455200766
+--- !u!4 &6969661677548933334
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5038744562516785011}
+  m_GameObject: {fileID: 6039840834139874993}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -341,13 +341,13 @@ Transform:
   m_Father: {fileID: 4039148045892121328}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &2053107457073730319
+--- !u!82 &6600224566148862326
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5038744562516785011}
+  m_GameObject: {fileID: 6039840834139874993}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -437,7 +437,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &6039840834139874993
+--- !u!1 &8215232972648749313
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -445,22 +445,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6969661677548933334}
-  - component: {fileID: 6600224566148862326}
+  - component: {fileID: 2653708378064381675}
+  - component: {fileID: 6635274539694172059}
   m_Layer: 0
-  m_Name: Sfx_Player1
+  m_Name: Sfx_Invirionments
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6969661677548933334
+--- !u!4 &2653708378064381675
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6039840834139874993}
+  m_GameObject: {fileID: 8215232972648749313}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -469,13 +469,13 @@ Transform:
   m_Father: {fileID: 4039148045892121328}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &6600224566148862326
+--- !u!82 &6635274539694172059
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6039840834139874993}
+  m_GameObject: {fileID: 8215232972648749313}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
