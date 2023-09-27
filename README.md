@@ -84,5 +84,8 @@
 - https://jp.freepik.com/
 
 5. フォント：
-- https://www.dafont.com/		
+- https://www.dafont.com/
+
+6. ほかの素材：
+- https://commons.nicovideo.jp/works/agreement/nc116831
 
