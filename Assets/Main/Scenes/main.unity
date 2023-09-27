@@ -10995,7 +10995,7 @@ MonoBehaviour:
   player1: {fileID: 0}
   player2: {fileID: 0}
   timeup: {fileID: 996050296}
-  map: 2
+  map: 1
 --- !u!4 &2115471317
 Transform:
   m_ObjectHideFlags: 0

@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
     GameObject weapon, frontArm, backArm;
     public GameObject axePre, swordPre, spearPre;
     public GameObject effect_sword;
+    public GameObject otherPlayer;
     public Sprite axe, sword, spear;
     Rigidbody2D rb;
     Animator animator; 
@@ -48,14 +49,28 @@ public class PlayerController : MonoBehaviour
     float axeCD, swordCD, spearCD,puncCD;
     float chargeAttackTime,holdTime;
 
+    float spearSpecialAttack;
     bool chargeAttacked;
     
     // Start is called before the first frame update
     void Start()
     {
-        if (transform.CompareTag("Player1")) player = 1;
-        else if (PlayerPrefs.GetString("mode") == "PVE") player = 3;
-        else if (PlayerPrefs.GetString("mode") == "PVP") player = 2;
+        if (transform.CompareTag("Player1"))
+        {
+            player = 1;
+            otherPlayer = GameObject.Find("Player2");
+        }
+        else if (PlayerPrefs.GetString("mode") == "PVE")
+        {
+            player = 3;
+            otherPlayer = GameObject.Find("Player1");
+        }
+        else if (PlayerPrefs.GetString("mode") == "PVP")
+        {
+            player = 2;
+            otherPlayer = GameObject.Find("Player1");
+        }
+
 
         weapon = transform.Find("Body/Front arm/Weapon").gameObject;
         frontArm = transform.Find("Body/Front arm").gameObject;
@@ -138,36 +153,70 @@ public class PlayerController : MonoBehaviour
                 DisableWeapon();
                 holdTime = 0;
                 animator.speed = 1;
-                chargeAttacked = false;
+                chargeAttacked = false;                
+                if (equiment!=Equiment.SPEAR) weapon.transform.localScale = Vector3.one;
                 if (lastAtk < 0) lastAtk = 0;
             }
             //charge attack
             else
             {                
                 if (Input.GetButton(input[player - 1].atk) && !chargeAttacked)
-                {                    
+                {
                     if (equiment == Equiment.SWORD)
-                    {                        
-                        var aniTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;                        
+                    {
+                        var aniTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
                         if (aniTime > (15.0f / 38.0f))
                         {
                             holdTime += Time.deltaTime;
-                            animator.speed = 0;  
+                            animator.speed = 0;
+                        }
+                    }
+                    else if (equiment == Equiment.AXE)
+                    {
+                        var aniTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                        if (aniTime > (15.0f / 38.0f))
+                        {
+                            holdTime += Time.deltaTime;
+                            animator.speed = 0;
+                            weapon.transform.localScale += new Vector3(2, 2, 2) * Time.deltaTime;
+                        }
+                    }
+                    else if (equiment == Equiment.SPEAR) {
+                        var aniTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                        if (aniTime > (1f / 38.0f))
+                        {
+                            holdTime += Time.deltaTime;
+                            animator.speed = 0;                           
                         }
                     }
                 }
                 if ((Input.GetButtonUp(input[player - 1].atk) || holdTime >= chargeAttackTime) && !chargeAttacked) {
                     animator.speed = 1;
                     if (holdTime >= chargeAttackTime) {
-                        var pos = transform.position;
-                        pos.y += 0.81f;                        
-                        pos.x += 0.81f * transform.localScale.x * -1;
-                        var effect = Instantiate(effect_sword, pos, Quaternion.identity);
-                        effect.transform.localScale = new Vector3(0.3f* transform.localScale.x*-1,0.3f,1);
-                        effect.GetComponent<swordEffectController>().attacker = transform.tag;
+                        if (equiment == Equiment.SWORD)
+                        {
+                            var pos = transform.position;
+                            pos.y += 0.81f;
+                            pos.x += 0.81f * transform.localScale.x * -1;
+                            var effect = Instantiate(effect_sword, pos, Quaternion.identity);
+                            effect.transform.localScale = new Vector3(0.3f * transform.localScale.x * -1, 0.3f, 1);
+                            effect.GetComponent<swordEffectController>().attacker = transform.tag;
+                        }
+                        else if(equiment == Equiment.SPEAR)
+                        {                             
+                            spearSpecialAttack = 0.2f;
+                        }
                         chargeAttacked = true;
                     }                    
                 }
+            }
+            //槍チャージ攻撃
+            if (spearSpecialAttack > 0f) {
+                var target = (otherPlayer.transform.position - transform.position).normalized;
+                target.z = 0f;
+                transform.Translate(target*Time.deltaTime*20);
+                transform.localScale= new Vector3(target.x>0?-1:1,1,1);
+                spearSpecialAttack -= Time.deltaTime;
             }
             //攻撃  
             if (Input.GetButtonDown(input[player - 1].atk) && !attacking)
