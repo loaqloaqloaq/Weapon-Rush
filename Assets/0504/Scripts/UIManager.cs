@@ -61,10 +61,41 @@ public class UIManager : MonoBehaviour
     {
         if (healthManagers[(int)player].dashCoolDownImage == null)
         {
-            Debug.Log("dashCoolDownImage is Null!");
+            Debug.Log("dashCoolDownImage reference is Null!");
             return;
         }
         healthManagers[(int)player].dashCoolDownImage.fillAmount = amount;
+    }
+
+    public void UpdatePlayerWeaponImage(Player player, PlayerController.Equiment equipment, bool isDrop = false)
+    {
+        int playerNum = (int)(player);
+        int equipNum = (int)equipment;
+
+        foreach (var image in healthManagers[playerNum].weaponImages)
+        {
+            image.enabled = false;
+        }
+        if (isDrop) return;
+
+        if (healthManagers.Length <= (int)player || (int)equipment > healthManagers[playerNum].weaponImages.Length)
+        {
+            Debug.Log("Array Index out of Range");
+            return;
+        }
+
+        if (healthManagers[playerNum].animator != null)
+        {
+            healthManagers[playerNum].animator.SetTrigger("changeWeapon");
+        }
+        else
+        {
+            Debug.Log("HM animator is NULL");
+        }
+
+
+        healthManagers[playerNum].weaponImages[equipNum].enabled = true;
+
     }
 
 
@@ -76,6 +107,11 @@ public class UIManager : MonoBehaviour
             hm.healthAmount = hm.targetAmount;
         }
         hm.healthBarGauge.fillAmount = hm.healthAmount;
+
+        if (hm.animator != null)
+        {
+            hm.animator.SetTrigger("damaged");
+        }
     }
 
     public void UpdatePlayerHealth(Player player, float currentHp, float maxHp)
