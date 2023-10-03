@@ -401,6 +401,10 @@ public class PlayerController : MonoBehaviour
         else { GameData.p2.weaponCount++; }
         EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.GetWeapon);
         SoundManager.Instance.Play("Sounds/SFX/getWeapon", SoundManager.Sound.P_Effect);
+
+        int playerNum = 0;
+        if (transform.CompareTag("Player2")) playerNum = 1;
+        UIManager.Instance.UpdatePlayerWeaponImage((UIManager.Player)playerNum, equiment);
     }
     //武器を捨てる
     private void DropWeapon()
@@ -433,6 +437,10 @@ public class PlayerController : MonoBehaviour
         weapon.SetActive(false);
         animator.SetBool("using spear", false);
         atkMuiltpler = 0.5f;
+
+        int playerNum = 0;
+        if (transform.CompareTag("Player2")) playerNum = 1;
+        UIManager.Instance.UpdatePlayerWeaponImage((UIManager.Player)playerNum, equiment, true);
     }
     //ジャンプ
     public void Jump() {
