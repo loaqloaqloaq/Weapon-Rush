@@ -66,7 +66,7 @@ public class GameDirector : MonoBehaviour
             end = true;
         }
 
-        if (checkTimer > delay)
+        if (checkTimer > delay || player1.HP==0 || player2.HP==0)
         {
             end = true;
         }
