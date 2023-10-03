@@ -1,3 +1,4 @@
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -21,7 +22,7 @@ public class PlayerController : MonoBehaviour
     float dashing;
     float dashCoolDown;
     struct KeyBind {
-        public string move, atk, jump, drop, dash;        
+        public string move,down, atk, jump, drop, dash;        
     }   
     KeyBind[] input = new KeyBind[2];   
     
@@ -38,6 +39,7 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed, jumpPow, dashMaxSpeed;
    
     bool onGround;
+    bool onStage;
 
     float attack;
     float atkMuiltpler;
@@ -80,19 +82,22 @@ public class PlayerController : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        onGround = false;       
+        onGround = false;
+        onStage = false;
         onHoverObject = null;      
 
         //キーバインド
         //プレイヤー　１
         input[0].move = "Player1_Horizontal";
+        input[0].down = "Player1_Vertical";
         input[0].atk = "Player1_Attack";
         input[0].drop = "Player1_Drop";
         input[0].jump = "Player1_Jump";
         input[0].dash = "Player1_Dash";
 
         //プレイヤー　2
-        input[1].move = "Player2_Horizontal";  
+        input[1].move = "Player2_Horizontal";
+        input[1].down = "Player2_Vertical";
         input[1].atk = "Player2_Attack";
         input[1].drop = "Player2_Drop";
         input[1].jump = "Player2_Jump";
@@ -284,6 +289,11 @@ public class PlayerController : MonoBehaviour
                 {
                     Jump();
                 }
+                //下へ                   
+                if (Input.GetAxis(input[player - 1].down) > 0.2f && onStage)
+                {
+                    Down();
+                }
 
             }
             if (spearSpecialAttack <= 0)
@@ -308,7 +318,11 @@ public class PlayerController : MonoBehaviour
 
        if (collision.transform.CompareTag("Floor") || collision.transform.CompareTag("Block") || collision.transform.CompareTag("Cloud")) {
             onGround = true;
-        }       
+        }
+        if (collision.transform.CompareTag("Stage")) { 
+            onStage = true;
+            onGround = true;
+        }
         
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -337,7 +351,10 @@ public class PlayerController : MonoBehaviour
         if (collision.transform.CompareTag("Axe") || collision.transform.CompareTag("Spear") || collision.transform.CompareTag("Sword"))
         {
             onHoverObject = null;
-        }        
+        }
+        if (collision.transform.CompareTag("Stage")) {
+            GetComponent<BoxCollider2D>().isTrigger = false;
+        }
     }
     //武器を拾う
     public void GetWeapon(GameObject weaponObject) {
@@ -422,6 +439,16 @@ public class PlayerController : MonoBehaviour
         if (onGround)
         {
             rb.velocity = new Vector2(0, jumpPow);
+            onGround = false;
+            onStage = false;
+        }
+    }
+    public void Down()
+    {
+        if (onStage)
+        {
+            GetComponent<BoxCollider2D>().isTrigger = true;
+            onStage = false;
             onGround = false;
         }
     }

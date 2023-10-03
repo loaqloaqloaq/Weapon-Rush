@@ -74,13 +74,10 @@ public class CameraController : MonoBehaviour
                 target.x = target.x > xMargin[1] ? xMargin[1] : target.x < xMargin[0] ? xMargin[0] : target.x;
             }
             target.y = target.y > yMargin[1] ? yMargin[1] : target.y < yMargin[0] ? yMargin[0] : target.y;
-
+        GetComponent<CameraShake>().originalPos = target;
         if (GetComponent<CameraShake>().shakeDuration <= 0)
         {
             transform.position = target;
-        }
-        else {
-            GetComponent<CameraShake>().originalPos = target;
-        }
+        }        
     }
 }

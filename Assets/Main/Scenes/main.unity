@@ -494,7 +494,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6587470612625249383, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6587470612625249383, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
       propertyPath: m_AnchorMax.x
@@ -901,7 +901,7 @@ Transform:
   - {fileID: 1887525199}
   - {fileID: 1099737464}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &192491113 stripped
 GameObject:
@@ -1022,7 +1022,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &290804173
 MonoBehaviour:
@@ -1636,8 +1636,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camTransform: {fileID: 0}
   shakeDuration: 0
+  shakeFequence: 0.05
   shakeAmount: 0.1
   decreaseFactor: 1
+  originalPos: {x: 0, y: 0, z: 0}
 --- !u!1 &351490017
 GameObject:
   m_ObjectHideFlags: 0
@@ -1704,7 +1706,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &357617783
 GameObject:
@@ -2381,8 +2383,8 @@ GameObject:
   - component: {fileID: 493674368}
   - component: {fileID: 493674367}
   m_Layer: 0
-  m_Name: Floor (1)
-  m_TagString: Floor
+  m_Name: Stage
+  m_TagString: Stage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -2600,7 +2602,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
@@ -2735,8 +2737,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camTransform: {fileID: 519420032}
   shakeDuration: 0
+  shakeFequence: 0.05
   shakeAmount: 0.1
   decreaseFactor: 1
+  originalPos: {x: 0, y: 0, z: 0}
 --- !u!114 &533536812 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4001676034735102229, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
@@ -2763,7 +2767,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &570331015
 Transform:
   m_ObjectHideFlags: 0
@@ -4324,7 +4328,7 @@ Transform:
   - {fileID: 753213780}
   - {fileID: 1727914871}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &895204432
 GameObject:
@@ -5380,7 +5384,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1077480965
 MonoBehaviour:
@@ -8381,8 +8385,8 @@ GameObject:
   - component: {fileID: 1426669324}
   - component: {fileID: 1426669323}
   m_Layer: 0
-  m_Name: Floor (2)
-  m_TagString: Floor
+  m_Name: Stage
+  m_TagString: Stage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -9707,7 +9711,7 @@ GameObject:
   - component: {fileID: 1885931304}
   m_Layer: 0
   m_Name: Floor (3)
-  m_TagString: Floor
+  m_TagString: Stage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -11389,7 +11393,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2123571285
 GameObject:

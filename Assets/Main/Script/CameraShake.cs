@@ -34,7 +34,9 @@ public class CameraShake : MonoBehaviour
             if (lastShakeTime >= shakeFequence)
             {
                 lastShakeTime = 0;
-                camTransform.localPosition = originalPos + Random.insideUnitSphere * shakeAmount;
+               Vector3 pos = originalPos + Random.insideUnitSphere * shakeAmount;
+                pos = new Vector3(pos.x, pos.y, -10);
+                camTransform.localPosition = pos;
                 shakeDuration -= Time.deltaTime * decreaseFactor;
             }
         }
