@@ -1259,6 +1259,7 @@ GameObject:
   - component: {fileID: 338622927}
   - component: {fileID: 338622926}
   - component: {fileID: 338622928}
+  - component: {fileID: 338622929}
   m_Layer: 0
   m_Name: Sub Camera
   m_TagString: Untagged
@@ -1357,6 +1358,22 @@ MonoBehaviour:
   - 25.57
   camNum: 1
   border: {fileID: 0}
+--- !u!114 &338622929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 338622924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 068a6d153eb1dc645b1893b81116472b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camTransform: {fileID: 0}
+  shakeDuration: 0
+  shakeAmount: 0.1
+  decreaseFactor: 1
 --- !u!1 &351490017
 GameObject:
   m_ObjectHideFlags: 0
@@ -1519,7 +1536,6 @@ GameObject:
   m_Component:
   - component: {fileID: 372191545}
   - component: {fileID: 372191547}
-  - component: {fileID: 372191546}
   - component: {fileID: 372191548}
   m_Layer: 0
   m_Name: Rock
@@ -1543,74 +1559,6 @@ Transform:
   m_Father: {fileID: 1908141546}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!60 &372191546
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 372191544}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
-    oldSize: {x: 2.15, y: 1.53}
-    newSize: {x: 2.15, y: 1.53}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.575, y: 0.93}
-      - {x: 0.465, y: 1.11}
-      - {x: 0.36499998, y: 1.25}
-      - {x: 0.265, y: 1.36}
-      - {x: 0.055, y: 1.4699999}
-      - {x: -0.055, y: 1.51}
-      - {x: -0.375, y: 1.51}
-      - {x: -0.505, y: 1.48}
-      - {x: -0.73499995, y: 1.48}
-      - {x: -0.945, y: 1.29}
-      - {x: -1.015, y: 1.12}
-      - {x: -1.005, y: 0.91999996}
-      - {x: -0.965, y: 0.84}
-      - {x: -1.0749999, y: 0.77}
-      - {x: -1.0749999, y: 0.42999998}
-      - {x: -1.045, y: 0.32999998}
-      - {x: -0.965, y: 0.02}
-      - {x: -0.945, y: 0}
-      - {x: 1.0749999, y: 0}
-      - {x: 1.0749999, y: 0.04}
-      - {x: 1.0649999, y: 0.11}
-      - {x: 0.955, y: 0.32}
-      - {x: 0.825, y: 0.57}
-  m_UseDelaunayMesh: 0
 --- !u!212 &372191547
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1675,7 +1623,7 @@ PolygonCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2147483647
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1957,6 +1905,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420033}
+  - component: {fileID: 519420034}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2063,6 +2012,22 @@ MonoBehaviour:
   - 25.57
   camNum: 0
   border: {fileID: 0}
+--- !u!114 &519420034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 068a6d153eb1dc645b1893b81116472b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camTransform: {fileID: 519420032}
+  shakeDuration: 0
+  shakeAmount: 0.1
+  decreaseFactor: 1
 --- !u!114 &533536812 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4001676034735102229, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
@@ -7799,7 +7764,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1976892783
 Transform:
   m_ObjectHideFlags: 0
@@ -8168,7 +8133,7 @@ PolygonCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2147483647
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0

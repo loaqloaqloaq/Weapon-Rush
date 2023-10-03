@@ -13,16 +13,13 @@ public class GameDirector : MonoBehaviour
     float loadSceneDelay;
     public static bool end;
     public int map = 1;
-
-    private float checkTimer;
-    private float delay = 2.0f;
+    
+    private float endStopTime = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        Time.timeScale = 1.0f;
-
-        checkTimer = 0f;
+        Time.timeScale = 1.0f;       
 
         player1 = GameObject.Find("Player1").GetComponent<PlayerController>();
         player2 = GameObject.Find("Player2").GetComponent<PlayerController>();
@@ -37,6 +34,7 @@ public class GameDirector : MonoBehaviour
         List<GameObject> maps = new List<GameObject>();
         if (GameObject.Find("Map1")) maps.Add(GameObject.Find("Map1"));
         if (GameObject.Find("Map2")) maps.Add(GameObject.Find("Map2"));
+        if (GameObject.Find("Map3")) maps.Add(GameObject.Find("Map3"));
 
         foreach (GameObject map in maps) { 
             map.SetActive(false);
@@ -55,29 +53,26 @@ public class GameDirector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Debug.Log("Player1: " + player1.HP.ToString());
-        if (player1.HP <= 0 || player2.HP <= 0)
-        {
-            checkTimer += Time.deltaTime;
-        }
         if (timer.CountDown_ <= 0)
         {
             timeup.SetActive(true);
             end = true;
         }
-
-        if (checkTimer > delay || player1.HP==0 || player2.HP==0)
+        
+        if (player1.HP <= 0 || player2.HP <= 0)
         {
+            Time.timeScale = 0f;
             end = true;
         }
-
         if (end)
         {
+            endStopTime+= Time.unscaledDeltaTime;
+            if (endStopTime > 0.5f) Time.timeScale = 0.2f;
             PlayerPrefs.SetFloat("player1HP", player1.HP);
             PlayerPrefs.SetFloat("player2HP", player2.HP);
-            loadSceneDelay += Time.deltaTime;
+            loadSceneDelay += Time.unscaledDeltaTime;
         }
-        if (loadSceneDelay >= 2f)
+        if (loadSceneDelay >= 5f)
         {
             if (player1.HP > player2.HP && player1.HP > 0)
             {
@@ -96,5 +91,9 @@ public class GameDirector : MonoBehaviour
 
             SceneManager.LoadScene("Result");
         }
+    }
+    public static void CameraShake() {
+        GameObject.Find("Main Camera").GetComponent<CameraShake>().shakeDuration = 0.1f;
+        GameObject.Find("Sub Camera").GetComponent<CameraShake>().shakeDuration = 0.1f;
     }
 }

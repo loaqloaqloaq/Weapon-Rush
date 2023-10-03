@@ -433,7 +433,7 @@ public class PlayerController : MonoBehaviour
             if (lastAtk < axeCD) return;
             animator.SetTrigger("axe");
             Invoke("EnableWeapon", 0.24f);
-            lastAtk = -1;
+            lastAtk = -1;            
         }
         else if (equiment == Equiment.SWORD)
         {
@@ -520,6 +520,7 @@ public class PlayerController : MonoBehaviour
                 break;
             case Equiment.AXE:
                 EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.WeaponHit);
+                GameDirector.CameraShake();
                 break;
         }
     }
