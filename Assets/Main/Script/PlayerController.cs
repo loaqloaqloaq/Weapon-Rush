@@ -135,12 +135,18 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (otherPlayer.GetComponent<PlayerController>().HP <= 0 && !animator.GetCurrentAnimatorStateInfo(0).IsName("victory")) { 
+        if (
+            (otherPlayer.GetComponent<PlayerController>().HP <= 0 && !animator.GetCurrentAnimatorStateInfo(0).IsName("victory")) ||
+            (GameDirector.end && HP > otherPlayer.GetComponent<PlayerController>().HP)
+        ) {  
             animator.SetTrigger("win");           
         }
 
         //一時停止時や死んだの時、プレイヤーを動けないようにする 
-        if (Mathf.Approximately(Time.timeScale, 0.0f) || HP <= 0 || GameDirector.end) return;
+        if (Mathf.Approximately(Time.timeScale, 0.0f) || HP <= 0 || GameDirector.end)
+        {            
+            return;
+        }
         
         if (lastAtk >= 0) lastAtk += Time.deltaTime;       
         
@@ -497,6 +503,7 @@ public class PlayerController : MonoBehaviour
             GetComponent<BoxCollider2D>().enabled = false;
             rb.isKinematic = true;
         }
+        animator.speed = 1;
     }    
     private void PlayEffect(Equiment equipment)
     {

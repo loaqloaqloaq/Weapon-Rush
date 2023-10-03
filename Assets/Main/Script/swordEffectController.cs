@@ -34,7 +34,7 @@ public class swordEffectController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag.StartsWith("Player") && !collision.CompareTag(attacker)) {
-            collision.GetComponent<PlayerController>().TakeDamage(30, PlayerController.Equiment.SWORD);
+            collision.GetComponent<PlayerController>().TakeDamage(10, PlayerController.Equiment.SWORD);
         }
     }
 }
