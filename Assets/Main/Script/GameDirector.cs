@@ -12,7 +12,8 @@ public class GameDirector : MonoBehaviour
 
     float loadSceneDelay;
     public static bool end;
-    public int map = 1;
+    int map = 1;
+    public int testMap = 1;
     
     private float endStopTime = 0;
 
@@ -30,7 +31,9 @@ public class GameDirector : MonoBehaviour
 
         Pause.pausePlayer = 0;
 
-        map = 3;
+        Debug.Log(PlayerPrefs.GetInt("map"));
+        map = PlayerPrefs.GetInt("map")>0? PlayerPrefs.GetInt("map"):testMap;
+
         List<GameObject> maps = new List<GameObject>();
         if (GameObject.Find("Map1")) maps.Add(GameObject.Find("Map1"));
         if (GameObject.Find("Map2")) maps.Add(GameObject.Find("Map2"));
