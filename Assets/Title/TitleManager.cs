@@ -31,11 +31,17 @@ public class TitleManager : MonoBehaviour
     private void Update()
     {
         nowButton = EventSystem.current.currentSelectedGameObject;
+
+        //DEBUG用
+        if (Input.GetKeyDown(KeyCode.V)) {
+            Debug.Log(nowButton.name);
+        }
         
 
         if (nowButton == null)
         {
-            return;
+            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
+            nowButton = EventSystem.current.currentSelectedGameObject;
         }
 
         ChangeButtonEffect();
