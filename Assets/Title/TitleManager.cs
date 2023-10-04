@@ -158,5 +158,5 @@ public class TitleManager : MonoBehaviour
         Invoke("MapExit", 0.2f);
 
         SoundManager.Instance.Play(exitSE, SoundManager.Sound.UI);
-    }
+    }    
 }
