@@ -71,8 +71,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1237236977
+  m_SortingLayer: 1
   m_SortingOrder: -1
   m_Sprite: {fileID: 21300004, guid: 15b2d2faaecad4bfb9edc6585d94f509, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -516,8 +516,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1237236977
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300268, guid: 15b2d2faaecad4bfb9edc6585d94f509, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -543,6 +543,7 @@ GameObject:
   - component: {fileID: 436987580789451609}
   - component: {fileID: 4912904861535017560}
   - component: {fileID: 513023433841460957}
+  - component: {fileID: 4731303157207315012}
   m_Layer: 3
   m_Name: Player2
   m_TagString: Player2
@@ -564,7 +565,7 @@ Transform:
   m_Children:
   - {fileID: 6883603309867684637}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2162456419225339858
 Animator:
@@ -602,7 +603,7 @@ MonoBehaviour:
   axePre: {fileID: 3081265719968954611, guid: 3c8621087f2acf649ba5378d6b3e7269, type: 3}
   swordPre: {fileID: 1154018821322401736, guid: f73f67169bbbad0469078ee8f966e4a4, type: 3}
   spearPre: {fileID: 5582843355123188142, guid: c62a026905ba4174ca04115018a52813, type: 3}
-  effect_sword: {fileID: 0}
+  effect_sword: {fileID: 1559750545465684225, guid: 6a6cb3dd903ed8d4faf78281c1d3c6eb, type: 3}
   otherPlayer: {fileID: 0}
   axe: {fileID: 21300230, guid: 15b2d2faaecad4bfb9edc6585d94f509, type: 3}
   sword: {fileID: 21300174, guid: 15b2d2faaecad4bfb9edc6585d94f509, type: 3}
@@ -610,7 +611,7 @@ MonoBehaviour:
   maxHP: 100
   HP: 0
   equiment: 0
-  player: 2
+  player: 3
   moveSpeed: 0
   jumpPow: 0
   dashMaxSpeed: 0
@@ -687,6 +688,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &4731303157207315012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6183051335753238030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe2c442570601f347bf8c807ce06e16b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableAttack: 0
+  enableWalk: 0
 --- !u!1 &7486600042860579165
 GameObject:
   m_ObjectHideFlags: 0
