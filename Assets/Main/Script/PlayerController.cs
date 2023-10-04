@@ -57,6 +57,9 @@ public class PlayerController : MonoBehaviour
     private ChargeEffect chargeEffect;
     private bool isCharging = false;
 
+    //ダッシュ
+    private TrailRenderer dashTrail;
+
     private bool pressDown;
 
     private void Awake()
