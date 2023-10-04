@@ -186,9 +186,9 @@ public class PlayerController : MonoBehaviour
             {
                 if (Input.GetButton(input[player - 1].atk) && !chargeAttacked)
                 {
+                    var aniTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
                     if (equiment == Equiment.SWORD)
-                    {
-                        var aniTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                    {                        
                         if (aniTime > (15.0f / 38.0f))
                         {
                             holdTime += Time.deltaTime;
@@ -201,8 +201,7 @@ public class PlayerController : MonoBehaviour
                         }
                     }
                     else if (equiment == Equiment.AXE)
-                    {
-                        var aniTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                    {                        
                         if (aniTime > (15.0f / 38.0f))
                         {
                             holdTime += Time.deltaTime;
@@ -215,8 +214,7 @@ public class PlayerController : MonoBehaviour
                             }
                         }
                     }
-                    else if (equiment == Equiment.SPEAR) {
-                        var aniTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                    else if (equiment == Equiment.SPEAR) {                        
                         if (aniTime > (5.0f / 38.0f))
                         {
                             holdTime += Time.deltaTime;
@@ -232,6 +230,7 @@ public class PlayerController : MonoBehaviour
                 if ((Input.GetButtonUp(input[player - 1].atk) || holdTime >= chargeAttackTime) && !chargeAttacked) {
                     animator.speed = 1;
                     chargeAttacked = true;
+                    var aniTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
                     if (holdTime >= chargeAttackTime) {
                         if (equiment == Equiment.SWORD)
                         {
@@ -250,7 +249,13 @@ public class PlayerController : MonoBehaviour
                     isCharging = false;
                     chargeEffect.Stop();
                     PlayAttackSound(equiment);
-                    EnableWeapon();
+                    if ( 
+                        (equiment == Equiment.SWORD && aniTime > (15.0f / 38.0f)) ||
+                        (equiment == Equiment.AXE && aniTime > (15.0f / 38.0f)) ||
+                        (equiment == Equiment.SPEAR && aniTime > (5.0f / 38.0f))
+                    ) EnableWeapon();
+
+
                 }
             }
             //槍チャージ攻撃
@@ -329,10 +334,7 @@ public class PlayerController : MonoBehaviour
                 {
                     Jump();
                 }
-                //下へ                   
-                if (player == 1) {
-                    Debug.Log(Input.GetAxis(input[player - 1].down));
-                }
+                //下へ   
                 if (Input.GetAxis(input[player - 1].down) > 0.2f && onStage && !pressDown)
                 {
                     pressDown = true;
@@ -559,6 +561,38 @@ public class PlayerController : MonoBehaviour
             if (lastAtk < spearCD) return;
             animator.SetTrigger("spear");
             //Invoke("EnableWeapon", 0.2f);
+            lastAtk = -1;
+        }
+        else if (equiment == Equiment.PUNCH)
+        {
+            if (lastAtk < puncCD) return;
+            frontArm.GetComponent<CapsuleCollider2D>().enabled = true;
+            backArm.GetComponent<CapsuleCollider2D>().enabled = true;
+            animator.SetTrigger("punch");
+            lastAtk = -1;
+        }
+    }
+    public void CpuAttack()
+    {
+        if (equiment == Equiment.AXE)
+        {
+            if (lastAtk < axeCD) return;
+            animator.SetTrigger("axe");
+            Invoke("EnableWeapon", 0.24f);
+            lastAtk = -1;
+        }
+        else if (equiment == Equiment.SWORD)
+        {
+            if (lastAtk < swordCD) return;
+            animator.SetTrigger("sword");
+            Invoke("EnableWeapon", 0.24f);
+            lastAtk = -1;
+        }
+        else if (equiment == Equiment.SPEAR)
+        {
+            if (lastAtk < spearCD) return;
+            animator.SetTrigger("spear");
+            Invoke("EnableWeapon", 0.2f);
             lastAtk = -1;
         }
         else if (equiment == Equiment.PUNCH)

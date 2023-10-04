@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static PlayerController;
 using static UIManager;
 using static Unity.Collections.AllocatorManager;
+using static UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle;
 
 public class AIController : MonoBehaviour
 {   
@@ -24,18 +26,20 @@ public class AIController : MonoBehaviour
 
     float prePosX;
     float testStuckTimer;
+
+    PlayerController pc;
     // Start is called before the first frame update
     void Start()
     {  
         animator = GetComponent<Animator>();
-
+        pc = GetComponent<PlayerController>();
         //find enemy
         if (transform.CompareTag("Player1")) otherPl = GameObject.Find("Player2");
         else otherPl = GameObject.Find("Player1");
         
         //get parameter from player controller
-        moveSpeed = GetComponent<PlayerController>().moveSpeed;
-        jumpPow = GetComponent<PlayerController>().jumpPow;
+        moveSpeed = pc.moveSpeed;
+        jumpPow = pc.jumpPow;
         blocks = GameObject.FindGameObjectsWithTag("Block");
         walls = GameObject.FindGameObjectsWithTag("Wall");
         weapon = weapons[UnityEngine.Random.Range(0,3)];
@@ -54,11 +58,11 @@ public class AIController : MonoBehaviour
     void Update()
     {          
         //stop when someone die
-        if (GetComponent<PlayerController>().HP <= 0 || otherPl.GetComponent<PlayerController>().HP <= 0 || GameDirector.end) return;
+        if (pc.HP <= 0 || otherPl.GetComponent<PlayerController>().HP <= 0 || GameDirector.end) return;
         GameObject other = otherPl;
 
         //find weapon if don't have
-        if (GetComponent<PlayerController>().equiment == PlayerController.Equiment.PUNCH)
+        if (pc.equiment == PlayerController.Equiment.PUNCH)
         {
             int allWeaponCnt = GameObject.FindGameObjectsWithTag("Axe").Length + GameObject.FindGameObjectsWithTag("Spear").Length + GameObject.FindGameObjectsWithTag("Sword").Length;
             if (weaponsObj.Count < allWeaponCnt)
@@ -87,13 +91,13 @@ public class AIController : MonoBehaviour
         float verticalDistance = cpuVertialPosition.y - otherVerticalPosition.y;
         float absVerticalDistance = Math.Abs(verticalDistance);        
         //í«Ç¡ÇƒçUåÇÇ∑ÇÈ
-        if (horizontalDistance < 1.5f && absVerticalDistance < 1.7f && GetComponent<PlayerController>().equiment != PlayerController.Equiment.PUNCH) startAttack = true;
+        if (horizontalDistance < 1.5f && absVerticalDistance < 1.7f && pc.equiment != PlayerController.Equiment.PUNCH) startAttack = true;
         else if (horizontalDistance > 2.0f || absVerticalDistance > 1.7f) startAttack = false;
 
         if (!attacking)
         {
-            GetComponent<PlayerController>().DisableWeapon();
-            if (GetComponent<PlayerController>().lastAtk < 0) GetComponent<PlayerController>().lastAtk = 0;
+            pc.DisableWeapon();
+            if (pc.lastAtk < 0) pc.lastAtk = 0;
         } 
 
         if (!startAttack)
@@ -105,7 +109,7 @@ public class AIController : MonoBehaviour
                     float movedX = Math.Abs(prePosX - transform.position.x)/ testStuckTimer;                    
                     prePosX = transform.position.x;
                     testStuckTimer = 0;
-                    if(movedX < 2) GetComponent<PlayerController>().Jump();
+                    if(movedX < 2) pc.Jump();
                 }
 
                 //à⁄ìÆ
@@ -125,8 +129,8 @@ public class AIController : MonoBehaviour
                 else
                 {
                     
-                    if (cpuVertialPosition.y < otherVerticalPosition.y) GetComponent<PlayerController>().Jump();     
-                    else GetComponent<PlayerController>().Down();
+                    if (cpuVertialPosition.y < otherVerticalPosition.y) pc.Jump();     
+                    else pc.Down();
                     if (transform.position.x >= 29.3f) walkaround = -1;
                     if (transform.position.x <= -9.3f) walkaround = 1;                    
                     transform.localScale = new Vector3(walkaround * -1, 1, 1);                    
@@ -147,12 +151,12 @@ public class AIController : MonoBehaviour
                         //âE
                         if (direction == 1 && XdistanceToBlock >= -2 && XdistanceToBlock <= 0)
                         {
-                            GetComponent<PlayerController>().Jump();
+                            pc.Jump();
                         }
                         //ç∂
                         else if (direction == -1 && XdistanceToBlock >= 0 && XdistanceToBlock <= 2)
                         {
-                            GetComponent<PlayerController>().Jump();
+                            pc.Jump();
                         }
                     }
                 } 
@@ -174,7 +178,10 @@ public class AIController : MonoBehaviour
             transform.localScale = new Vector3(direction * -1, 1, 1);
             //çUåÇ
             animator.SetBool("walking", false);
-            if (enableAttack && GetComponent<PlayerController>().equiment != PlayerController.Equiment.PUNCH) GetComponent<PlayerController>().Attack();
+            if (enableAttack && pc.equiment != PlayerController.Equiment.PUNCH)
+            {               
+                pc.CpuAttack();                
+            }
         }
         else
         {
@@ -193,8 +200,8 @@ public class AIController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (GetComponent<PlayerController>().player == 3 && collision.CompareTag(weapon) && GetComponent<PlayerController>().CurrentWeapon() == PlayerController.Equiment.PUNCH) {
-            GetComponent<PlayerController>().GetWeapon(collision.gameObject);
+        if (pc.player == 3 && collision.CompareTag(weapon) && pc.CurrentWeapon() == PlayerController.Equiment.PUNCH) {
+            pc.GetWeapon(collision.gameObject);
         }
     }
 

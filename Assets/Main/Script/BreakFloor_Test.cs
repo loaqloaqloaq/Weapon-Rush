@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BreakFloor : MonoBehaviour
+public class BreakFloor_Test : MonoBehaviour
 {
     bool standing;
 
@@ -27,46 +27,43 @@ public class BreakFloor : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        if (standing) curColor.a -= 0.5f * Time.deltaTime;
-        else if (curColor.a != 0f) curColor.a += 0.5f * Time.deltaTime;
+    {        
+        if(standing) curColor.a -= 0.5f * Time.deltaTime;
+        else if(curColor.a !=0f ) curColor.a += 0.5f * Time.deltaTime;
 
         if (curColor.a <= 0)
         {
-            curColor.a = 0;
+            curColor.a = 0;            
             floor_collider.enabled = false;
+        }        
+
+        if (curColor.a >= 1) {
+            curColor.a = 1;            
         }
 
-        if (curColor.a >= 1)
-        {
-            curColor.a = 1;
-        }
-
-        if (!floor_collider.isActiveAndEnabled)
-        {
-            revivalTimeCnt += Time.deltaTime;
-            if (revivalTimeCnt >= revivalTime)
-            {
+        if (!floor_collider.isActiveAndEnabled) {
+            revivalTimeCnt+=Time.deltaTime;
+            if (revivalTimeCnt >= revivalTime) {
                 revivalTimeCnt = 0;
                 curColor.a += 0.5f * Time.deltaTime;
                 floor_collider.enabled = true;
             }
         }
 
-        sp.color = new Color(curColor.r, curColor.g, curColor.b, curColor.a);
-
+        sp.color = new Color(curColor.r,curColor.g,curColor.b,curColor.a);
+        
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-
+        
         if (collision.tag.StartsWith("Player"))
         {
             standing = true;
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
-    {
+    {        
         if (collision.tag.StartsWith("Player"))
         {
             standing = true;
