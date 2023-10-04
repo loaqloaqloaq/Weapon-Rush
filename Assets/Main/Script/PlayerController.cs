@@ -1,4 +1,3 @@
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -37,9 +36,9 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector]
     public float moveSpeed, jumpPow, dashMaxSpeed;
-   
-    bool onGround;
-    bool onStage;
+
+    [SerializeField]
+    bool onGround, onStage;    
 
     float attack;
     float atkMuiltpler;
@@ -53,7 +52,22 @@ public class PlayerController : MonoBehaviour
 
     float spearSpecialAttack;
     bool chargeAttacked;
-    
+
+    //チャージエフェクト
+    private ChargeEffect chargeEffect;
+    private bool isCharging = false;
+
+    //ダッシュ
+    private TrailRenderer dashTrail;
+
+    private bool pressDown;
+
+    private void Awake()
+    {
+        chargeEffect = GetComponentInChildren<ChargeEffect>();
+        dashTrail = GetComponentInChildren<TrailRenderer>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -141,7 +155,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (
-            (otherPlayer.GetComponent<PlayerController>().HP <= 0 && !animator.GetCurrentAnimatorStateInfo(0).IsName("victory")) ||
+            (otherPlayer.GetComponent<PlayerController>().HP <= 0 && animator.GetCurrentAnimatorStateInfo(0).IsName("idle")) ||
             (GameDirector.end && HP > otherPlayer.GetComponent<PlayerController>().HP)
         ) {  
             animator.SetTrigger("win");           
@@ -169,7 +183,7 @@ public class PlayerController : MonoBehaviour
             }
             //charge attack
             else
-            {                
+            {
                 if (Input.GetButton(input[player - 1].atk) && !chargeAttacked)
                 {
                     if (equiment == Equiment.SWORD)
@@ -179,6 +193,11 @@ public class PlayerController : MonoBehaviour
                         {
                             holdTime += Time.deltaTime;
                             animator.speed = 0;
+                            if (!isCharging)
+                            {
+                                isCharging = true;
+                                chargeEffect.Play();
+                            }
                         }
                     }
                     else if (equiment == Equiment.AXE)
@@ -189,6 +208,11 @@ public class PlayerController : MonoBehaviour
                             holdTime += Time.deltaTime;
                             animator.speed = 0;
                             weapon.transform.localScale += new Vector3(2, 2, 2) * Time.deltaTime;
+                            if (!isCharging)
+                            {
+                                isCharging = true;
+                                chargeEffect.Play();
+                            }
                         }
                     }
                     else if (equiment == Equiment.SPEAR) {
@@ -196,7 +220,12 @@ public class PlayerController : MonoBehaviour
                         if (aniTime > (5.0f / 38.0f))
                         {
                             holdTime += Time.deltaTime;
-                            animator.speed = 0;                           
+                            animator.speed = 0;
+                            if (!isCharging)
+                            {
+                                isCharging = true;
+                                chargeEffect.Play();
+                            }
                         }
                     }
                 }
@@ -217,7 +246,11 @@ public class PlayerController : MonoBehaviour
                         {                             
                             spearSpecialAttack = 0.2f;
                         }                        
-                    }                    
+                    }
+                    isCharging = false;
+                    chargeEffect.Stop();
+                    PlayAttackSound(equiment);
+                    EnableWeapon();
                 }
             }
             //槍チャージ攻撃
@@ -255,12 +288,19 @@ public class PlayerController : MonoBehaviour
             {
                 dashing = dashTime;
                 dashCoolDown = cooldown;
+                dashTrail.emitting = true;
+                SoundManager.Instance.Play("Sounds/SFX/dash", SoundManager.Sound.P_Effect);
+                EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.Dash);
             }
             if (dashing > 0)
             {
                 dashSpeed = dashMaxSpeed;
                 dashing -= Time.deltaTime;
-                if (dashing < 0) dashing = 0;
+                if (dashing < 0)
+                {
+                    dashing = 0;
+                    dashTrail.emitting = false;
+                } 
             }
             if (dashCoolDown > 0)
             {
@@ -290,9 +330,16 @@ public class PlayerController : MonoBehaviour
                     Jump();
                 }
                 //下へ                   
-                if (Input.GetAxis(input[player - 1].down) > 0.2f && onStage)
+                if (player == 1) {
+                    Debug.Log(Input.GetAxis(input[player - 1].down));
+                }
+                if (Input.GetAxis(input[player - 1].down) > 0.2f && onStage && !pressDown)
                 {
+                    pressDown = true;
                     Down();
+                }
+                if (Input.GetAxis(input[player - 1].down) <= 0.2f && !onStage) {
+                    pressDown = false;
                 }
 
             }
@@ -312,18 +359,42 @@ public class PlayerController : MonoBehaviour
             }
             
         }
-    }   
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
-       if (collision.transform.CompareTag("Floor") || collision.transform.CompareTag("Block")) {
+        if (collision.transform.CompareTag("Floor") || collision.transform.CompareTag("Block"))
+        {
+            GetComponent<BoxCollider2D>().isTrigger = false;
+            onStage = false;
             onGround = true;
         }
-        if (collision.transform.CompareTag("Stage") || collision.transform.CompareTag("Cloud")) { 
+        else if (collision.transform.CompareTag("Stage") || collision.transform.CompareTag("Cloud"))
+        {
             onStage = true;
             onGround = true;
         }
-        
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.transform.CompareTag("Floor") || collision.transform.CompareTag("Block"))
+        {
+            GetComponent<BoxCollider2D>().isTrigger = false;
+            onStage = false;
+            onGround = true;
+        }
+        else if (collision.transform.CompareTag("Stage") || collision.transform.CompareTag("Cloud"))
+        {
+            onStage = true;
+            onGround = true;
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.transform.CompareTag("Floor") || collision.transform.CompareTag("Block") || collision.transform.CompareTag("Stage") || collision.transform.CompareTag("Cloud"))
+        {
+            onGround = false;
+            onStage = false;
+        }       
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {        
@@ -427,6 +498,8 @@ public class PlayerController : MonoBehaviour
             forceX = -10.0f;
             forceY = 3.0f;
             droppedWeapon.GetComponent<swordController>().throwSword(transform.tag);
+            EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.ThrowWeapon);
+            SoundManager.Instance.Play("Sounds/SFX/throwSword", SoundManager.Sound.P_Effect);
         }
         else if (equiment == Equiment.SPEAR)
         {            
@@ -456,9 +529,13 @@ public class PlayerController : MonoBehaviour
         if (onStage)
         {
             GetComponent<BoxCollider2D>().isTrigger = true;
+            Invoke("jumper", 0.34f);
             onStage = false;
             onGround = false;
         }
+    }
+    private void jumper() {
+        GetComponent<BoxCollider2D>().isTrigger = false;
     }
     //攻撃
     public void Attack()
@@ -467,21 +544,21 @@ public class PlayerController : MonoBehaviour
         {
             if (lastAtk < axeCD) return;
             animator.SetTrigger("axe");
-            Invoke("EnableWeapon", 0.24f);
+            //Invoke("EnableWeapon", 0.24f);
             lastAtk = -1;            
         }
         else if (equiment == Equiment.SWORD)
         {
             if (lastAtk < swordCD) return;
             animator.SetTrigger("sword");
-            Invoke("EnableWeapon", 0.24f);
+            //Invoke("EnableWeapon", 0.24f);
             lastAtk = -1;
         }
         else if (equiment == Equiment.SPEAR)
         {
             if (lastAtk < spearCD) return;
             animator.SetTrigger("spear");
-            Invoke("EnableWeapon", 0.2f);
+            //Invoke("EnableWeapon", 0.2f);
             lastAtk = -1;
         }
         else if (equiment == Equiment.PUNCH)
@@ -517,7 +594,6 @@ public class PlayerController : MonoBehaviour
             weapon.GetComponent<CapsuleCollider2D>().size = new Vector2(0.232f, 0.469f);
             weapon.GetComponent<CapsuleCollider2D>().offset = new Vector2(0.003f, 0.8835f);
         }        
-        PlayAttackSound(equiment);
     }
     //ダメージを受ける
     public void TakeDamage(float atk, Equiment equipment)

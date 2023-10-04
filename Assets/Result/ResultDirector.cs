@@ -12,7 +12,7 @@ public class ResultDirector : MonoBehaviour
     [SerializeField] private TextMeshProUGUI[] text_score;
     [SerializeField] private GameObject[] playerImages;
 
-    GameObject nowButton;
+    GameObject nowButton, prevButton;
     float defaultOpacity = 0.8f;
 
     void Start()
@@ -25,6 +25,18 @@ public class ResultDirector : MonoBehaviour
     private void Update()
     {
         nowButton = EventSystem.current.currentSelectedGameObject;
+
+        if (nowButton == null)
+        {
+            if (prevButton == null)
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
+            else
+                EventSystem.current.SetSelectedGameObject(prevButton);
+
+            nowButton = EventSystem.current.currentSelectedGameObject;
+        }
+        prevButton = EventSystem.current.currentSelectedGameObject;
+
         ChangeButtonEffect();
     }
 

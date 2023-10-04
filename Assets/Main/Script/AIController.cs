@@ -125,7 +125,8 @@ public class AIController : MonoBehaviour
                 else
                 {
                     
-                    if (cpuVertialPosition.y < otherVerticalPosition.y) GetComponent<PlayerController>().Jump();                    
+                    if (cpuVertialPosition.y < otherVerticalPosition.y) GetComponent<PlayerController>().Jump();     
+                    else GetComponent<PlayerController>().Down();
                     if (transform.position.x >= 29.3f) walkaround = -1;
                     if (transform.position.x <= -9.3f) walkaround = 1;                    
                     transform.localScale = new Vector3(walkaround * -1, 1, 1);                    

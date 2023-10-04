@@ -18,6 +18,7 @@ public class TitleManager : MonoBehaviour
 
     //今選ばれているボタン
     GameObject nowButton;
+    GameObject prevButton;
     float defaultOpacity = 0.8f;
     //説明画面(チュートリアル)の状態
     bool explanation = false;
@@ -45,9 +46,14 @@ public class TitleManager : MonoBehaviour
 
         if (nowButton == null)
         {
-            return;
-        }
+            if(prevButton == null)
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
+            else
+                EventSystem.current.SetSelectedGameObject(prevButton);
 
+            nowButton = EventSystem.current.currentSelectedGameObject;
+        }
+        prevButton= EventSystem.current.currentSelectedGameObject;
         ChangeButtonEffect();
         if (Explanation.activeSelf && Input.GetButtonDown("Cancel"))
         {
@@ -178,5 +184,7 @@ public class TitleManager : MonoBehaviour
 
         Invoke("MapExit", 0.2f);
         SoundManager.Instance.Play(exitSE, SoundManager.Sound.UI);
+
     }
 }
+

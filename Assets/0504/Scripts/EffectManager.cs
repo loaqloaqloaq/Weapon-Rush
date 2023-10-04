@@ -18,12 +18,16 @@ public class EffectManager : MonoBehaviour
     {
         PunchHit,
         WeaponHit,
-        GetWeapon
+        GetWeapon,
+        ThrowWeapon,
+        Dash
     }
 
     [SerializeField] private ParticleSystem commonHit;
     [SerializeField] private ParticleSystem WeaponHit;
-    [SerializeField] private ParticleSystem GetWeapon;    
+    [SerializeField] private ParticleSystem GetWeapon;
+    [SerializeField] private ParticleSystem ThrowWeapon;
+    [SerializeField] private ParticleSystem Dash;
     //
     public void PlayEffect(Vector3 pos,
         EffectType effectType = EffectType.WeaponHit, Transform parent = null)
@@ -48,6 +52,10 @@ public class EffectManager : MonoBehaviour
                 return WeaponHit;
             case EffectType.GetWeapon:
                 return GetWeapon;
+            case EffectType.ThrowWeapon:
+                return ThrowWeapon;
+                case EffectType.Dash: 
+                return Dash;
         }
         return commonHit;
     }
