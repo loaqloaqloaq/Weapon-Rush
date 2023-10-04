@@ -61,6 +61,7 @@ public class PlayerController : MonoBehaviour
     private TrailRenderer dashTrail;
 
     private bool pressDown;
+    private bool weaponEnabled;
 
     private void Awake()
     {
@@ -148,15 +149,18 @@ public class PlayerController : MonoBehaviour
         
         chargeAttackTime = 0.5f;
         holdTime = 0;
-        
+
+        weaponEnabled = false;
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
         if (
-            (otherPlayer.GetComponent<PlayerController>().HP <= 0 && animator.GetCurrentAnimatorStateInfo(0).IsName("idle")) ||
-            (GameDirector.end && HP > otherPlayer.GetComponent<PlayerController>().HP)
+            (otherPlayer.GetComponent<PlayerController>().HP <= 0 || (GameDirector.end && HP > otherPlayer.GetComponent<PlayerController>().HP) ) &&
+            animator.GetCurrentAnimatorStateInfo(0).IsName("idle")
         ) {  
             animator.SetTrigger("win");           
         }
@@ -184,9 +188,16 @@ public class PlayerController : MonoBehaviour
             //charge attack
             else
             {
+                var aniTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                if (
+                    ((equiment == Equiment.SWORD && aniTime > (16.0f / 38.0f)) ||
+                    (equiment == Equiment.AXE && aniTime > (16.0f / 38.0f)) ||
+                    (equiment == Equiment.SPEAR && aniTime > (6.0f / 38.0f))) &&
+                    !weaponEnabled
+                ) EnableWeapon();
+
                 if (Input.GetButton(input[player - 1].atk) && !chargeAttacked)
-                {
-                    var aniTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                {                    
                     if (equiment == Equiment.SWORD)
                     {                        
                         if (aniTime > (15.0f / 38.0f))
@@ -226,11 +237,11 @@ public class PlayerController : MonoBehaviour
                             }
                         }
                     }
-                }
+                }               
                 if ((Input.GetButtonUp(input[player - 1].atk) || holdTime >= chargeAttackTime) && !chargeAttacked) {
                     animator.speed = 1;
                     chargeAttacked = true;
-                    var aniTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                    
                     if (holdTime >= chargeAttackTime) {
                         if (equiment == Equiment.SWORD)
                         {
@@ -249,13 +260,6 @@ public class PlayerController : MonoBehaviour
                     isCharging = false;
                     chargeEffect.Stop();
                     PlayAttackSound(equiment);
-                    if ( 
-                        (equiment == Equiment.SWORD && aniTime > (15.0f / 38.0f)) ||
-                        (equiment == Equiment.AXE && aniTime > (15.0f / 38.0f)) ||
-                        (equiment == Equiment.SPEAR && aniTime > (5.0f / 38.0f))
-                    ) EnableWeapon();
-
-
                 }
             }
             //槍チャージ攻撃
@@ -443,7 +447,8 @@ public class PlayerController : MonoBehaviour
                 animator.SetBool("using spear", false);
                 weapon.transform.localScale = Vector3.one;
                 moveSpeed = 4.0f;
-                Destroy(weaponObject);
+                chargeAttackTime = 0.5f;
+                Destroy(weaponObject);                
                 break;
             case "Sword":
                 DropWeapon();
@@ -454,7 +459,8 @@ public class PlayerController : MonoBehaviour
                 animator.SetBool("using spear", false);
                 weapon.transform.localScale = Vector3.one;
                 moveSpeed = 6.0f;
-                Destroy(weaponObject);
+                chargeAttackTime = 0.8f;
+                Destroy(weaponObject);                
                 break;
             case "Spear":
                 DropWeapon();
@@ -465,6 +471,7 @@ public class PlayerController : MonoBehaviour
                 animator.SetBool("using spear", true);
                 weapon.transform.localScale = new Vector3(1,1.3f,1);
                 moveSpeed = 5.0f;
+                chargeAttackTime = 0.5f;
                 Destroy(weaponObject);
                 break;
             default: break;
@@ -609,6 +616,7 @@ public class PlayerController : MonoBehaviour
         weapon.GetComponent<CapsuleCollider2D>().enabled = false;
         frontArm.GetComponent<CapsuleCollider2D>().enabled = false;
         backArm.GetComponent<CapsuleCollider2D>().enabled = false;
+        weaponEnabled = false;
     }
     void EnableWeapon()
     {
@@ -627,7 +635,8 @@ public class PlayerController : MonoBehaviour
         {
             weapon.GetComponent<CapsuleCollider2D>().size = new Vector2(0.232f, 0.469f);
             weapon.GetComponent<CapsuleCollider2D>().offset = new Vector2(0.003f, 0.8835f);
-        }        
+        }
+        weaponEnabled = true;
     }
     //ダメージを受ける
     public void TakeDamage(float atk, Equiment equipment)

@@ -21,7 +21,7 @@ public class BreakFloor : MonoBehaviour
 
         floor_collider = GetComponent<BoxCollider2D>();
 
-        revivalTime = 5.0f;
+        revivalTime = 2.0f;
         revivalTimeCnt = 0;
     }
 
