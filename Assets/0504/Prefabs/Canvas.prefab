@@ -2548,7 +2548,7 @@ Animator:
   m_GameObject: {fileID: 2711077606376133058}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4820d073369f1234aa695d34281a2865, type: 2}
+  m_Controller: {fileID: 9100000, guid: 8abc3ee2cf433084a863d08fc6309ae6, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2999,7 +2999,7 @@ Animator:
   m_GameObject: {fileID: 3027931542357419681}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4820d073369f1234aa695d34281a2865, type: 2}
+  m_Controller: {fileID: 9100000, guid: 8abc3ee2cf433084a863d08fc6309ae6, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -3308,7 +3308,7 @@ MonoBehaviour:
   m_FillMethod: 0
   m_FillAmount: 0
   m_FillClockwise: 0
-  m_FillOrigin: 1
+  m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
 --- !u!1 &3332796057223863456
@@ -5588,7 +5588,7 @@ MonoBehaviour:
   m_FillMethod: 0
   m_FillAmount: 0
   m_FillClockwise: 0
-  m_FillOrigin: 0
+  m_FillOrigin: 1
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
 --- !u!1 &5787450890209876154

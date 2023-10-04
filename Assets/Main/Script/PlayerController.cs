@@ -57,9 +57,13 @@ public class PlayerController : MonoBehaviour
     private ChargeEffect chargeEffect;
     private bool isCharging = false;
 
+    //ダッシュ
+    private TrailRenderer dashTrail;
+
     private void Awake()
     {
         chargeEffect = GetComponentInChildren<ChargeEffect>();
+        dashTrail = GetComponentInChildren<TrailRenderer>();
     }
 
     // Start is called before the first frame update
@@ -281,12 +285,19 @@ public class PlayerController : MonoBehaviour
             {
                 dashing = dashTime;
                 dashCoolDown = cooldown;
+                dashTrail.emitting = true;
+                SoundManager.Instance.Play("Sounds/SFX/dash", SoundManager.Sound.P_Effect);
+                EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.Dash);
             }
             if (dashing > 0)
             {
                 dashSpeed = dashMaxSpeed;
                 dashing -= Time.deltaTime;
-                if (dashing < 0) dashing = 0;
+                if (dashing < 0)
+                {
+                    dashing = 0;
+                    dashTrail.emitting = false;
+                } 
             }
             if (dashCoolDown > 0)
             {
