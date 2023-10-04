@@ -36,9 +36,9 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector]
     public float moveSpeed, jumpPow, dashMaxSpeed;
-   
-    bool onGround;
-    bool onStage;
+
+    [SerializeField]
+    bool onGround, onStage;    
 
     float attack;
     float atkMuiltpler;
@@ -56,6 +56,8 @@ public class PlayerController : MonoBehaviour
     //チャージエフェクト
     private ChargeEffect chargeEffect;
     private bool isCharging = false;
+
+    private bool pressDown;
 
     private void Awake()
     {
@@ -316,9 +318,13 @@ public class PlayerController : MonoBehaviour
                     Jump();
                 }
                 //下へ                   
-                if (Input.GetAxis(input[player - 1].down) > 0.2f && onStage)
+                if (Input.GetAxis(input[player - 1].down) > 0.2f && onStage && !pressDown)
                 {
+                    pressDown = true;
                     Down();
+                }
+                if (Input.GetAxis(input[player - 1].down) <= 0.2f && !onStage) {
+                    pressDown = false;
                 }
 
             }
@@ -338,18 +344,46 @@ public class PlayerController : MonoBehaviour
             }
             
         }
-    }   
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
-       if (collision.transform.CompareTag("Floor") || collision.transform.CompareTag("Block")) {
+        if (collision.transform.CompareTag("Floor") || collision.transform.CompareTag("Block"))
+        {
+            GetComponent<BoxCollider2D>().isTrigger = false;
+            onStage = false;
             onGround = true;
         }
-        if (collision.transform.CompareTag("Stage") || collision.transform.CompareTag("Cloud")) { 
+        else if (collision.transform.CompareTag("Stage") || collision.transform.CompareTag("Cloud"))
+        {
             onStage = true;
             onGround = true;
         }
-        
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.transform.CompareTag("Floor") || collision.transform.CompareTag("Block"))
+        {
+            GetComponent<BoxCollider2D>().isTrigger = false;
+            onStage = false;
+            onGround = true;
+        }
+        else if (collision.transform.CompareTag("Stage") || collision.transform.CompareTag("Cloud"))
+        {
+            onStage = true;
+            onGround = true;
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.transform.CompareTag("Floor") || collision.transform.CompareTag("Block"))
+        {
+            onGround = false;
+        }
+        if (collision.transform.CompareTag("Stage") || collision.transform.CompareTag("Cloud"))
+        {
+            onStage = false;
+            onGround = false;
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {        
@@ -484,9 +518,13 @@ public class PlayerController : MonoBehaviour
         if (onStage)
         {
             GetComponent<BoxCollider2D>().isTrigger = true;
+            Invoke("jumper", 0.35f);
             onStage = false;
             onGround = false;
         }
+    }
+    private void jumper() {
+        GetComponent<BoxCollider2D>().isTrigger = false;
     }
     //攻撃
     public void Attack()
