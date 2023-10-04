@@ -316,10 +316,10 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
-       if (collision.transform.CompareTag("Floor") || collision.transform.CompareTag("Block") || collision.transform.CompareTag("Cloud")) {
+       if (collision.transform.CompareTag("Floor") || collision.transform.CompareTag("Block")) {
             onGround = true;
         }
-        if (collision.transform.CompareTag("Stage")) { 
+        if (collision.transform.CompareTag("Stage") || collision.transform.CompareTag("Cloud")) { 
             onStage = true;
             onGround = true;
         }
