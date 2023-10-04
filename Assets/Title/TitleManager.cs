@@ -22,16 +22,26 @@ public class TitleManager : MonoBehaviour
     //説明画面(チュートリアル)の状態
     bool explanation = false;
 
+    //マップセレクトボタンが押されているか
+    public static bool mapselect = false;
+
     private void Start()
     {
-        //ゲームデータを初期化
-        GameData.Initialize();       
+        //マップセレクトが押されたら
+        if (mapselect == true)
+        {
+            //元の状態に戻す
+            mapselect = false;
+
+            Title_Display.SetActive(false);
+            MapSelect_Display.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(GameObject.Find("Stage_1"));
+        }
     }
 
     private void Update()
     {
         nowButton = EventSystem.current.currentSelectedGameObject;
-        
 
         if (nowButton == null)
         {
@@ -39,17 +49,19 @@ public class TitleManager : MonoBehaviour
         }
 
         ChangeButtonEffect();
-        if (Explanation.activeSelf && Input.GetButtonDown("Cancel")) {
+        if (Explanation.activeSelf && Input.GetButtonDown("Cancel"))
+        {
             Close_Explanation();
         }
-        if (Input.GetButtonDown("Submit") && explanation == false) {
+        if (Input.GetButtonDown("Submit") && explanation == false)
+        {
             nowButton.GetComponent<Button>().onClick.Invoke();
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
-            #endif
+#endif
             Application.Quit();
         }
     }
@@ -125,9 +137,9 @@ public class TitleManager : MonoBehaviour
 
     //ゲームを終了
     public void GameEnd()
-    {        
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
 #endif
 
         SoundManager.Instance.Play(exitSE, SoundManager.Sound.UI);
@@ -138,16 +150,22 @@ public class TitleManager : MonoBehaviour
     //選んだステージに移行
     public void Stage1()
     {
+        Title_Display.SetActive(false);
+        MapSelect_Display.SetActive(true);
         LoadingSceneController.LoadScene("main");
         PlayerPrefs.SetInt("map", 1);
     }
     public void Stage2()
     {
+        Title_Display.SetActive(false);
+        MapSelect_Display.SetActive(true);
         LoadingSceneController.LoadScene("main");
         PlayerPrefs.SetInt("map", 2);
     }
     public void Stage3()
     {
+        Title_Display.SetActive(false);
+        MapSelect_Display.SetActive(true);
         LoadingSceneController.LoadScene("main");
         PlayerPrefs.SetInt("map", 3);
     }
@@ -155,8 +173,10 @@ public class TitleManager : MonoBehaviour
     //マップ選択画面キャンセル (前の画面に戻る)
     public void MapSelect_Exit()
     {
-        Invoke("MapExit", 0.2f);
+        //ゲームデータを初期化
+        GameData.Initialize();
 
+        Invoke("MapExit", 0.2f);
         SoundManager.Instance.Play(exitSE, SoundManager.Sound.UI);
     }
 }
