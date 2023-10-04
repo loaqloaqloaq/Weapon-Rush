@@ -35,6 +35,7 @@ public class GameDirector : MonoBehaviour
         if (GameObject.Find("Map1")) maps.Add(GameObject.Find("Map1"));
         if (GameObject.Find("Map2")) maps.Add(GameObject.Find("Map2"));
         if (GameObject.Find("Map3")) maps.Add(GameObject.Find("Map3"));
+        if (GameObject.Find("Map4")) maps.Add(GameObject.Find("Map4"));
 
         foreach (GameObject map in maps) { 
             map.SetActive(false);
