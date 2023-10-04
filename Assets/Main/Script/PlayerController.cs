@@ -411,7 +411,11 @@ public class PlayerController : MonoBehaviour
             weapon.GetComponent<CapsuleCollider2D>().enabled = false;
             frontArm.GetComponent<CapsuleCollider2D>().enabled = false;
             backArm.GetComponent<CapsuleCollider2D>().enabled = false;
-            collision.GetComponent<PlayerController>().TakeDamage(attack * atkMuiltpler, equiment);                              
+            collision.GetComponent<PlayerController>().TakeDamage(attack * atkMuiltpler, equiment);
+            if (spearSpecialAttack > 0) {
+                collision.GetComponent<PlayerController>().DropWeapon(false);
+                collision.GetComponent<PlayerController>().equiment = Equiment.PUNCH;
+            }
         }
     }
     private void OnTriggerStay2D(Collider2D collision)
@@ -487,7 +491,7 @@ public class PlayerController : MonoBehaviour
         UIManager.Instance.UpdatePlayerWeaponImage((UIManager.Player)playerNum, equiment);
     }
     //武器を捨てる
-    private void DropWeapon()
+    public void DropWeapon(bool throwSword = true)
     {
         lastAtk = 1f;
         if (equiment == Equiment.PUNCH) return;
@@ -503,12 +507,16 @@ public class PlayerController : MonoBehaviour
             Vector3 pos = transform.position;
             pos.y += 0.5f;
             droppedWeapon = Instantiate(swordPre, pos, Quaternion.identity);
-            droppedWeapon.transform.rotation = Quaternion.Euler(0.0f, 0.0f, facing*90);
-            forceX = -10.0f;
-            forceY = 3.0f;
-            droppedWeapon.GetComponent<swordController>().throwSword(transform.tag);
-            EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.ThrowWeapon);
-            SoundManager.Instance.Play("Sounds/SFX/throwSword", SoundManager.Sound.P_Effect);
+            
+            if (throwSword)
+            {              
+                droppedWeapon.transform.rotation = Quaternion.Euler(0.0f, 0.0f, facing * 90);
+                forceX = -10.0f;
+                forceY = 3.0f;
+                droppedWeapon.GetComponent<swordController>().throwSword(transform.tag);
+                EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.ThrowWeapon);
+                SoundManager.Instance.Play("Sounds/SFX/throwSword", SoundManager.Sound.P_Effect);
+            }
         }
         else if (equiment == Equiment.SPEAR)
         {            
