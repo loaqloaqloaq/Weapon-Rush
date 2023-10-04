@@ -33,7 +33,9 @@ public class Pause : MonoBehaviour
     [HideInInspector]
     public static int confirmButtonIndex;
     public GameObject[] confirmButtons;
-    GameObject confirmButton;    
+    GameObject confirmButton;
+
+    [SerializeField] private AudioClip UiSE;
 
     private void Start()
     {
@@ -236,6 +238,10 @@ public class Pause : MonoBehaviour
         pausePlayer = 0;
         Time.timeScale = 1.0f;
         ConfirmationText.SetActive(false);
+        if (UiSE != null)
+        {
+            SoundManager.Instance.Play(UiSE, SoundManager.Sound.UI);
+        }
     }
 
 }
