@@ -48,3 +48,4 @@ MonoBehaviour:
   WeaponHit: {fileID: 19800000, guid: bc98890f6028f444eaa7789bde5e2eeb, type: 3}
   GetWeapon: {fileID: 19800000, guid: aa3fed151f536ee49b583c6a3ac4a2e1, type: 3}
   ThrowWeapon: {fileID: 19800000, guid: 83cd9cc9f9c88824ba18dc59b05ae328, type: 3}
+  Dash: {fileID: 19800000, guid: 83cd9cc9f9c88824ba18dc59b05ae328, type: 3}
