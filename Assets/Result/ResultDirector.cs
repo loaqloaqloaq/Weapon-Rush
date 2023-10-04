@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ResultDirector : MonoBehaviour
 {
@@ -9,7 +10,6 @@ public class ResultDirector : MonoBehaviour
     [SerializeField] private TextMeshProUGUI[] text_victory;
     [SerializeField] private TextMeshProUGUI[] text_weapon;
     [SerializeField] private TextMeshProUGUI[] text_score;
-    // Start is called before the first frame update
     [SerializeField] private GameObject[] playerImages;
 
     GameObject nowButton, prevButton;
@@ -17,12 +17,6 @@ public class ResultDirector : MonoBehaviour
 
     void Start()
     {
-        /*
-        p1hp = PlayerPrefs.GetFloat("player1HP");
-        p2hp = PlayerPrefs.GetFloat("player2HP");
-        t=GetComponent<Text>();
-        t.text = "p1:" + p1hp.ToString() + "\np2:" + p2hp.ToString();
-        */
         SetActiveWinnerSprite();
         SetWinnerText();
         SetInformText();
@@ -120,6 +114,13 @@ public class ResultDirector : MonoBehaviour
     }
     public void Button_Title()
     {
+        //ゲームデータを初期化
+        GameData.Initialize();
+        LoadingSceneController.LoadScene("Title");
+    }
+    public void Button_MapSelect()
+    {
+        TitleManager.mapselect = true;
         LoadingSceneController.LoadScene("Title");
     }
 }
