@@ -52,7 +52,16 @@ public class PlayerController : MonoBehaviour
 
     float spearSpecialAttack;
     bool chargeAttacked;
-    
+
+    //チャージエフェクト
+    private ChargeEffect chargeEffect;
+    private bool isCharging = false;
+
+    private void Awake()
+    {
+        chargeEffect = GetComponentInChildren<ChargeEffect>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -168,7 +177,7 @@ public class PlayerController : MonoBehaviour
             }
             //charge attack
             else
-            {                
+            {
                 if (Input.GetButton(input[player - 1].atk) && !chargeAttacked)
                 {
                     if (equiment == Equiment.SWORD)
@@ -178,6 +187,11 @@ public class PlayerController : MonoBehaviour
                         {
                             holdTime += Time.deltaTime;
                             animator.speed = 0;
+                            if (!isCharging)
+                            {
+                                isCharging = true;
+                                chargeEffect.Play();
+                            }
                         }
                     }
                     else if (equiment == Equiment.AXE)
@@ -188,6 +202,11 @@ public class PlayerController : MonoBehaviour
                             holdTime += Time.deltaTime;
                             animator.speed = 0;
                             weapon.transform.localScale += new Vector3(2, 2, 2) * Time.deltaTime;
+                            if (!isCharging)
+                            {
+                                isCharging = true;
+                                chargeEffect.Play();
+                            }
                         }
                     }
                     else if (equiment == Equiment.SPEAR) {
@@ -195,7 +214,12 @@ public class PlayerController : MonoBehaviour
                         if (aniTime > (5.0f / 38.0f))
                         {
                             holdTime += Time.deltaTime;
-                            animator.speed = 0;                           
+                            animator.speed = 0;
+                            if (!isCharging)
+                            {
+                                isCharging = true;
+                                chargeEffect.Play();
+                            }
                         }
                     }
                 }
@@ -216,7 +240,10 @@ public class PlayerController : MonoBehaviour
                         {                             
                             spearSpecialAttack = 0.2f;
                         }                        
-                    }                    
+                    }
+                    isCharging = false;
+                    chargeEffect.Stop();
+                    PlayAttackSound(equiment);
                 }
             }
             //槍チャージ攻撃
@@ -426,6 +453,8 @@ public class PlayerController : MonoBehaviour
             forceX = -10.0f;
             forceY = 3.0f;
             droppedWeapon.GetComponent<swordController>().throwSword(transform.tag);
+            EffectManager.Instance.PlayEffect(effectTransform.position, EffectManager.EffectType.ThrowWeapon);
+            SoundManager.Instance.Play("Sounds/SFX/throwSword", SoundManager.Sound.P_Effect);
         }
         else if (equiment == Equiment.SPEAR)
         {            
@@ -516,7 +545,6 @@ public class PlayerController : MonoBehaviour
             weapon.GetComponent<CapsuleCollider2D>().size = new Vector2(0.232f, 0.469f);
             weapon.GetComponent<CapsuleCollider2D>().offset = new Vector2(0.003f, 0.8835f);
         }        
-        PlayAttackSound(equiment);
     }
     //ダメージを受ける
     public void TakeDamage(float atk, Equiment equipment)
