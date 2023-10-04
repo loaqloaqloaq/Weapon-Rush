@@ -155,7 +155,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (
-            (otherPlayer.GetComponent<PlayerController>().HP <= 0 && !animator.GetCurrentAnimatorStateInfo(0).IsName("victory")) ||
+            (otherPlayer.GetComponent<PlayerController>().HP <= 0 && animator.GetCurrentAnimatorStateInfo(0).IsName("idle")) ||
             (GameDirector.end && HP > otherPlayer.GetComponent<PlayerController>().HP)
         ) {  
             animator.SetTrigger("win");           
@@ -329,6 +329,9 @@ public class PlayerController : MonoBehaviour
                     Jump();
                 }
                 //下へ                   
+                if (player == 1) {
+                    Debug.Log(Input.GetAxis(input[player - 1].down));
+                }
                 if (Input.GetAxis(input[player - 1].down) > 0.2f && onStage && !pressDown)
                 {
                     pressDown = true;
@@ -525,7 +528,7 @@ public class PlayerController : MonoBehaviour
         if (onStage)
         {
             GetComponent<BoxCollider2D>().isTrigger = true;
-            Invoke("jumper", 0.32f);
+            Invoke("jumper", 0.34f);
             onStage = false;
             onGround = false;
         }
