@@ -175,7 +175,13 @@ public class TitleManager : MonoBehaviour
         LoadingSceneController.LoadScene("main");
         PlayerPrefs.SetInt("map", 3);
     }
-
+    public void Stage4()
+    {
+        Title_Display.SetActive(false);
+        MapSelect_Display.SetActive(true);
+        LoadingSceneController.LoadScene("main");
+        PlayerPrefs.SetInt("map", 4);
+    }
     //マップ選択画面キャンセル (前の画面に戻る)
     public void MapSelect_Exit()
     {
