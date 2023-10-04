@@ -488,6 +488,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 8abc3ee2cf433084a863d08fc6309ae6, type: 2}
+    - target: {fileID: 4078094544631417268, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 8abc3ee2cf433084a863d08fc6309ae6, type: 2}
     - target: {fileID: 6587470612625249383, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -570,6 +574,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6587470612625249383, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7750150017262411113, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8262555734620741445, guid: 6bb5a0d8dafd70042b899cbe6df22244, type: 3}
