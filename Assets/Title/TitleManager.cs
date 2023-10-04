@@ -18,6 +18,7 @@ public class TitleManager : MonoBehaviour
 
     //今選ばれているボタン
     GameObject nowButton;
+    GameObject prevButton;
     float defaultOpacity = 0.8f;
     //説明画面(チュートリアル)の状態
     bool explanation = false;
@@ -40,10 +41,14 @@ public class TitleManager : MonoBehaviour
 
         if (nowButton == null)
         {
-            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
+            if(prevButton == null)
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
+            else
+                EventSystem.current.SetSelectedGameObject(prevButton);
+
             nowButton = EventSystem.current.currentSelectedGameObject;
         }
-
+        prevButton= EventSystem.current.currentSelectedGameObject;
         ChangeButtonEffect();
         if (Explanation.activeSelf && Input.GetButtonDown("Cancel")) {
             Close_Explanation();
