@@ -375,15 +375,11 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.transform.CompareTag("Floor") || collision.transform.CompareTag("Block"))
+        if (collision.transform.CompareTag("Floor") || collision.transform.CompareTag("Block") || collision.transform.CompareTag("Stage") || collision.transform.CompareTag("Cloud"))
         {
             onGround = false;
-        }
-        if (collision.transform.CompareTag("Stage") || collision.transform.CompareTag("Cloud"))
-        {
             onStage = false;
-            onGround = false;
-        }
+        }       
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {        
@@ -518,7 +514,7 @@ public class PlayerController : MonoBehaviour
         if (onStage)
         {
             GetComponent<BoxCollider2D>().isTrigger = true;
-            Invoke("jumper", 0.35f);
+            Invoke("jumper", 0.32f);
             onStage = false;
             onGround = false;
         }
