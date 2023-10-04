@@ -178,6 +178,18 @@ public class PlayerController : MonoBehaviour
             bool attacking = animator.GetCurrentAnimatorStateInfo(0).IsName("punch attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("sword attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("axe attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("spear attack");
             if (!attacking)
             {
+                if (equiment == Equiment.SWORD)
+                {
+                    atkMuiltpler = 1.1f;
+                }
+                else if (equiment == Equiment.AXE)
+                {
+                    atkMuiltpler = 1.8f;
+                }
+                else if (equiment == Equiment.SPEAR)
+                {
+                    atkMuiltpler = 0.8f;
+                }
                 DisableWeapon();
                 holdTime = 0;
                 animator.speed = 1;
@@ -217,7 +229,7 @@ public class PlayerController : MonoBehaviour
                         {
                             holdTime += Time.deltaTime;
                             animator.speed = 0;
-                            weapon.transform.localScale += new Vector3(2, 2, 2) * Time.deltaTime;
+                            weapon.transform.localScale += new Vector3(4, 4, 4) * Time.deltaTime;                            
                             if (!isCharging)
                             {
                                 isCharging = true;
@@ -252,8 +264,11 @@ public class PlayerController : MonoBehaviour
                             effect.transform.localScale = new Vector3(0.3f * transform.localScale.x * -1, 0.3f, 1);
                             effect.GetComponent<swordEffectController>().attacker = transform.tag;
                         }
-                        else if(equiment == Equiment.SPEAR)
-                        {                             
+                        else if (equiment == Equiment.AXE) {
+                            atkMuiltpler *= (2 * (holdTime / chargeAttackTime));
+                        }
+                        else if (equiment == Equiment.SPEAR)
+                        {
                             spearSpecialAttack = 0.2f;
                         }                        
                     }
@@ -462,7 +477,7 @@ public class PlayerController : MonoBehaviour
                 weapon.GetComponent<SpriteRenderer>().sprite = sword;
                 animator.SetBool("using spear", false);
                 weapon.transform.localScale = Vector3.one;
-                moveSpeed = 6.0f;
+                moveSpeed = 5.0f;
                 chargeAttackTime = 0.8f;
                 Destroy(weaponObject);                
                 break;
