@@ -250,6 +250,7 @@ public class PlayerController : MonoBehaviour
                     isCharging = false;
                     chargeEffect.Stop();
                     PlayAttackSound(equiment);
+                    EnableWeapon();
                 }
             }
             //槍チャージ攻撃
@@ -543,21 +544,21 @@ public class PlayerController : MonoBehaviour
         {
             if (lastAtk < axeCD) return;
             animator.SetTrigger("axe");
-            Invoke("EnableWeapon", 0.24f);
+            //Invoke("EnableWeapon", 0.24f);
             lastAtk = -1;            
         }
         else if (equiment == Equiment.SWORD)
         {
             if (lastAtk < swordCD) return;
             animator.SetTrigger("sword");
-            Invoke("EnableWeapon", 0.24f);
+            //Invoke("EnableWeapon", 0.24f);
             lastAtk = -1;
         }
         else if (equiment == Equiment.SPEAR)
         {
             if (lastAtk < spearCD) return;
             animator.SetTrigger("spear");
-            Invoke("EnableWeapon", 0.2f);
+            //Invoke("EnableWeapon", 0.2f);
             lastAtk = -1;
         }
         else if (equiment == Equiment.PUNCH)
