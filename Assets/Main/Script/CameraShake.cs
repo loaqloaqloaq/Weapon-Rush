@@ -30,18 +30,18 @@ public class CameraShake : MonoBehaviour
     {        
         if (shakeDuration > 0)
         {
-            lastShakeTime += Time.deltaTime;
+            lastShakeTime +=  Time.unscaledDeltaTime;
+            shakeDuration -= Time.deltaTime * decreaseFactor;            
             if (lastShakeTime >= shakeFequence)
             {
                 lastShakeTime = 0;
-               Vector3 pos = originalPos + Random.insideUnitSphere * shakeAmount;
+                Vector3 pos = originalPos + Random.insideUnitSphere * shakeAmount;
                 pos = new Vector3(pos.x, pos.y, -10);
-                camTransform.localPosition = pos;
-                shakeDuration -= Time.deltaTime * decreaseFactor;
+                camTransform.localPosition = pos;                              
             }
         }
         else
-        {
+        {            
             shakeDuration = 0f;
             camTransform.localPosition = originalPos;
         }
