@@ -33,6 +33,7 @@ public class OnClickButton : MonoBehaviour
         PlayUISound();
         //タイトルシーンに切り替え
         Time.timeScale = 1.0f;
+        GameData.Initialize();
         SceneManager.LoadScene("Title");
     }
 

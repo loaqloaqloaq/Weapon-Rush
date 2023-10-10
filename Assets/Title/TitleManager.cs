@@ -24,7 +24,7 @@ public class TitleManager : MonoBehaviour
     bool explanation = false;
 
     //マップセレクトボタンが押されているか
-    public static bool mapselect = false;
+    [SerializeField] public static bool mapselect = false;
 
     private void Start()
     {

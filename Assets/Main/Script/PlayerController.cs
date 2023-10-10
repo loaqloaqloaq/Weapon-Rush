@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     KeyBind[] input = new KeyBind[2];   
     
     public enum Equiment {
-        AXE, SWORD, SPEAR, PUNCH, NON
+        AXE, SWORD, SPEAR, PUNCH, NON, FLYINGSWORD
     };
     public Equiment equiment;
     GameObject onHoverObject;
@@ -167,7 +167,7 @@ public class PlayerController : MonoBehaviour
 
         //一時停止時や死んだの時、プレイヤーを動けないようにする 
         if (Mathf.Approximately(Time.timeScale, 0.0f) || HP <= 0 || GameDirector.end)
-        {            
+        {   
             return;
         }
         
@@ -197,7 +197,7 @@ public class PlayerController : MonoBehaviour
                 if (equiment!=Equiment.SPEAR) weapon.transform.localScale = Vector3.one;
                 if (lastAtk < 0) lastAtk = 0;
             }
-            //charge attack
+            //チャージ攻撃
             else
             {
                 var aniTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
@@ -428,8 +428,7 @@ public class PlayerController : MonoBehaviour
             backArm.GetComponent<CapsuleCollider2D>().enabled = false;
             collision.GetComponent<PlayerController>().TakeDamage(attack * atkMuiltpler, equiment);
             if (spearSpecialAttack > 0) {
-                collision.GetComponent<PlayerController>().DropWeapon(false);
-                collision.GetComponent<PlayerController>().equiment = Equiment.PUNCH;
+                collision.GetComponent<PlayerController>().DropWeapon(false,true);                
             }
         }
     }
@@ -478,7 +477,7 @@ public class PlayerController : MonoBehaviour
                 animator.SetBool("using spear", false);
                 weapon.transform.localScale = Vector3.one;
                 moveSpeed = 5.0f;
-                chargeAttackTime = 0.8f;
+                chargeAttackTime = 0.65f;
                 Destroy(weaponObject);                
                 break;
             case "Spear":
@@ -506,16 +505,16 @@ public class PlayerController : MonoBehaviour
         UIManager.Instance.UpdatePlayerWeaponImage((UIManager.Player)playerNum, equiment);
     }
     //武器を捨てる
-    public void DropWeapon(bool throwSword = true)
+    public void DropWeapon(bool throwSword = true, bool attacked = false)
     {
         lastAtk = 1f;
         if (equiment == Equiment.PUNCH) return;
 
-        GameObject droppedWeapon;
+        GameObject droppedWeapon = null;
         float forceX = -2.0f, forceY = 5.0f;
         if (equiment == Equiment.AXE)
         {
-            droppedWeapon = Instantiate(axePre, transform.position, Quaternion.identity);            
+            if(!attacked || !isCharging) droppedWeapon = Instantiate(axePre, transform.position, Quaternion.identity);            
         }
         else if (equiment == Equiment.SWORD)
         {
@@ -538,10 +537,14 @@ public class PlayerController : MonoBehaviour
             droppedWeapon = Instantiate(spearPre, transform.position, Quaternion.identity);           
         }
         else droppedWeapon = null;
-        if (droppedWeapon != null) droppedWeapon.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * forceX, forceY, 0);
-        weapon.SetActive(false);
-        animator.SetBool("using spear", false);
-        atkMuiltpler = 0.5f;
+        if (droppedWeapon != null)
+        {
+            droppedWeapon.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * forceX, forceY, 0);
+            weapon.SetActive(false);
+            animator.SetBool("using spear", false);
+            atkMuiltpler = 0.5f;
+            equiment = Equiment.PUNCH;
+        }
 
         int playerNum = 0;
         if (transform.CompareTag("Player2")) playerNum = 1;
@@ -664,6 +667,10 @@ public class PlayerController : MonoBehaviour
     //ダメージを受ける
     public void TakeDamage(float atk, Equiment equipment)
     {
+        if (equipment == Equiment.FLYINGSWORD) {
+            if (spearSpecialAttack > 0) return;
+            else equipment = Equiment.SWORD;
+        }
         HP -= atk;        
         int playerNum = 0;
         if (transform.CompareTag("Player2")) playerNum = 1;
