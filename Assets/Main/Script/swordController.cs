@@ -37,7 +37,7 @@ public class swordController : MonoBehaviour
         {
             if (collision.transform.tag.StartsWith("Player"))
             {
-                collision.GetComponent<PlayerController>().TakeDamage(10, PlayerController.Equiment.SWORD);
+                collision.GetComponent<PlayerController>().TakeDamage(10, PlayerController.Equiment.FLYINGSWORD);
                 throwing = false;
             }
             //dropOnFloor();
