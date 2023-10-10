@@ -92,7 +92,7 @@ public class GameDirector : MonoBehaviour
             {
                 GameData.winnerId = 3;
             }
-
+            Time.timeScale = 1.0f;
             SceneManager.LoadScene("Result");
         }
     }

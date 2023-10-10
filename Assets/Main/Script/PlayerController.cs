@@ -167,7 +167,7 @@ public class PlayerController : MonoBehaviour
 
         //一時停止時や死んだの時、プレイヤーを動けないようにする 
         if (Mathf.Approximately(Time.timeScale, 0.0f) || HP <= 0 || GameDirector.end)
-        {            
+        {   
             return;
         }
         
@@ -477,7 +477,7 @@ public class PlayerController : MonoBehaviour
                 animator.SetBool("using spear", false);
                 weapon.transform.localScale = Vector3.one;
                 moveSpeed = 5.0f;
-                chargeAttackTime = 0.8f;
+                chargeAttackTime = 0.65f;
                 Destroy(weaponObject);                
                 break;
             case "Spear":
