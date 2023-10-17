@@ -1,9 +1,15 @@
 using UnityEngine;
 using TMPro;
 using static UIManager;
+using Unity.VisualScripting;
 
 public class UIManager : MonoBehaviour
 {
+    
+    GameObject player1, player2;    
+    Camera camera;    
+    CanvasGroup cg;
+
     private static UIManager instance;
     public static UIManager Instance
     {
@@ -43,6 +49,10 @@ public class UIManager : MonoBehaviour
             healthManagers[i].healthAmount = 1.0f;
             healthManagers[i].targetAmount = 1.0f;
         }
+        if (player1 == null) player1 = GameObject.Find("Player1");
+        if (player2 == null) player2 = GameObject.Find("Player2");
+        if (camera == null) camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        if (cg == null) cg = GameObject.Find("Canvas/UIPanel/Panel").GetComponent<CanvasGroup>();
     }
 
     // Update is called once per frame
@@ -53,8 +63,18 @@ public class UIManager : MonoBehaviour
             if (healthManager.healthAmount != healthManager.targetAmount)
             {
                 UpdateHealthAmount(healthManager);
-            }
+            }            
         }
+        if (Camera.main.WorldToViewportPoint(player1.transform.position).y > 0.73f || Camera.main.WorldToViewportPoint(player2.transform.position).y > 0.73f)
+        {
+            cg.alpha = 0.4f;
+        }
+        else
+        {
+          cg.alpha=1f;
+        }
+
+
     }
 
     public void UpdateDash(Player player, float amount)

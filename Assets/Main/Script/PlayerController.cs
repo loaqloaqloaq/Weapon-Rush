@@ -8,7 +8,10 @@ public class PlayerController : MonoBehaviour
     public GameObject otherPlayer;
     public Sprite axe, sword, spear;
     Rigidbody2D rb;
-    Animator animator; 
+    Animator animator;
+
+    public TextAsset weaponJson;
+    Weapon axeData,swordData,spearData,punchData;
 
     //エフェクトを表示する位置
     private Transform effectTransform; 
@@ -30,6 +33,8 @@ public class PlayerController : MonoBehaviour
     };
     public Equiment equiment;
     GameObject onHoverObject;
+
+
 
     // 1＝プレイヤー１ ／ 2＝プレイヤー２ ／ 3＝CPU
     public int player = 1;
@@ -141,11 +146,18 @@ public class PlayerController : MonoBehaviour
         }
 
         //武器数値
+        Weapons weaponData = JsonUtility.FromJson<Weapons>(weaponJson.text);
+        axeData = weaponData.weapons.Axe;
+        swordData = weaponData.weapons.Sword;
+        spearData = weaponData.weapons.Spear;
+        punchData = weaponData.weapons.Punch;
+
         lastAtk = 1f;
-        axeCD = 0.7f;
-        swordCD = 0.5f;
-        spearCD = 0.3f;
-        puncCD = 0.5f;
+
+        axeCD = axeData.atkCD;
+        swordCD = swordData.atkCD;
+        spearCD = spearData.atkCD;
+        puncCD = punchData.atkCD;
         
         chargeAttackTime = 0.5f;
         holdTime = 0;
@@ -193,7 +205,9 @@ public class PlayerController : MonoBehaviour
                 DisableWeapon();
                 holdTime = 0;
                 animator.speed = 1;
-                chargeAttacked = false;                
+                chargeAttacked = false;  
+                isCharging = false;
+                chargeEffect.Stop();
                 if (equiment!=Equiment.SPEAR) weapon.transform.localScale = Vector3.one;
                 if (lastAtk < 0) lastAtk = 0;
             }
@@ -217,7 +231,7 @@ public class PlayerController : MonoBehaviour
                             holdTime += Time.deltaTime;
                             animator.speed = 0;
                             if (!isCharging)
-                            {
+                            {                                
                                 isCharging = true;
                                 chargeEffect.Play();
                             }
@@ -459,37 +473,37 @@ public class PlayerController : MonoBehaviour
             case "Axe":
                 DropWeapon();
                 equiment = Equiment.AXE;
-                atkMuiltpler = 1.8f;
+                atkMuiltpler = axeData.atkMuiltpler;
                 weapon.SetActive(true);
                 weapon.GetComponent<SpriteRenderer>().sprite = axe;
                 animator.SetBool("using spear", false);
                 weapon.transform.localScale = Vector3.one;
-                moveSpeed = 4.0f;
-                chargeAttackTime = 0.5f;
+                moveSpeed = axeData.moveSpeed;
+                chargeAttackTime = axeData.chargeAttackTime;
                 Destroy(weaponObject);                
                 break;
             case "Sword":
                 DropWeapon();
                 equiment = Equiment.SWORD;
-                atkMuiltpler = 1.1f;
+                atkMuiltpler = swordData.atkMuiltpler;
                 weapon.SetActive(true);
                 weapon.GetComponent<SpriteRenderer>().sprite = sword;
                 animator.SetBool("using spear", false);
                 weapon.transform.localScale = Vector3.one;
-                moveSpeed = 5.0f;
-                chargeAttackTime = 0.65f;
+                moveSpeed = swordData.moveSpeed;
+                chargeAttackTime = swordData.chargeAttackTime;
                 Destroy(weaponObject);                
                 break;
             case "Spear":
                 DropWeapon();
                 equiment = Equiment.SPEAR;
-                atkMuiltpler = 0.8f;
+                atkMuiltpler = spearData.atkMuiltpler;
                 weapon.SetActive(true);
                 weapon.GetComponent<SpriteRenderer>().sprite = spear;
                 animator.SetBool("using spear", true);
                 weapon.transform.localScale = new Vector3(1,1.3f,1);
-                moveSpeed = 5.0f;
-                chargeAttackTime = 0.5f;
+                moveSpeed = spearData.moveSpeed;
+                chargeAttackTime = spearData.chargeAttackTime;
                 Destroy(weaponObject);
                 break;
             default: break;
@@ -544,6 +558,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("using spear", false);
             atkMuiltpler = 0.5f;
             equiment = Equiment.PUNCH;
+            moveSpeed = 0.5f;
         }
 
         int playerNum = 0;
@@ -676,7 +691,8 @@ public class PlayerController : MonoBehaviour
         if (transform.CompareTag("Player2")) playerNum = 1;
         UIManager.Instance.UpdatePlayerHealth((UIManager.Player)playerNum, HP, maxHP);
         PlayEffect(equipment);
-        PlayHitSound(equipment);
+        PlayHitSound(equipment);        
+        chargeEffect.Stop();
         if (HP > 0) {
             if(this.equiment != Equiment.AXE) animator.SetTrigger("hurt");
         } 

@@ -31,7 +31,7 @@ public class GameDirector : MonoBehaviour
 
         Pause.pausePlayer = 0;
 
-        Debug.Log(PlayerPrefs.GetInt("map"));
+        //Debug.Log(PlayerPrefs.GetInt("map"));
         map = PlayerPrefs.HasKey("map")? PlayerPrefs.GetInt("map"):testMap;
 
         List<GameObject> maps = new List<GameObject>();

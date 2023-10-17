@@ -1,0 +1,28 @@
+{
+    "weapons":{
+        "Axe":{
+            "atkMuiltpler":1.8,
+            "moveSpeed":4.0,
+            "chargeAttackTime":0.5,
+            "atkCD":0.7
+        },
+        "Sword":{
+            "atkMuiltpler":1.1,
+            "moveSpeed":5.0,
+            "chargeAttackTime":0.65,
+            "atkCD":0.5
+        },
+        "Spear":{
+            "atkMuiltpler":0.8,
+            "moveSpeed":5.0,
+            "chargeAttackTime":0.5,
+            "atkCD":0.3
+        },
+        "Punch":{
+            "atkMuiltpler":0.5,
+            "moveSpeed":5.0,
+            "chargeAttackTime":0,
+            "atkCD":0.5
+        }
+    }
+}
