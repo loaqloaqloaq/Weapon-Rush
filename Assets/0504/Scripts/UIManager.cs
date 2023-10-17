@@ -32,14 +32,11 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI timeText;
 
-    [SerializeField] private GameObject timeUpText;
-    //[SerializeField] private Image image;
 
-    private float interporate = 0.05f;
+    private float interporate = 0.15f;
 
     private void Awake()
     {
-        timeUpText.SetActive(false); 
     }
 
     void Start()
@@ -159,8 +156,4 @@ public class UIManager : MonoBehaviour
         timeText.text = time.ToString();
     }
 
-    public void SetActiveTimeUpText()
-    {
-        timeUpText.SetActive(true);
-    }
 }
