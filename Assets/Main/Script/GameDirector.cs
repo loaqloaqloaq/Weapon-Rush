@@ -8,7 +8,6 @@ public class GameDirector : MonoBehaviour
     public PlayerController player1, player2;
     Timer_CountDown timer;
     [SerializeField]
-    GameObject timeup;
 
     float loadSceneDelay;
     public static bool end;
@@ -24,9 +23,7 @@ public class GameDirector : MonoBehaviour
 
         player1 = GameObject.Find("Player1").GetComponent<PlayerController>();
         player2 = GameObject.Find("Player2").GetComponent<PlayerController>();
-        timer = GameObject.Find("Canvas/UIPanel/Panel/Text_Timer").GetComponent<Timer_CountDown>();
-        timeup = GameObject.Find("Canvas/UIPanel/Text_TimeUp");
-        timeup.SetActive(false);
+        timer = GameObject.Find("Canvas").GetComponent<Timer_CountDown>();
         end = false;
 
         Pause.pausePlayer = 0;
@@ -59,7 +56,6 @@ public class GameDirector : MonoBehaviour
     {
         if (timer.CountDown_ <= 0)
         {
-            timeup.SetActive(true);
             end = true;
         }
         
