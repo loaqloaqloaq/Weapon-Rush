@@ -556,9 +556,9 @@ public class PlayerController : MonoBehaviour
             droppedWeapon.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * forceX, forceY, 0);
             weapon.SetActive(false);
             animator.SetBool("using spear", false);
-            atkMuiltpler = 0.5f;
+            atkMuiltpler = punchData.atkMuiltpler;
             equiment = Equiment.PUNCH;
-            moveSpeed = 0.5f;
+            moveSpeed = punchData.moveSpeed;
         }
 
         int playerNum = 0;
